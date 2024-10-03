@@ -88,13 +88,13 @@ export default function Header() {
             </div>
             Notifications
           </NavLink>
-          <div className={styles.item}>
+          <NavLink to="/profile" className={styles.item}>
             <Profile />
             <div className={styles.arr}>
             <span>Profile</span>
             <Arrow />
             </div>
-          </div>
+          </NavLink>
           <div className={styles.item}>
             <Work />
             <div className={styles.arr}>

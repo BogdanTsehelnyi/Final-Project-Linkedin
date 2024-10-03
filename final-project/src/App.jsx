@@ -7,7 +7,8 @@ function App() {
   
   return (
     <>
-    <Header />
+        <Header />
+    <div className='wrapper'>
     <AppRoutes/>
     </div>
     </>

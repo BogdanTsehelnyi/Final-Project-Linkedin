@@ -4,7 +4,7 @@ import Net from "./pages/Net";
 import Jobs from "./pages/Jobs";
 import Messages from "./pages/Messages";
 import Notifications from "./pages/Notifications";
-import Profile from "./images/Profile";
+import Profile from "../src/pages/Profile/Profile";
 
 export default function AppRoutes() {
   return (
