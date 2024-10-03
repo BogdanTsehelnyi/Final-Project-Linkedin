@@ -4,6 +4,7 @@ import Net from "./pages/Net";
 import Jobs from "./pages/Jobs";
 import Messages from "./pages/Messages";
 import Notifications from "./pages/Notifications";
+import Profile from "./images/Profile";
 
 export default function AppRoutes() {
   return (
@@ -13,6 +14,7 @@ export default function AppRoutes() {
       <Route path="/jobs" element={<Jobs />} />
       <Route path="/messages" element={<Messages />} />
       <Route path="/notifications" element={<Notifications />} />
+      <Route path='/profile' element={<Profile />} />
     </Routes>
   );
 }
