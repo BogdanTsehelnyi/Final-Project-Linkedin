@@ -2,12 +2,16 @@ import React from 'react';
 import styles from './ProfileBar.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import { setProfileData } from '../../redux/slices/profileSlice';
+import { useNavigate } from 'react-router-dom';
 
 export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     
     // Отримуємо дані профілю з Redux
     const profileData = useSelector((state) => state.profile);
+
+    const addedFriend = useSelector((state) => state.friend);
 
     // Функція для зміни фону профілю
     const handleBackgroundChange = (event) => {
@@ -39,6 +43,8 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
         }
     };
 
+    const friendCount = addedFriend.length;
+
     return (
         <div className={styles.container}>
             <div className={styles.backgroundProfile} style={{
@@ -66,6 +72,9 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
             <h3 className={styles.cityProfile}>
                 {profileData.country}, {profileData.city}
             </h3>
+            <button onClick={() => navigate('/net')} className={styles.countProfileBtn}>
+                {friendCount}+ profiles
+            </button>
             <button onClick={handleOpenModal} className={styles.openModal}>
                 <img src="/image/main/Edit.svg" alt="Редагувати профіль" />
             </button>   

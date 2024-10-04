@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import Net from "./pages/Net";
+import Net from "./pages/Net/Net";
 import Jobs from "./pages/Jobs";
 import Messages from "./pages/Messages";
 import Notifications from "./pages/Notifications";
