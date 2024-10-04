@@ -8,9 +8,11 @@
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "start": "npm run dev"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.2.7",
     "classnames": "^2.5.1",
     "formik": "^2.4.6",
     "react": "^18.3.1",
@@ -54,6 +56,11 @@
     ],
     "collectCoverage": true,
     "coverageDirectory": "coverage",
-    "coverageReporters": ["json", "lcov", "text", "clover"]
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text",
+      "clover"
+    ]
   }
 }
