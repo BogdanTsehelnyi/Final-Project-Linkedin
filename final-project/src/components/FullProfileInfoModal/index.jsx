@@ -11,11 +11,18 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 500,  // Збільшено ширину модалки
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
+    borderRadius: '10px',  // Додаємо округлі краї
+};
+
+const typographyStyle = {
+  borderBottom: '1px solid #ccc',  // Нижня лінія
+  paddingBottom: '10px',           // Відступ до бордера
+  marginBottom: '15px',            // Відступ після елемента
 };
 
 export default function FullProfileInfoModal({ open, handleClose }) {
@@ -30,39 +37,46 @@ export default function FullProfileInfoModal({ open, handleClose }) {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-        {profileData.firstName} {profileData.lastName}
-        </Typography>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-        {profileData.headline}
-        </Typography>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-        {profileData.email}
-        </Typography>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-        {profileData.country}, {profileData.city}
-        </Typography>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-        {profileData.industry}, 
-        </Typography>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-        {profileData.experienceTitle}
-        </Typography>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-        {profileData.educationDegree}
-        </Typography>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-        {profileData.skills}
-        </Typography>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-        {profileData.languages}, Proficiency: {profileData.proficiency}
-        </Typography>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-        {profileData.certifications}
+        {/* Застосовуємо стиль з нижнім бордером для кожного елементу */}
+        <Typography id="modal-modal-title" variant="h5" component="h2" sx={typographyStyle}>
+          {profileData.firstName} {profileData.lastName}
         </Typography>
 
-        <Stack spacing={2} direction="row">
-                <Button variant="outlined" onClick={handleClose}>Close</Button>
+        <Typography id="modal-modal-description" variant="subtitle1" component="p" sx={typographyStyle}>
+          {profileData.headline}
+        </Typography>
+
+        <Typography id="modal-modal-email" variant="body1" sx={typographyStyle}>
+          Email: {profileData.email}
+        </Typography>
+
+        <Typography id="modal-modal-location" variant="body1" sx={typographyStyle}>
+          Location: {profileData.country}, {profileData.city}
+        </Typography>
+
+        <Typography id="modal-modal-industry" variant="body1" sx={typographyStyle}>
+          Industry: {profileData.industry}
+        </Typography>
+
+        <Typography id="modal-modal-experience" variant="body1" sx={typographyStyle}>
+          Experience: {profileData.experienceTitle}
+        </Typography>
+
+        <Typography id="modal-modal-education" variant="body1" sx={typographyStyle}>
+          Education: {profileData.educationDegree}
+        </Typography>
+
+        <Typography id="modal-modal-languages" variant="body1" sx={typographyStyle}>
+          Languages: {profileData.languages}, Proficiency: {profileData.proficiency}
+        </Typography>
+
+        <Typography id="modal-modal-certifications" variant="body1" sx={typographyStyle}>
+          Certifications: {profileData.certifications}
+        </Typography>
+
+        {/* Додаємо додатковий відступ навколо кнопки */}
+        <Stack spacing={2} direction="row" sx={{ mt: 3 }}>
+          <Button variant="outlined" onClick={handleClose}>Close</Button>
         </Stack>
       </Box>
     </Modal>

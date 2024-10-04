@@ -85,3 +85,18 @@
     cursor: pointer;
 }
 
+@media (max-width: 787px) {
+    .container{
+        width: 100%;
+    }
+}
+.countProfileBtn{
+    color: #1e00ff;
+    font-weight: 600;
+    font-size: 18px;
+    margin-left: 20px;
+    border: none;
+    display: block;
+    background-color: #fff;
+    cursor: pointer;
+}
