@@ -19,7 +19,8 @@
 .search {
   border-radius: 4px;
   height: 4.9vh;
-  width: 279px;
+  // width: 279px;
+  min-width: 20vw;
   border: none;
   background-color: #eef3f8;
   padding-left: 20%;
@@ -55,4 +56,34 @@
 .arr {
   display: flex;
   gap: 2px;
+}
+.mess {
+  display: none;
+}
+@media (max-width: 911px) {
+  .item {
+    display: none;
+  }
+  .name {
+    display: none;
+  }
+}
+@media (max-width: 910px) {
+  .wrapper {
+    flex-direction: row-reverse;
+  }
+  .inputWrapper {
+    display: flex;
+  }
+  .itemDisplay {
+    display: flex;
+  }
+  .search {
+    min-width: 30vw;
+    padding-left: 55px;
+  }
+  .mess {
+    display: flex;
+    align-items: center;
+  }
 }

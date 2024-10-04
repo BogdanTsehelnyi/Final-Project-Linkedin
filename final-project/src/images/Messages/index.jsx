@@ -1,8 +1,6 @@
-import React from "react";
-
-export default function Messages() {
+export default function Messages({className}) {
   return (
-    <div>
+    <div className={className}>
       <svg
         width="23"
         height="19"

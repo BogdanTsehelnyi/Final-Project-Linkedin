@@ -10,16 +10,18 @@ import Notifications from "../../images/Notifications";
 import Profile from "../../images/Profile";
 import Work from "../../images/Work";
 import { NavLink } from "react-router-dom";
+import classNames from 'classnames'
 
 export default function Header() {
   return (
     <header className={styles.wrapper}>
+              <Messages className={styles.mess}/>
       <div className={styles.searchGroup}>
-        <Logo />
+        <Logo className={styles.name}/>
         <div className={styles.inputWrapper}>
           <Search />
           <input
-            className={styles.search}
+            className={classNames(styles.search, styles.displaySearch)}
             type="text"
             name="search"
             placeholder="Search"
@@ -35,7 +37,6 @@ export default function Header() {
             }
           >
             <div className={styles.group}>
-              {/* <Active /> */}
               <Home />
             </div>
               <span>Home</span>
@@ -47,7 +48,6 @@ export default function Header() {
             }
           >
             <div className={styles.group}>
-              {/* <Active /> */}
               <Net />
             </div>
             Net
@@ -59,7 +59,6 @@ export default function Header() {
             }
           >
             <div className={styles.group}>
-              {/* <Active /> */}
               <Jobs />
             </div>
             Jobs
@@ -71,8 +70,7 @@ export default function Header() {
             }
           >
             <div className={styles.group}>
-              {/* <Active /> */}
-              <Messages />
+              <Messages className={styles.mes}/>
             </div>
             Messages
           </NavLink>
@@ -83,12 +81,11 @@ export default function Header() {
             }
           >
             <div className={styles.group}>
-              {/* <Active /> */}
               <Notifications />
             </div>
             Notifications
           </NavLink>
-          <NavLink to="/profile" className={styles.item}>
+          <NavLink to="/profile" className={classNames(styles.item, styles.itemDisplay)}>
             <Profile />
             <div className={styles.arr}>
             <span>Profile</span>
