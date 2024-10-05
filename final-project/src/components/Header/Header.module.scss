@@ -12,6 +12,33 @@
   display: flex;
   gap: 17px;
   align-items: center;
+  position: relative;
+}
+.wrapperFocus {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #7b787859;
+}
+.focusModal {
+  position: absolute;
+  top: 5%;
+  left: 11.7%;
+  width: 30vw;
+  height: 50vh;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 4px;
+}
+.items {
+  color: black;
+  font-size: 20px;
+  font-weight: 500;
+  font-family: sans-serif;
+  margin-top: 15px;
+  list-style: none;
 }
 .inputWrapper {
   position: relative;
@@ -85,5 +112,11 @@
   .mess {
     display: flex;
     align-items: center;
+  }
+  .focusModal {
+    width: 100vw;
+    height: 100vh;
+    top: 8%;
+    left: 0;
   }
 }
