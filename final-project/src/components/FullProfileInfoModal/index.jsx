@@ -1,80 +1,151 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import { useSelector } from 'react-redux';  
+import CircularProgress from '@mui/material/CircularProgress';
+import { fetchProfile } from '../../redux/slices/profileSlice';  
+import { useSelector, useDispatch } from 'react-redux';
 
 const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 500,  // Збільшено ширину модалки
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-    borderRadius: '10px',  // Додаємо округлі краї
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '90%',           // Зменшили ширину до 90% екрана
+  maxWidth: '600px',       // Максимальна ширина - 600px
+  height: '80%',           // Зменшили висоту до 80% екрана
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+  borderRadius: '10px',
+  overflowY: 'auto',       // Додаємо вертикальну прокрутку
+  display: 'flex',         // Додаємо flex для вертикального розміщення
+  flexDirection: 'column',
 };
 
 const typographyStyle = {
-  borderBottom: '1px solid #ccc',  // Нижня лінія
-  paddingBottom: '10px',           // Відступ до бордера
-  marginBottom: '15px',            // Відступ після елемента
+  borderBottom: '1px solid #ccc',
+  marginBottom: '10px',
 };
 
 export default function FullProfileInfoModal({ open, handleClose }) {
+  const dispatch = useDispatch();
 
-  const profileData = useSelector((state) => state.profile);
+  const { profileData, loading, error } = useSelector((state) => state.profile);
+  
+  useEffect(() => {
+    if (open) {
+      dispatch(fetchProfile()); // Завантажуємо профіль, якщо модалка відкрита
+    }
+  }, [dispatch, open]);
+
+  if (loading) {
+    return (
+      <Modal open={open} onClose={handleClose}>
+        <Box sx={style}>
+          <CircularProgress />
+        </Box>
+      </Modal>
+    );
+  }
+
+  if (error) {
+    return (
+      <Modal open={open} onClose={handleClose}>
+        <Box sx={style}>
+          <Typography variant="body2" color="error">
+            Error: {error}
+          </Typography>
+        </Box>
+      </Modal>
+    );
+  }
+
+  // Перевірка наявності профілю
+  if (!profileData || Object.keys(profileData).length === 0) {
+    return (
+      <Modal open={open} onClose={handleClose}>
+        <Box sx={style}>
+          <Typography variant="body2">No profile data available.</Typography>
+        </Box>
+      </Modal>
+    );
+  }
+
+  // Деструктуризація даних з профілю
+  const {
+    firstName = "N/A",
+    lastName = "N/A",
+    headline = "N/A",
+    email = "N/A",
+    location = { country: "N/A", city: "N/A" },
+    industry = "N/A",
+    experience = [],
+    education = [],
+    certifications = [],
+    languages = []
+  } = profileData;
+
+  // Функція для відображення списку даних
+  const renderList = (title, data, renderItem) => (
+    <Typography variant="body1" sx={typographyStyle}>
+      {title}:
+      {data.length > 0 ? (
+        <ul>
+          {data.map((item, index) => (
+            <li key={index}>{renderItem(item)}</li>
+          ))}
+        </ul>
+      ) : (
+        <ul>
+          <li>No {title.toLowerCase()} available</li>
+        </ul>
+      )}
+    </Typography>
+  );
 
   return (
-    <Modal
-      open={open}
-      onClose={handleClose}  // Закриваємо модалку через Redux
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-    >
+    <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
       <Box sx={style}>
-        {/* Застосовуємо стиль з нижнім бордером для кожного елементу */}
         <Typography id="modal-modal-title" variant="h5" component="h2" sx={typographyStyle}>
-          {profileData.firstName} {profileData.lastName}
+          {firstName} {lastName}
         </Typography>
 
         <Typography id="modal-modal-description" variant="subtitle1" component="p" sx={typographyStyle}>
-          {profileData.headline}
+          {headline}
         </Typography>
 
         <Typography id="modal-modal-email" variant="body1" sx={typographyStyle}>
-          Email: {profileData.email}
+          Email: {email}
         </Typography>
 
         <Typography id="modal-modal-location" variant="body1" sx={typographyStyle}>
-          Location: {profileData.country}, {profileData.city}
+          Location: {location.country}, {location.city}
         </Typography>
 
         <Typography id="modal-modal-industry" variant="body1" sx={typographyStyle}>
-          Industry: {profileData.industry}
+          Industry: {industry}
         </Typography>
 
-        <Typography id="modal-modal-experience" variant="body1" sx={typographyStyle}>
-          Experience: {profileData.experienceTitle}
-        </Typography>
+        {renderList('Experience', experience, (exp) => (
+          `${exp.title} at ${exp.company} (${exp.startDate} - ${exp.endDate || "Present"})`
+        ))}
 
-        <Typography id="modal-modal-education" variant="body1" sx={typographyStyle}>
-          Education: {profileData.educationDegree}
-        </Typography>
+        {renderList('Education', education, (edu) => (
+          `${edu.degree} in ${edu.fieldOfStudy} (${edu.startDate} - ${edu.endDate})`
+        ))}
 
-        <Typography id="modal-modal-languages" variant="body1" sx={typographyStyle}>
-          Languages: {profileData.languages}, Proficiency: {profileData.proficiency}
-        </Typography>
+        {renderList('Languages', languages, (lang) => (
+          `${lang.language} (Proficiency: ${lang.proficiency})`
+        ))}
+        
+        {renderList('Certifications', certifications, (cert) => (
+          `${cert.name} - ${cert.authority} (${cert.date})`
+        ))}
 
-        <Typography id="modal-modal-certifications" variant="body1" sx={typographyStyle}>
-          Certifications: {profileData.certifications}
-        </Typography>
-
-        {/* Додаємо додатковий відступ навколо кнопки */}
         <Stack spacing={2} direction="row" sx={{ mt: 3 }}>
           <Button variant="outlined" onClick={handleClose}>Close</Button>
         </Stack>
