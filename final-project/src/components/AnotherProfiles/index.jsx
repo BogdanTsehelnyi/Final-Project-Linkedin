@@ -1,14 +1,19 @@
 import axios from "axios";
 import styles from "./AnotherProfiles.module.scss";
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addFriend } from "../../redux/slices/friendProfileSlice"; // Імпорт дій з Redux
 
 export default function AnotherProfiles() {
     const dispatch = useDispatch();
 
+    // Стан для завантажених профілів
     const [anotherProfileData, setAnotherProfileData] = useState([]);
+    
+    // Отримуємо список друзів з Redux
+    const friendsData = useSelector((state) => state.friend.friendsData);
 
+    // Завантаження даних профілів при рендері
     useEffect(() => {
         async function fetchAnotherProfileData() {
             try {
@@ -24,7 +29,14 @@ export default function AnotherProfiles() {
 
     // Функція для додавання друга
     const handleAddFriend = (profile) => {
-        dispatch(addFriend(profile)); // Додаємо профіль у список друзів через Redux
+        const existingFriend = friendsData.find(friend => friend.id === profile.id);
+        
+        if (!existingFriend) {
+            // Додаємо профіль у список друзів через Redux
+            dispatch(addFriend(profile));
+        } else {
+            alert("Цей користувач вже у списку ваших друзів!");
+        }
     };
 
     return (
