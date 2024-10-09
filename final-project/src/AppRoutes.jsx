@@ -1,7 +1,7 @@
-import { Routes, Route, Navigate, Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { logout } from './redux/slices/authSlice';
-import Auth from './components/Auth';
+import { Routes, Route, Navigate, Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "./redux/slices/authSlice";
+import Auth from "./components/Auth";
 import Home from "./pages/Home";
 import Net from "./pages/Net/Net";
 import Jobs from "./pages/Jobs";
@@ -20,8 +20,8 @@ export default function AppRoutes() {
 
   const handleLogout = () => {
     dispatch(logout());
-    localStorage.removeItem('email'); 
-    localStorage.removeItem('password'); 
+    localStorage.removeItem("email");
+    localStorage.removeItem("password");
   };
 
   return (
@@ -92,7 +92,9 @@ export default function AppRoutes() {
             <div>
               <h1>Головна сторінка</h1>
               <p>Ви успішно увійшли в систему.</p>
-              <Link to="/login" onClick={handleLogout}>Вийти з акаунта</Link>
+              <Link to="/login" onClick={handleLogout}>
+                Вийти з акаунта
+              </Link>
             </div>
           </ProtectedRoute>
         }
