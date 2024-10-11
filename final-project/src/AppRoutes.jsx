@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "./redux/slices/authSlice";
-import Auth from "./components/Auth";
+import Auth from "./components/Auth/Auth";
 import Home from "./pages/Home";
 import Net from "./pages/Net/Net";
 import Jobs from "./pages/Jobs";

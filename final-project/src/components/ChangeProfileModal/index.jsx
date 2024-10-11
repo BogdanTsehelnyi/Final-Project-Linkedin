@@ -26,13 +26,13 @@ export default function ChangeProfileModal() {
   const dispatch = useDispatch();
 
   // Отримуємо дані профілю з Redux
-  const profileData = useSelector((state) => state.profile);
+  const { profileData } = useSelector((state) => state.profile);
   // Отримуємо стан модалки з Redux
   const open = useSelector((state) => state.changeProfileModal.openProfileModal);
 
   // Перевіряємо, чи є дані профілю перед рендерингом форми
-  if (!profileData.firstName || !profileData.lastName) {
-    return null;  // або можна показати спіннер
+  if (!profileData || Object.keys(profileData).length === 0) {
+    return null;  // можна також додати спіннер замість повернення null
   }
 
   return (
@@ -48,11 +48,26 @@ export default function ChangeProfileModal() {
         </Typography>
 
         <Formik
-          initialValues={profileData}  // Передаємо профільні дані як початкові значення
+          initialValues={{
+            firstName: profileData.firstName || "",
+            lastName: profileData.lastName || "",
+            headline: profileData.headline || "",
+            country: profileData.location?.country || "",
+            city: profileData.location?.city || ""
+          }}  // Передаємо профільні дані як початкові значення
           enableReinitialize={true}  // Ця опція дозволяє повторно ініціалізувати форму при зміні значень
           onSubmit={(values) => {
             // Оновлюємо профіль через Redux
-            dispatch(setProfileData(values));
+            dispatch(setProfileData({
+              ...profileData,
+              location: {
+                country: values.country,
+                city: values.city
+              },
+              firstName: values.firstName,
+              lastName: values.lastName,
+              headline: values.headline
+            }));
             dispatch(handleCloseProfileModal());  // Закриваємо модалку після збереження
           }}
         >

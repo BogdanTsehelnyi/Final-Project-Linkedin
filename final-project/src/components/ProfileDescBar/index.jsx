@@ -1,21 +1,41 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./ProfileDescBar.module.scss";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchProfile } from "../../redux/slices/profileSlice";
 
-export default function ProfileDescBar() {
+export default function ProfileDescBar({ profileData, loading, error }) {
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
+  const country = profileData?.location?.country || "Unknown country";
+  const city = profileData?.location?.city || "Unknown city";
+
   return (
     <div className={styles.wrapper}>
-      <div className={styles.imgBackground}></div>
-      <a className={styles.avatarContainer} href="#">
-        <img
-          src=""
-          alt="avatar"
-        />
+      <div
+        className={styles.imgBackground}
+        style={{
+          backgroundImage: `url(${
+            profileData.backgroundImageUrl || "./image/profile/profileBackgroundDefault.svg"
+          })`,
+        }}
+      ></div>
+      <a className={styles.photoContainer} href="#">
+        <img src={profileData.profilePicture} alt="avatar" />
       </a>
-      <div>
-        <h3>Oleh Broshko</h3>
-        <p>Lorem ipsum dolor sit amet.</p>
-        <p>Kyiv</p>
-        <button>experience</button>
+      <div className={styles.textInfo}>
+        <h3 className={styles.name}>
+          {profileData.firstName} {profileData.lastName}
+        </h3>
+
+        <p className={styles.education}>
+          Attended National Technical University of Ukraine 'Kyiv Polytechnic Institute​
+        </p>
+        <p className={styles.city}>
+          {country}, {city}
+        </p>
+
+        <button className={styles.experienceBtn}>Experience</button>
       </div>
     </div>
   );

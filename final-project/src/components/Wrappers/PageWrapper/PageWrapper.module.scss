@@ -1,13 +1,8 @@
 .wrapper {
   display: grid;
-  place-items: center;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
-  grid-column-gap: 20px;
-  grid-row-gap: 0px;
-  place-items: center;
-  // width: 1128px;
-  width: 576px;
+  grid-template-columns: 226px 543px 324px;
+  grid-column-gap: 24px;
+  width: 1136px;
   margin: 0 auto;
   margin-top: 20px;
 }

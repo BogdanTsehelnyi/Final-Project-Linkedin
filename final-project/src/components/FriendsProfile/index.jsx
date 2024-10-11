@@ -4,7 +4,8 @@ import { removeFriend } from "../../redux/slices/friendProfileSlice"; // Імп�
 import styles from "./FriendsProfile.module.scss";
 
 export default function FriendsProfile() {
-    const friends = useSelector((state) => state.friend); // Отримуємо список друзів з Redux
+    // Отримуємо список друзів з Redux
+    const friends = useSelector((state) => state.friend.friendsData); 
     const dispatch = useDispatch();
 
     // Функція для видалення друга
@@ -19,24 +20,35 @@ export default function FriendsProfile() {
                 friends.map((friend) => (
                     <div className={styles.friendContainer} key={friend.id}>
                         <div className={styles.friendBox}>
-                        <img className={styles.friendPhoto} src={friend.profilePicture || '/path/to/default/image.jpg'} alt="profile" />
-                        <div className={styles.friendInfo}>
-                            <h3 className={styles.friendName}>{friend.firstName} {friend.lastName}</h3>
-                            <p className={styles.friendHeadline}>{friend.headline}</p>
-                        </div>
+                            <img 
+                                className={styles.friendPhoto} 
+                                src={friend.profilePicture || '/path/to/default/image.jpg'} 
+                                alt="profile" 
+                            />
+                            <div className={styles.friendInfo}>
+                                <h3 className={styles.friendName}>
+                                    {friend.firstName} {friend.lastName}
+                                </h3>
+                                <p className={styles.friendHeadline}>{friend.headline}</p>
+                            </div>
                         </div>
                         <div className={styles.btnBox}>
-                        <button className={styles.friendBtn}>
+                            <button className={styles.friendBtn}>
                                 Message
-                        </button>
-                        <button onClick={() => handleRemoveFriend(friend.id)} className={styles.friendBtn}>
+                            </button>
+                            <button 
+                                onClick={() => handleRemoveFriend(friend.id)} 
+                                className={styles.friendBtn}
+                            >
                                 Remove Friend
-                        </button>
+                            </button>
                         </div>
                     </div>
                 ))
             ) : (
-                <p className={styles.noFriendsText}>You don't have any friends yet!</p>
+                <p className={styles.noFriendsText}>
+                    You don't have any friends yet!
+                </p>
             )}
         </div>
     );
