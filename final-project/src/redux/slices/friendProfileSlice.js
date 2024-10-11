@@ -18,6 +18,7 @@ const initialState = {
   friendsData: [],  // Список друзів
   loading: false,   // Стан завантаження
   error: null,      // Для збереження можливих помилок
+  pendingRequests: {},
 };
 
 const friendsProfileSlice = createSlice({
@@ -28,12 +29,16 @@ const friendsProfileSlice = createSlice({
       const existingFriend = state.friendsData.find(item => item.id === action.payload.id);
       if (!existingFriend) {
         state.friendsData.push(action.payload); // Додаємо нового друга
-      } else {
-        alert('Цей друг вже був доданий раніше!!!');
+        delete state.pendingRequests[action.payload.id]; // Видаляємо зі списку "Pending"
       }
     },
+    cancelRequest(state, action) {
+      // Скасовуємо запит на додавання друга
+      delete state.pendingRequests[action.payload.id];
+    },
     removeFriend(state, action) {
-      state.friendsData = state.friendsData.filter(item => item.id !== action.payload); // Видалення друга
+      // Видаляємо друга зі списку друзів
+      state.friendsData = state.friendsData.filter(item => item.id !== action.payload); 
     },
   },
   extraReducers: (builder) => {
@@ -53,5 +58,5 @@ const friendsProfileSlice = createSlice({
   },
 });
 
-export const { addFriend, removeFriend } = friendsProfileSlice.actions;
+export const { addFriend, confirmAddFriend, cancelRequest, removeFriend } = friendsProfileSlice.actions;
 export default friendsProfileSlice.reducer;
