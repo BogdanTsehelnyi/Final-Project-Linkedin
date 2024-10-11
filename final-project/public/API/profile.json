@@ -10,7 +10,7 @@
     "city": "San Francisco"
   },
   "industry": "Information Technology",
-  "experience": [ 
+  "experience": [
     {
       "title": "Senior Software Engineer",
       "company": "Example Inc.",
@@ -28,15 +28,9 @@
       "endDate": "2017-06"
     }
   ],
-  "skills": [
-    "JavaScript",
-    "React",
-    "Node.js",
-    "MongoDB",
-    "Python"
-  ],
+  "skills": ["JavaScript", "React", "Node.js", "MongoDB", "Python"],
   "languages": [
-    { 
+    {
       "language": "English",
       "proficiency": "Native"
     }
