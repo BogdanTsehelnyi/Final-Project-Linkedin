@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1728685946267" clover="3.2.0">
+  <project timestamp="1728685946267" name="All files">
+    <metrics statements="119" coveredstatements="104" conditionals="33" coveredconditionals="21" methods="49" coveredmethods="43" elements="201" coveredelements="168" complexity="0" loc="119" ncloc="119" packages="14" files="17" classes="17"/>
+    <package name="components.Header">
+      <metrics statements="28" coveredstatements="17" conditionals="17" coveredconditionals="8" methods="13" coveredmethods="7"/>
+      <file name="index.jsx" path="/Users/developer/Final-Project-Linkedin-1/final-project/src/components/Header/index.jsx">
+        <metrics statements="28" coveredstatements="17" conditionals="17" coveredconditionals="8" methods="13" coveredmethods="7"/>
+        <line num="17" count="4" type="stmt"/>
+        <line num="18" count="4" type="stmt"/>
+        <line num="19" count="4" type="stmt"/>
+        <line num="21" count="4" type="stmt"/>
+        <line num="22" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="23" count="2" type="stmt"/>
+        <line num="26" count="4" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
+        <line num="33" count="4" type="stmt"/>
+        <line num="34" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="40" count="4" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="44" count="4" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="47" count="4" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="50" count="4" type="stmt"/>
+        <line num="74" count="0" type="stmt"/>
+        <line num="85" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="96" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="107" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="118" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="129" count="4" type="cond" truecount="1" falsecount="1"/>
+      </file>
+    </package>
+    <package name="images.Arrow">
+      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <file name="index.jsx" path="/Users/developer/Final-Project-Linkedin-1/final-project/src/images/Arrow/index.jsx">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="4" count="8" type="stmt"/>
+      </file>
+    </package>
+    <package name="images.Home">
+      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <file name="index.jsx" path="/Users/developer/Final-Project-Linkedin-1/final-project/src/images/Home/index.jsx">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="4" count="4" type="stmt"/>
+      </file>
+    </package>
+    <package name="images.Jobs">
+      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <file name="index.jsx" path="/Users/developer/Final-Project-Linkedin-1/final-project/src/images/Jobs/index.jsx">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="4" count="4" type="stmt"/>
+      </file>
+    </package>
+    <package name="images.Logo">
+      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <file name="Logo.jsx" path="/Users/developer/Final-Project-Linkedin-1/final-project/src/images/Logo/Logo.jsx">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="5" count="4" type="stmt"/>
+      </file>
+    </package>
+    <package name="images.Messages">
+      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <file name="index.jsx" path="/Users/developer/Final-Project-Linkedin-1/final-project/src/images/Messages/index.jsx">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="2" count="8" type="stmt"/>
+      </file>
+    </package>
+    <package name="images.Net">
+      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <file name="index.jsx" path="/Users/developer/Final-Project-Linkedin-1/final-project/src/images/Net/index.jsx">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="4" count="4" type="stmt"/>
+      </file>
+    </package>
+    <package name="images.Notifications">
+      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <file name="index.jsx" path="/Users/developer/Final-Project-Linkedin-1/final-project/src/images/Notifications/index.jsx">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="4" count="4" type="stmt"/>
+      </file>
+    </package>
+    <package name="images.Profile">
+      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <file name="index.jsx" path="/Users/developer/Final-Project-Linkedin-1/final-project/src/images/Profile/index.jsx">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="4" count="4" type="stmt"/>
+      </file>
+    </package>
+    <package name="images.Search">
+      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <file name="index.jsx" path="/Users/developer/Final-Project-Linkedin-1/final-project/src/images/Search/index.jsx">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="4" count="4" type="stmt"/>
+      </file>
+    </package>
+    <package name="images.Work">
+      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <file name="index.jsx" path="/Users/developer/Final-Project-Linkedin-1/final-project/src/images/Work/index.jsx">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="4" count="4" type="stmt"/>
+      </file>
+    </package>
+    <package name="pages">
+      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <file name="Home.jsx" path="/Users/developer/Final-Project-Linkedin-1/final-project/src/pages/Home.jsx">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="4" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="redux">
+      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="store.js" path="/Users/developer/Final-Project-Linkedin-1/final-project/src/redux/store.js">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="7" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="redux.slices">
+      <metrics statements="79" coveredstatements="75" conditionals="16" coveredconditionals="13" methods="25" coveredmethods="25"/>
+      <file name="authSlice.js" path="/Users/developer/Final-Project-Linkedin-1/final-project/src/redux/slices/authSlice.js">
+        <metrics statements="32" coveredstatements="30" conditionals="10" coveredconditionals="9" methods="5" coveredmethods="5"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="10" count="2" type="stmt"/>
+        <line num="12" count="2" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="23" count="6" type="stmt"/>
+        <line num="24" count="6" type="stmt"/>
+        <line num="26" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="30" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="31" count="1" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
+        <line num="35" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="36" count="2" type="stmt"/>
+        <line num="37" count="2" type="stmt"/>
+        <line num="40" count="2" type="stmt"/>
+        <line num="41" count="2" type="stmt"/>
+        <line num="42" count="2" type="stmt"/>
+        <line num="45" count="2" type="stmt"/>
+        <line num="46" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="50" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="51" count="1" type="stmt"/>
+        <line num="52" count="1" type="stmt"/>
+        <line num="55" count="1" type="stmt"/>
+        <line num="56" count="1" type="stmt"/>
+        <line num="59" count="1" type="stmt"/>
+        <line num="60" count="1" type="stmt"/>
+        <line num="61" count="1" type="stmt"/>
+        <line num="66" count="2" type="stmt"/>
+      </file>
+      <file name="friendProfileSlice.js" path="/Users/developer/Final-Project-Linkedin-1/final-project/src/redux/slices/friendProfileSlice.js">
+        <metrics statements="22" coveredstatements="21" conditionals="4" coveredconditionals="3" methods="10" coveredmethods="10"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="8" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="9" count="0" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="17" count="2" type="stmt"/>
+        <line num="24" count="2" type="stmt"/>
+        <line num="29" count="2" type="stmt"/>
+        <line num="30" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="31" count="1" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
+        <line num="37" count="1" type="stmt"/>
+        <line num="41" count="2" type="stmt"/>
+        <line num="45" count="2" type="stmt"/>
+        <line num="47" count="2" type="stmt"/>
+        <line num="48" count="2" type="stmt"/>
+        <line num="51" count="2" type="stmt"/>
+        <line num="52" count="2" type="stmt"/>
+        <line num="55" count="1" type="stmt"/>
+        <line num="56" count="1" type="stmt"/>
+        <line num="61" count="2" type="stmt"/>
+      </file>
+      <file name="modal.js" path="/Users/developer/Final-Project-Linkedin-1/final-project/src/redux/slices/modal.js">
+        <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="8" count="2" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="22" count="1" type="stmt"/>
+        <line num="32" count="2" type="stmt"/>
+      </file>
+      <file name="profileSlice.js" path="/Users/developer/Final-Project-Linkedin-1/final-project/src/redux/slices/profileSlice.js">
+        <metrics statements="18" coveredstatements="17" conditionals="2" coveredconditionals="1" methods="6" coveredmethods="6"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="8" count="0" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="16" count="2" type="stmt"/>
+        <line num="23" count="2" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="36" count="2" type="stmt"/>
+        <line num="38" count="2" type="stmt"/>
+        <line num="39" count="2" type="stmt"/>
+        <line num="42" count="2" type="stmt"/>
+        <line num="43" count="2" type="stmt"/>
+        <line num="46" count="1" type="stmt"/>
+        <line num="47" count="1" type="stmt"/>
+        <line num="52" count="2" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>
