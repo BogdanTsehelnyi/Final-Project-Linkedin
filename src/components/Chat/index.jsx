@@ -3,6 +3,8 @@ import styles from "./Chat.module.scss";
 
 export default function Chat() {
   const [message, setMessage] = useState("");
+  console.log(message);
+  
   const handleHeightnInp = (e) => {
     const inp = e.target;
     setMessage(inp.value);
@@ -37,7 +39,10 @@ export default function Chat() {
       </ul>
       <div className={styles.chatWrapper}>
         <div className={styles.headerChat}>header</div>
-        <div>Chat</div>
+        <div className={styles.chatWrapper}>
+            <div className={styles.pending}>Pending</div>
+            <div className={styles.sending}>Sending</div>
+        </div>
         <textarea
           className={styles.inp}
           value={message}

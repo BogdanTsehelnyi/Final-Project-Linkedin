@@ -74,3 +74,50 @@
     overflow: hidden;
     outline: none;
 }
+.chatWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 10px;
+    height: 80vh;
+    padding: 5px;
+    overflow-y: auto;
+}
+.pending, .sending {
+    display: flex;
+    align-items: center;
+    min-height: 15vh;
+    width: 30vw;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+.sending {
+    align-self: flex-end;
+    background-color: rgb(96, 132, 194);
+    position: relative;
+    border-bottom-right-radius: 0;
+    &::after {
+        content: "";
+        position: absolute;
+        top: 87%;
+        right: 0;
+        border-width: 10px;
+        border-style: solid;
+        border-color: transparent rgb(96, 132, 194) transparent transparent;
+    }
+}
+.pending {
+    background-color: rgb(176, 178, 180);
+    border-bottom-right-radius: 0;
+    position: relative;
+    &::before {
+        content: "";
+        position: absolute;
+        // top: 87%;
+        top: -7%;
+        left: 0;
+        border-width: 10px;
+        border-style: solid;
+        border-color: transparent  transparent transparent rgb(176, 178, 180);
+    }
+}
