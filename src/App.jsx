@@ -1,13 +1,24 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import AppRoutes from "./AppRoutes";
-import Header from "./components/Header";
 import HeaderMobile from "./components/HeaderMobile";
+import { useDispatch } from "react-redux";
+import { fetchCarts } from './redux/slices/friendProfileSlice';
+import { fetchProfile } from "./redux/slices/profileSlice";
 
 function App() {
   const [widthWindow, setWidthWindow] = useState(window.innerWidth);
-  // console.log(widthWindow);
-  
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchProfile()); // Завантажуємо дані профілю при рендері
+}, [dispatch]);
+
+
+  useEffect(() => {
+    dispatch(fetchCarts());
+  }, [dispatch]);
+
   useEffect(() => {
     const resizeWidth = () => setWidthWindow(window.innerWidth);
 
@@ -17,9 +28,9 @@ function App() {
       window.removeEventListener("resize", resizeWidth);
     };
   }, []);
+
   return (
     <>
-      <Header />
       <div className="wrapper">
         <AppRoutes />
       </div>
@@ -29,3 +40,5 @@ function App() {
 }
 
 export default App;
+
+

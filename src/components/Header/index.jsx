@@ -54,7 +54,7 @@ export default function Header() {
         <Logo className={styles.name} />
         <div className={styles.inputWrapper}>
           <Search />
-          <input data-testid="input-search"
+          <input
             onFocus={handleFocus}
             onBlur={handleBlur}
             onKeyDown={handleEnterKey}

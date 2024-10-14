@@ -1,0 +1,123 @@
+.firstPageMain {
+    flex-grow: 1; /* Займає весь доступний простір після хедера */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    position: relative;
+    padding: 30px 0 30px 100px;
+    overflow: hidden; /* Забороняємо скрол */
+}
+
+.firstPageLeftSide {
+    /* Можна додати додаткові стилі за потреби */
+}
+
+.firstPageLeftSideTitle {
+    font-size: 48px;
+    font-weight: 400;
+    line-height: 1.25;
+    color: #526a6e;
+}
+
+.firstPageRightSide {
+    /* Можна додати додаткові стилі за потреби */
+}
+
+.firstPageRightSide img {
+    position: absolute;
+    top: 30px;
+    right: -125px;
+    width: 700px;
+    height: 560px;
+}
+
+.firstPageLeftSideBtnContainer {
+    display: flex;
+    flex-direction: column;
+    font-weight: 500;
+    text-overflow: ellipsis;
+
+    button {
+        border-radius: 27px;
+        margin: 15px 0;
+        font-size: 14px;
+        letter-spacing: 0.25px;
+        height: 40px;
+    }
+}
+
+.firstPageLeftSideBtnGoogle {
+    border: none;
+    background-color: #0A66C2;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 20px;
+    height: 40px;
+    line-height: 40px;
+    position: relative;
+
+    &::before {
+        content: '';
+        background-image: url('/image/first-page/Google.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        background-color: white;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+}
+
+.firstPageLeftSideBtnEmail {
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+}
+
+.firstPageLeftSideConfidenPolice {
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.5;
+    padding: 30px 0;
+
+    span {
+        color: #0A66C2;
+    }
+}
+
+.firstPageLeftSideNotSignIn {
+    text-align: center;
+
+    span {
+        color: #0A66C2;
+    }
+}
+
+@media (max-width: 1200px) {
+    .firstPageRightSide img {
+        width: 500px;
+        height: 300px;
+    }
+}
+
+@media (max-width: 713px) {
+    .firstPageMain {
+        display: flex; /* Використовуємо Flexbox */
+        flex-direction: column; /* Вертикальний напрямок */
+        align-items: center; /* Вирівнювання по горизонталі */
+        padding: 30px 20px; /* Додаємо відступи */
+        gap: 20px; /* Відступ між секціями */
+    }
+
+    .firstPageRightSide{
+        position: relative;
+        img {
+            top: 0;
+            right: -259px;
+        }
+    }
+}
