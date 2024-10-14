@@ -1,0 +1,11 @@
+.firstLogoWrapper {
+    display: flex;
+    align-items: center;
+    width: 100px;
+    box-sizing: border-box;
+
+    svg{
+        width: 100px;
+        height: auto;
+    }
+}

@@ -15,10 +15,10 @@ export const fetchCarts = createAsyncThunk(
 
 // Ініціалізація початкового стану
 const initialState = {
-  friendsData: [],  // Список друзів
+  allProfiles: [], // Всі доступні профілі
+  friendsData: [],  // Тільки список друзів
   loading: false,   // Стан завантаження
   error: null,      // Для збереження можливих помилок
-  pendingRequests: {},
 };
 
 const friendsProfileSlice = createSlice({
@@ -28,35 +28,30 @@ const friendsProfileSlice = createSlice({
     addFriend(state, action) {
       const existingFriend = state.friendsData.find(item => item.id === action.payload.id);
       if (!existingFriend) {
-        state.friendsData.push(action.payload); // Додаємо нового друга
-        delete state.pendingRequests[action.payload.id]; // Видаляємо зі списку "Pending"
+        state.friendsData.push({ ...action.payload, isFriend: true }); // Додаємо в список друзів
       }
     },
-    cancelRequest(state, action) {
-      // Скасовуємо запит на додавання друга
-      delete state.pendingRequests[action.payload.id];
-    },
     removeFriend(state, action) {
-      // Видаляємо друга зі списку друзів
-      state.friendsData = state.friendsData.filter(item => item.id !== action.payload); 
+      // Видаляємо тільки зі списку друзів, але не з усіх профілів
+      state.friendsData = state.friendsData.filter(item => item.id !== action.payload);
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchCarts.pending, (state) => {
-        state.loading = true;  // Починаємо завантаження
-        state.error = null;    // Очищуємо помилки
+        state.loading = true;
+        state.error = null;
       })
       .addCase(fetchCarts.fulfilled, (state, action) => {
-        state.loading = false;  // Завантаження завершене
-        state.friendsData = action.payload;  // Зберігаємо завантажені дані
+        state.loading = false;
+        state.allProfiles = action.payload;  // Зберігаємо всі профілі
       })
       .addCase(fetchCarts.rejected, (state, action) => {
-        state.loading = false;  // Завантаження завершене з помилкою
-        state.error = action.error.message;  // Зберігаємо повідомлення про помилку
+        state.loading = false;
+        state.error = action.error.message;
       });
   },
 });
 
-export const { addFriend, confirmAddFriend, cancelRequest, removeFriend } = friendsProfileSlice.actions;
+export const { addFriend, removeFriend } = friendsProfileSlice.actions;
 export default friendsProfileSlice.reducer;

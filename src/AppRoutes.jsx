@@ -1,13 +1,15 @@
-import { Routes, Route, Navigate, Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { logout } from './redux/slices/authSlice';
-import Auth from './components/Auth/Auth';
+import { Routes, Route, Navigate, Link, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "./redux/slices/authSlice";
+import Auth from "./components/Auth/Auth";
 import Home from "./pages/Home";
 import Net from "./pages/Net/Net";
 import Jobs from "./pages/Jobs";
 import Messages from "./pages/Messages";
 import Notifications from "./pages/Notifications";
 import Profile from "../src/pages/Profile/Profile";
+import Header from "./components/Header";
+import FirstPage from "./pages/FirstPage/FirstPage";
 
 // Захищений маршрут
 const ProtectedRoute = ({ isAuthenticated, children }) => {
@@ -17,89 +19,78 @@ const ProtectedRoute = ({ isAuthenticated, children }) => {
 export default function AppRoutes() {
   const { isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const handleLogout = () => {
     dispatch(logout());
-    localStorage.removeItem('email'); 
-    localStorage.removeItem('password'); 
+    localStorage.removeItem("email");
+    localStorage.removeItem("password");
   };
 
+  // Перевіряємо, чи ми на FirstPage (додаємо логіку для '/login' пізніше)
+  const isFirstPage = location.pathname === "/home";
+
   return (
-    <Routes>
-      {/* Маршрут для сторінки логіну */}
-      <Route path="/login" element={<Auth />} />
+    <>
+      {/* Показуємо Header тільки якщо це не FirstPage */}
+      {!isFirstPage && <Header />}
 
-      {/* Захищені маршрути */}
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <Home />
-          </ProtectedRoute>
-        }
-      />
+      <Routes>
+        <Route 
+          path="/" 
+          element={isAuthenticated ? <Home /> : <Navigate to="/home" />} 
+        />
 
-      <Route
-        path="/net"
-        element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <Net />
-          </ProtectedRoute>
-        }
-      />
+        <Route path="/home" element={<FirstPage />} />
 
-      <Route
-        path="/jobs"
-        element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <Jobs />
-          </ProtectedRoute>
-        }
-      />
+        {/* Додаємо маршрут для логіну */}
+        <Route path="/login" element={<Auth />} />
 
-      <Route
-        path="/messages"
-        element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <Messages />
-          </ProtectedRoute>
-        }
-      />
+        {/* Захищені маршрути */}
+        <Route
+          path="/net"
+          element={
+            <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <Net />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/jobs"
+          element={
+            <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <Jobs />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/messages"
+          element={
+            <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <Messages />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/notifications"
+          element={
+            <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <Notifications />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
 
-      <Route
-        path="/notifications"
-        element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <Notifications />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/profile"
-        element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <Profile />
-          </ProtectedRoute>
-        }
-      />
-
-      {/* Захищена головна сторінка з опцією вийти з акаунта */}
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <div>
-              <h1>Головна сторінка</h1>
-              <p>Ви успішно увійшли в систему.</p>
-              <Link to="/login" onClick={handleLogout}>Вийти з акаунта</Link>
-            </div>
-          </ProtectedRoute>
-        }
-      />
-
-      {/* Перенаправлення на логін для всіх невідомих маршрутів */}
-      <Route path="*" element={<Navigate to="/login" />} />
-    </Routes>
+        {/* Перенаправляємо на логін для невідомих маршрутів */}
+        <Route path="*" element={<Navigate to="/login" />} />
+      </Routes>
+    </>
   );
 }
