@@ -11,11 +11,6 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
     const { profileData, loading, error } = useSelector((state) => state.profile);
     const addedFriend = useSelector((state) => state.friend.friendsData);
 
-    useEffect(() => {
-        dispatch(fetchProfile()); // Завантажуємо дані профілю при рендері
-    }, [dispatch]);
-
-
     // Функція для зміни фону профілю
     const handleBackgroundChange = (event) => {
         const file = event.target.files[0];

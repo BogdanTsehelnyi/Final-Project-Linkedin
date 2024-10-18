@@ -1,23 +1,24 @@
-.profileBox {
+@charset "UTF-8";
+.wrapper {
+  width: 23px;
+  height: 23px;
+  border-radius: 50%; /* Щоб зробити елемент колом */
+  border: 1px solid grey;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  gap: 50px;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
-          justify-content: center;
-  margin-top: 20px;
+          justify-content: center; /* Центрування по горизонталі */
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; /* Центрування по вертикалі */
+  overflow: hidden; /* Якщо зображення більше за круг, обрізаємо його */
 }
-.profileBox :first-child {
-  -ms-flex-item-align: start;
-      align-self: start;
-}
-
-@media (max-width: 787px) {
-  .profileBox {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 50px;
-    margin: 20px 30px;
-  }
+.wrapper img {
+  width: 100%; /* Зробимо картинку по ширині кола */
+  height: 100%; /* Зробимо картинку по висоті кола */
+  -o-object-fit: cover;
+     object-fit: cover; /* Це дозволить зображенню правильно масштабуватись всередині кола */
+  border-radius: 50%; /* Щоб зробити картинку круглою */
 }
