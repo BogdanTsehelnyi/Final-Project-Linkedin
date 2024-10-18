@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./Chat.module.scss";
 
 export default function Chat() {
   const [message, setMessage] = useState("");
-  console.log(message);
+  const [messages, setMessages] = useState([]);
+  const endMessageRef = useRef(null);
   
   const handleHeightnInp = (e) => {
     const inp = e.target;
@@ -11,6 +12,17 @@ export default function Chat() {
     inp.style.height = "auto";
     inp.style.height = `${inp.scrollHeight}px`;
   };
+  const handleSendMessage = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      setMessages([...messages, message]);
+      setMessage("");
+      
+    }
+  }
+  useEffect(() => {
+    endMessageRef.current ? endMessageRef.current.scrollIntoView({ behavior: 'smooth' }) : "";
+  }, [messages])
   return (
     <div className={styles.wrapper}>
       <ul className={styles.listChats}>
@@ -40,13 +52,18 @@ export default function Chat() {
       <div className={styles.chatWrapper}>
         <div className={styles.headerChat}>header</div>
         <div className={styles.chatWrapper}>
-            <div className={styles.pending}>Pending</div>
-            <div className={styles.sending}>Sending</div>
+            <div className={styles.pending}>              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi
+              numquam obcaecati minus! Sint distinctio molestiae aperiam earum
+              in nostrum quod illo minima necessitatibus, perferendis
+              praesentium officia? Neque ad nobis perferendis!</div>
+            {messages.map((mess, index) => (<div key={index} className={styles.sending}>{mess}</div>))}
+            <div ref={endMessageRef}></div>
         </div>
         <textarea
           className={styles.inp}
           value={message}
           onChange={handleHeightnInp}
+          onKeyDown={handleSendMessage}
           placeholder="Enter your message"
           type="text"
         />
