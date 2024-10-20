@@ -22,6 +22,7 @@
     width: 100vw;
     height: 100vh;
     background-color: #7b787859;
+    z-index: 1000;
   }
   .focusModal {
     position: absolute;
@@ -33,7 +34,6 @@
     // background-color: #fff;
     background-color: #7b7878;
     border-radius: 4px;
-    z-index: 1000 !important;
     color: white;
   }
   .items {
