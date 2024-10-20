@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./App.css";
 import AppRoutes from "./AppRoutes";
 import HeaderMobile from "./components/HeaderMobile";
 import { useDispatch } from "react-redux";
-import { fetchCarts } from './redux/slices/friendProfileSlice';
+import { fetchCarts } from "./redux/slices/friendProfileSlice";
 import { fetchProfile } from "./redux/slices/profileSlice";
+import { ContextTheme } from "./context/contextTheme/ContextTheme";
 
 function App() {
   const [widthWindow, setWidthWindow] = useState(window.innerWidth);
@@ -12,8 +13,7 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchProfile()); // Завантажуємо дані профілю при рендері
-}, [dispatch]);
-
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchCarts());
@@ -29,16 +29,15 @@ function App() {
     };
   }, []);
 
+  const {theme} = useContext(ContextTheme);
   return (
     <>
-      <div className="wrapper">
-        <AppRoutes />
-      </div>
-      {widthWindow <= 911 && <HeaderMobile />}
+        <div className="wrapper" style={{ backgroundColor: theme === "light" ? "#fff" : "#3a3939" }}>
+          <AppRoutes />
+        </div>
+        {widthWindow <= 911 && <HeaderMobile />}
     </>
   );
 }
 
 export default App;
-
-

@@ -89,6 +89,16 @@
 .mess {
   display: none;
 }
+.switchTheme {
+  display: block;
+  width: 30px;
+  height: 30px;
+  background-image: url("/public/image/header/theme.png");
+  background-size: cover;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
 @media (max-width: 911px) {
   .item {
     display: none;
