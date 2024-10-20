@@ -85,7 +85,8 @@
 }
 .pending, .sending {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    // align-items: center;
     max-width: 30vw;
     border-radius: 6px;
     box-sizing: border-box;

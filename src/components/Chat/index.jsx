@@ -1,10 +1,30 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./Chat.module.scss";
 
+// Заглушка для пользователей
+const usersArr = [
+  { id: 1, name: "John Doe", avatar: "https://example.com/avatar1.jpg" },
+  { id: 2, name: "Jane Smith", avatar: "https://example.com/avatar2.jpg" },
+  { id: 3, name: "Alice Johnson", avatar: "https://example.com/avatar3.jpg" },
+];
+
+// Заглушки для сообщений
+const messagesArr = [
+  { id: 1, userId: 1, text: "Hello! How are you?", sending: true},
+  { id: 2, userId: 2, text: "I'm fine, thanks! How about you?", sending: false},
+  { id: 3, userId: 1, text: "I'm doing great!", sending: true},
+];
+
 export default function Chat() {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [users, setUsers] = useState([]);
   const endMessageRef = useRef(null);
+
+  useEffect(() => {
+    setMessages(messagesArr);
+    setUsers(usersArr);
+  }, [])
   
   const handleHeightnInp = (e) => {
     const inp = e.target;
@@ -15,7 +35,13 @@ export default function Chat() {
   const handleSendMessage = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      setMessages([...messages, message]);
+      const newMessage = {
+        id: messages.length + 1,
+        userId: 1,
+        text: message,
+        sending: true,
+      }
+      setMessages([...messages, newMessage]);
       setMessage("");
       
     }
@@ -27,7 +53,8 @@ export default function Chat() {
     <div className={styles.wrapper}>
       <ul className={styles.listChats}>
         <div className={styles.headerList}>All chats</div>
-        <li className={styles.user}>
+        {users.map(user => (user.id !== 1 &&
+        <li key={user.id} className={styles.user}>
           <div className={styles.imgWrapper}>
             <img
               className={styles.img}
@@ -37,26 +64,30 @@ export default function Chat() {
           </div>
           <div className={styles.text}>
             <div className={styles.headerText}>
-              <p className={styles.name}>Jhon Dou</p>
+              <p className={styles.name}>{user.name}</p>
               <p className={styles.date}>12.12.2012</p>
             </div>
-            <p className={styles.discription}>
+            {/* <p className={styles.discription}>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi
               numquam obcaecati minus! Sint distinctio molestiae aperiam earum
               in nostrum quod illo minima necessitatibus, perferendis
               praesentium officia? Neque ad nobis perferendis!
-            </p>
+            </p> */}
           </div>
         </li>
+        ))}
       </ul>
       <div className={styles.chatWrapper}>
         <div className={styles.headerChat}>header</div>
         <div className={styles.chatWrapper}>
-            <div className={styles.pending}>              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi
+            {/* <div className={styles.pending}>              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi
               numquam obcaecati minus! Sint distinctio molestiae aperiam earum
               in nostrum quod illo minima necessitatibus, perferendis
-              praesentium officia? Neque ad nobis perferendis!</div>
-            {messages.map((mess, index) => (<div key={index} className={styles.sending}>{mess}</div>))}
+              praesentium officia? Neque ad nobis perferendis!</div> */}
+            {messages.map((msg) => (<div key={msg.userId} className={`${msg.sending ? styles.sending : styles.pending}`}>
+              <span>{users.find(user => user.id === msg.userId)?.name}:</span>
+              {msg.text}
+            </div>))}
             <div ref={endMessageRef}></div>
         </div>
         <textarea
