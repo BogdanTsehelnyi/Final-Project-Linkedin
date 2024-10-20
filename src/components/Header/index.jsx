@@ -1,7 +1,8 @@
 import Logo from "../../images/Logo/Logo";
 import Search from "../../images/Search";
 import Arrow from "../../images/Arrow";
-import styles from "./Header.module.scss";
+import light from "./Header.module.scss";
+import dark from "./HeaderDark.module.scss";
 import Home from "../../images/Home";
 import Net from "../../images/Net";
 import Jobs from "../../images/Jobs";
@@ -11,12 +12,16 @@ import Profile from "../../images/Profile";
 import Work from "../../images/Work";
 import { NavLink } from "react-router-dom";
 import classNames from "classnames";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { ContextTheme } from "../../context/contextTheme/ContextTheme";
 
 export default function Header() {
   const [value, setValue] = useState("");
   const [history, setHistory] = useState([]);
   const [focus, setFocus] = useState(false);
+  const { theme, toggleTheme } = useContext(ContextTheme);
+
+  const styles = theme === "light" ? light : dark;
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("history")) || [];
@@ -43,10 +48,10 @@ export default function Header() {
 
   const handleFocus = () => {
     setFocus(true);
-  }
+  };
   const handleBlur = () => {
-    setFocus(false)
-  }
+    setFocus(false);
+  };
   return (
     <header className={styles.wrapper}>
       <Messages className={styles.mess} />
@@ -71,11 +76,13 @@ export default function Header() {
             <ul className={styles.focusModal}>
               <span className={styles.headingFocus}>Recent searches</span>
               {history.map((item, index) => (
-                <li className={styles.items} key={index}>{item}</li>
+                <li className={styles.items} key={index}>
+                  {item}
+                </li>
               ))}
             </ul>
-            </div>
-          )}
+          </div>
+        )}
       </div>
       <div className={styles.groupTwoWrapper}>
         <nav className={styles.nav}>
@@ -154,6 +161,7 @@ export default function Header() {
           <div className={styles.item}>
             <p className={styles.prem}>Try Premium for free</p>
           </div>
+          <button onClick={toggleTheme} className={styles.switchTheme}></button>
         </nav>
       </div>
     </header>

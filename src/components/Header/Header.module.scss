@@ -22,11 +22,12 @@
   width: 100vw;
   height: 100vh;
   background-color: #7b787859;
+  z-index: 1000;
 }
 .focusModal {
   position: absolute;
-  top: 5%;
-  left: 11.7%;
+  top: 7%;
+  left: 10.5%;
   width: 30vw;
   height: 50vh;
   padding: 15px;
@@ -46,7 +47,7 @@
 }
 .search {
   border-radius: 4px;
-  height: 4.9vh;
+  max-height: 4.9vh;
   // width: 279px;
   min-width: 20vw;
   border: none;
@@ -80,6 +81,10 @@
 }
 .active {
   cursor: default;
+  border-bottom: 2px solid gray;
+  svg {
+    transform: rotate(30deg);
+  }
 }
 .arr {
   display: flex;
@@ -87,6 +92,16 @@
 }
 .mess {
   display: none;
+}
+.switchTheme {
+  display: block;
+  width: 30px;
+  height: 30px;
+  background-image: url("/public/image/header/theme.png");
+  background-size: cover;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 }
 @media (max-width: 911px) {
   .item {
