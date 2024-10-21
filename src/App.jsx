@@ -8,7 +8,7 @@ import { fetchProfile } from "./redux/slices/profileSlice";
 import { ContextTheme } from "./context/contextTheme/ContextTheme";
 
 function App() {
-  const [widthWindow, setWidthWindow] = useState(window.innerWidth);
+  // const [widthWindow, setWidthWindow] = useState(window.innerWidth);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -19,15 +19,15 @@ function App() {
     dispatch(fetchCarts());
   }, [dispatch]);
 
-  useEffect(() => {
-    const resizeWidth = () => setWidthWindow(window.innerWidth);
+  // useEffect(() => {
+  //   const resizeWidth = () => setWidthWindow(window.innerWidth);
 
-    window.addEventListener("resize", resizeWidth);
+  //   window.addEventListener("resize", resizeWidth);
 
-    return () => {
-      window.removeEventListener("resize", resizeWidth);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("resize", resizeWidth);
+  //   };
+  // }, []);
 
   const {theme} = useContext(ContextTheme);
   return (
@@ -35,7 +35,7 @@ function App() {
         <div className="wrapper" style={{ backgroundColor: theme === "light" ? "#fff" : "#3a3939" }}>
           <AppRoutes />
         </div>
-        {widthWindow <= 911 && <HeaderMobile />}
+        {/* {widthWindow <= 911 && <HeaderMobile />} */}
     </>
   );
 }

@@ -10,6 +10,8 @@ import Notifications from "./pages/Notifications";
 import Profile from "../src/pages/Profile/Profile";
 import Header from "./components/Header";
 import FirstPage from "./pages/FirstPage/FirstPage";
+import { useState, useEffect } from "react";
+import HeaderMobile from "./components/HeaderMobile";
 
 // Захищений маршрут
 const ProtectedRoute = ({ isAuthenticated, children }) => {
@@ -20,6 +22,24 @@ export default function AppRoutes() {
   const { isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const location = useLocation();
+  const [widthWindow, setWidthWindow] = useState(window.innerWidth);
+  // console.log(widthWindow);
+  
+
+  useEffect(() => {
+    const resizeWidth = () => {
+      console.log(window.innerWidth);
+      
+      setWidthWindow(window.innerWidth)
+    };
+
+    window.addEventListener("resize", resizeWidth);
+
+    return () => {
+      window.removeEventListener("resize", resizeWidth);
+    };
+  }, []);
+
 
   const handleLogout = () => {
     dispatch(logout());
@@ -33,7 +53,8 @@ export default function AppRoutes() {
   return (
     <>
       {/* Показуємо Header тільки якщо це не FirstPage */}
-      {!isFirstPage && <Header />}
+      {!isFirstPage && <Header /> }
+      {!isFirstPage && widthWindow < 911 && <HeaderMobile />}
 
       <Routes>
         <Route 

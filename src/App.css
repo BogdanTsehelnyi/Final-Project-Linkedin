@@ -1,4 +1,4 @@
 @import "./styles/styles.scss";
 .wrapper {
-    /* background-color: #3a3939; */
+    min-height: 100vh;
 }
