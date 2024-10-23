@@ -5,6 +5,7 @@ const initialState = {
   password: '',
   error: null,
   isAuthenticated: false,
+  isRegistered: false,
 };
 
 const users = {};
@@ -40,6 +41,7 @@ const authSlice = createSlice({
       users[state.email] = state.password;
       state.error = null;
       state.isAuthenticated = true;
+      state.isRegistered = true;
     },
     login(state) {
       const correctPassword = users[state.email];
@@ -54,6 +56,7 @@ const authSlice = createSlice({
 
       state.error = null;
       state.isAuthenticated = true;
+      state.isRegistered = false;
     },
     logout(state) {
       state.email = '';

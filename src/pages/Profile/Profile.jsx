@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import ChangeProfileModal from "../../components/ChangeProfileModal";
-import ProfileBar from "../../components/ProfileBar";
 import axios from 'axios';
 import AnotherProfiles from '../../components/AnotherProfiles';
 import styles from './Profile.module.scss';
@@ -12,6 +11,7 @@ import {
   handleCloseInfoModal 
 } from '../../redux/slices/modal';
 import FullProfileInfoModal from '../../components/FullProfileInfoModal';
+import ProfileBar from '../../components/ProfileBar';
 
 export default function Profile() {
   const dispatch = useDispatch();

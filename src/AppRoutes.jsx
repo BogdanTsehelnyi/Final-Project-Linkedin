@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, Link, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "./redux/slices/authSlice";
 import Auth from "./components/Auth/Auth";
@@ -10,6 +10,8 @@ import Notifications from "./pages/Notifications";
 import Profile from "../src/pages/Profile/Profile";
 import Header from "./components/Header";
 import FirstPage from "./pages/FirstPage/FirstPage";
+import AnotherProfilePage from "./pages/AnotherProfilePage/AnotherProfilePage";
+import RegistrationFormPage from "./pages/RegistrationFormPage/RegistrationFormPage";
 
 // Захищений маршрут
 const ProtectedRoute = ({ isAuthenticated, children }) => {
@@ -27,13 +29,15 @@ export default function AppRoutes() {
     localStorage.removeItem("password");
   };
 
-  // Перевіряємо, чи ми на FirstPage (додаємо логіку для '/login' пізніше)
+  // Перевіряємо, чи ми на FirstPage
   const isFirstPage = location.pathname === "/home";
+  const isRegistrationFormPage = location.pathname === "/registration";
+  const isAuth = location.pathname === "/login";
 
   return (
     <>
       {/* Показуємо Header тільки якщо це не FirstPage */}
-      {!isFirstPage && <Header />}
+      {!isFirstPage && !isRegistrationFormPage && !isAuth && <Header />}
 
       <Routes>
         <Route 
@@ -45,6 +49,8 @@ export default function AppRoutes() {
 
         {/* Додаємо маршрут для логіну */}
         <Route path="/login" element={<Auth />} />
+
+        <Route path="/registration" element={<RegistrationFormPage />} />
 
         {/* Захищені маршрути */}
         <Route
@@ -84,6 +90,14 @@ export default function AppRoutes() {
           element={
             <ProtectedRoute isAuthenticated={isAuthenticated}>
               <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+           path="/friend/:friendId"
+          element={
+            <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <AnotherProfilePage />
             </ProtectedRoute>
           }
         />

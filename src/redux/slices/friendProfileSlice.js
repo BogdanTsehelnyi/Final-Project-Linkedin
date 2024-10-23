@@ -32,7 +32,7 @@ const friendsProfileSlice = createSlice({
       }
     },
     removeFriend(state, action) {
-      // Видаляємо тільки зі списку друзів, але не з усіх профілів
+      // Видаляємо друга зі списку friendsData
       state.friendsData = state.friendsData.filter(item => item.id !== action.payload);
     },
   },
