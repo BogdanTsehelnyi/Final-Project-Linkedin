@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">95.83% </span>
+                <span class="strong">96% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>23/24</span>
+                <span class='fraction'>24/25</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">95.45% </span>
+                <span class="strong">95.65% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>21/22</span>
+                <span class='fraction'>22/23</span>
             </div>
         
             
@@ -148,6 +148,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -161,21 +162,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -184,30 +170,45 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 &nbsp;
-// Асинхронне завантаження даних з API
+// Асинхронное загрузка данных с API
 export const fetchCarts = createAsyncThunk(
   'friend/fetchCarts',
   async () =&gt; {
-    const response = await fetch('/API/anotherProfile.json'); // Ваш API шлях
+    const response = await fetch('/API/anotherProfile.json'); // Ваш API путь
     <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {
 <span class="cstat-no" title="statement not covered" >      throw new Error('Failed to fetch friends data');</span>
     }
     const data = await response.json();
-    return data;  // Повертаємо дані
+    return data;  // Возвращаем данные
   }
 );
 &nbsp;
-// Ініціалізація початкового стану
+// Инициализация начального состояния
 const initialState = {
-  friendsData: [],  // Список друзів
-  loading: false,   // Стан завантаження
-  error: null,      // Для збереження можливих помилок
-  pendingRequests: {},
+  allProfiles: [], // Все доступные профили
+  friendsData: [],  // Только список друзей
+  loading: false,   // Состояние загрузки
+  error: null,      // Для сохранения возможных ошибок
+  pendingRequests: {} // Хранит ID запросов на добавление друзей
 };
 &nbsp;
 const friendsProfileSlice = createSlice({
@@ -217,46 +218,45 @@ const friendsProfileSlice = createSlice({
     addFriend(state, action) {
       const existingFriend = state.friendsData.find(item =&gt; item.id === action.payload.id);
       if (!existingFriend) {
-        state.friendsData.push(action.payload); // Додаємо нового друга
-        delete state.pendingRequests[action.payload.id]; // Видаляємо зі списку "Pending"
+        state.friendsData.push({ ...action.payload, isFriend: true }); // Добавляем в список друзей
+        delete state.pendingRequests[action.payload.id]; // Удаляем из списка запросов
       }
     },
-    cancelRequest(state, action) {
-      // Скасовуємо запит на додавання друга
-      delete state.pendingRequests[action.payload.id];
-    },
     removeFriend(state, action) {
-      // Видаляємо друга зі списку друзів
-      state.friendsData = state.friendsData.filter(item =&gt; item.id !== action.payload); 
+      // Удаляем только из списка друзей, но не из всех профилей
+      state.friendsData = state.friendsData.filter(item =&gt; item.id !== action.payload);
+    },
+    cancelRequest(state, action) {
+      const { id } = action.payload;
+      delete state.pendingRequests[id]; // Удаляем запрос
     },
   },
   extraReducers: (builder) =&gt; {
     builder
       .addCase(fetchCarts.pending, (state) =&gt; {
-        state.loading = true;  // Починаємо завантаження
-        state.error = null;    // Очищуємо помилки
+        state.loading = true;
+        state.error = null;
       })
       .addCase(fetchCarts.fulfilled, (state, action) =&gt; {
-        state.loading = false;  // Завантаження завершене
-        state.friendsData = action.payload;  // Зберігаємо завантажені дані
+        state.loading = false;
+        state.allProfiles = action.payload;  // Сохраняем все профили
       })
       .addCase(fetchCarts.rejected, (state, action) =&gt; {
-        state.loading = false;  // Завантаження завершене з помилкою
-        state.error = action.error.message;  // Зберігаємо повідомлення про помилку
+        state.loading = false;
+        state.error = action.error.message;
       });
   },
 });
 &nbsp;
-export const { addFriend, confirmAddFriend, cancelRequest, removeFriend } = friendsProfileSlice.actions;
-export default friendsProfileSlice.reducer;
-&nbsp;</pre></td></tr></table></pre>
+export const { addFriend, removeFriend, cancelRequest } = friendsProfileSlice.actions;
+export default friendsProfileSlice.reducer;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-10-09T08:50:51.526Z
+                at 2024-10-24T07:48:25.577Z
             </div>
         <script src="prettify.js"></script>
         <script>

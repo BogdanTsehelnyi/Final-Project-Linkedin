@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "./redux/slices/authSlice";
 import Auth from "./components/Auth/Auth";
@@ -10,8 +10,10 @@ import Notifications from "./pages/Notifications";
 import Profile from "../src/pages/Profile/Profile";
 import Header from "./components/Header";
 import FirstPage from "./pages/FirstPage/FirstPage";
-import AnotherProfilePage from "./pages/AnotherProfilePage/AnotherProfilePage";
+import { useState, useEffect } from "react";
+import HeaderMobile from "./components/HeaderMobile";
 import RegistrationFormPage from "./pages/RegistrationFormPage/RegistrationFormPage";
+import AnotherProfilePage from "./pages/AnotherProfilePage/AnotherProfilePage";
 
 // Захищений маршрут
 const ProtectedRoute = ({ isAuthenticated, children }) => {
@@ -22,6 +24,24 @@ export default function AppRoutes() {
   const { isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const location = useLocation();
+  const [widthWindow, setWidthWindow] = useState(window.innerWidth);
+  // console.log(widthWindow);
+  
+
+  useEffect(() => {
+    const resizeWidth = () => {
+      console.log(window.innerWidth);
+      
+      setWidthWindow(window.innerWidth)
+    };
+
+    window.addEventListener("resize", resizeWidth);
+
+    return () => {
+      window.removeEventListener("resize", resizeWidth);
+    };
+  }, []);
+
 
   const handleLogout = () => {
     dispatch(logout());
@@ -30,14 +50,19 @@ export default function AppRoutes() {
   };
 
   // Перевіряємо, чи ми на FirstPage
-  const isFirstPage = location.pathname === "/home";
-  const isRegistrationFormPage = location.pathname === "/registration";
-  const isAuth = location.pathname === "/login";
+const isFirstPage = location.pathname === "/home";
+const isRegistrationFormPage = location.pathname === "/registration";
+const isAuth = location.pathname === "/login";
+
+
 
   return (
     <>
+
+{!isFirstPage && isRegistrationFormPage && isAuth && <Header />}
       {/* Показуємо Header тільки якщо це не FirstPage */}
-      {!isFirstPage && !isRegistrationFormPage && !isAuth && <Header />}
+      {!isFirstPage && <Header /> }
+      {!isFirstPage && widthWindow < 911 && <HeaderMobile />}
 
       <Routes>
         <Route 
@@ -45,12 +70,12 @@ export default function AppRoutes() {
           element={isAuthenticated ? <Home /> : <Navigate to="/home" />} 
         />
 
+      <Route path="/registration" element={<RegistrationFormPage />} />
+
         <Route path="/home" element={<FirstPage />} />
 
         {/* Додаємо маршрут для логіну */}
         <Route path="/login" element={<Auth />} />
-
-        <Route path="/registration" element={<RegistrationFormPage />} />
 
         {/* Захищені маршрути */}
         <Route
@@ -86,21 +111,21 @@ export default function AppRoutes() {
           }
         />
         <Route
-          path="/profile"
-          element={
-            <ProtectedRoute isAuthenticated={isAuthenticated}>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-           path="/friend/:friendId"
-          element={
-            <ProtectedRoute isAuthenticated={isAuthenticated}>
-              <AnotherProfilePage />
-            </ProtectedRoute>
-          }
-        />
+path="/profile"
+element={
+  <ProtectedRoute isAuthenticated={isAuthenticated}>
+    <Profile />
+  </ProtectedRoute>
+}
+/>
+<Route
+ path="/friend/:friendId"
+element={
+  <ProtectedRoute isAuthenticated={isAuthenticated}>
+    <AnotherProfilePage />
+  </ProtectedRoute>
+}
+/>
 
         {/* Перенаправляємо на логін для невідомих маршрутів */}
         <Route path="*" element={<Navigate to="/login" />} />
@@ -108,3 +133,10 @@ export default function AppRoutes() {
     </>
   );
 }
+
+
+
+
+
+
+
