@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './ProfileBar.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
-import { setProfileData } from '../../redux/slices/profileSlice';
+import { fetchProfile, setProfileData } from '../../redux/slices/profileSlice';
 import { useNavigate } from 'react-router-dom';
 
 export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     
-    // Отримуємо дані профілю з Redux
-    const profileData = useSelector((state) => state.profile);
+    const { profileData, loading, error } = useSelector((state) => state.profile);
+    const addedFriend = useSelector((state) => state.friend.friendsData);
 
-    const addedFriend = useSelector((state) => state.friend);
+    useEffect(() => {
+        dispatch(fetchProfile()); // Завантажуємо дані профілю при рендері
+    }, [dispatch]);
+
 
     // Функція для зміни фону профілю
     const handleBackgroundChange = (event) => {
@@ -19,7 +22,7 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                // Оновлюємо дані профілю через Redux
+                // Оновлюємо фон профілю через Redux
                 dispatch(setProfileData({
                     backgroundProfile: reader.result
                 }));
@@ -34,7 +37,7 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                // Оновлюємо дані профілю через Redux
+                // Оновлюємо зображення профілю через Redux
                 dispatch(setProfileData({
                     profilePicture: reader.result
                 }));
@@ -42,6 +45,18 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
             reader.readAsDataURL(file);
         }
     };
+
+    if (loading) {
+        return <p>Завантаження профілю...</p>;
+    }
+
+    if (error) {
+        return <p>Помилка завантаження профілю: {error}</p>;
+    }
+
+    if (!profileData.firstName) {
+        return <p>Дані профілю не знайдено</p>;
+    }
 
     const friendCount = addedFriend.length;
 
@@ -70,7 +85,7 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
             </h2>
             <h3 className={styles.professionProfile}>{profileData.headline}</h3>
             <h3 className={styles.cityProfile}>
-                {profileData.country}, {profileData.city}
+                {profileData.location.country}, {profileData.location.city}
             </h3>
             <button onClick={() => navigate('/net')} className={styles.countProfileBtn}>
                 {friendCount}+ profiles
