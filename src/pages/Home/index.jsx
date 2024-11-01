@@ -2,25 +2,17 @@ import React, { useEffect } from "react";
 import PageWrapper from "../../components/Wrappers/PageWrapper";
 import ProfileDescBar from "../../components/ProfileDescBar";
 import styles from "./Home.module.scss";
+import AsideFooter from "../../components/AsideFooter";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProfile } from "../../redux/slices/profileSlice";
 import { fetchCarts } from "../../redux/slices/friendProfileSlice";
 
 export default function Home() {
   // ОТРИМАННЯ ДАНИХ ДЛЯ ПРАВОГО SIDEBAR
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchProfile());
-  }, [dispatch]);
-
-  // ОТРИМАННЯ ДАНИХ ДЛЯ  ЛІВОГО SIDEBAR
-  useEffect(() => {
-    dispatch(fetchCarts());
-  }, [dispatch]);
 
   const profileData = useSelector((state) => state.profile.profileData);
-  const recommendationFriendData = useSelector((state) => state.friend.friendsData);
-  console.log(recommendationFriendData.profilePicture);
+
+  // const recommendationFriendData = useSelector((state) => state.friend.friendsData);
 
   const loading = useSelector((state) => state.profile.loading);
   const error = useSelector((state) => state.profile.error);
@@ -28,12 +20,8 @@ export default function Home() {
   return (
     <PageWrapper>
       <aside className={styles.leftSideBar}>
-        <ProfileDescBar profileData={profileData} loading={loading} error={error} />
+        <ProfileDescBar />
 
-        {/* <div>
-          <p>Unlock Premium tools & insights</p>
-          <p>Try Premium for UAH0</p>
-        </div> */}
         <div className={styles.connectionWrapper}>
           <a>
             <div className={styles.amountConnections}>
@@ -166,6 +154,7 @@ export default function Home() {
       {/* LEFT SIDEBAR */}
 
       <aside>
+        
         <div className={styles.recommendationsContainer}>
           <div className={styles.titleContainer}>
             <h2 className={styles.title}>Add to your feed </h2>
@@ -198,46 +187,9 @@ export default function Home() {
             <span></span>
           </a>
         </div>
-        {/* FOOTER */}
-        <footer className={styles.compactFooter}>
-          <ul className={styles.footerLinksContainer}>
-            <li>
-              <a href="#">About</a>
-            </li>
-            <li>
-              <a href="#">Accessibility</a>
-            </li>
-            <li>
-              <a href="#">Help Center</a>
-            </li>
-            <li>
-              <a className={styles.triangle} href="#">
-                Privacy & Terms
-              </a>
-            </li>
-            <li>
-              <a href="#">Ad Choices</a>
-            </li>
-            <li>
-              <a href="#">Advertising</a>
-            </li>
-            <li>
-              <a className={styles.triangle} href="#">
-                Business Services
-              </a>
-            </li>
-            <li>
-              <a href="#">Get the Linkedin app</a>
-            </li>
-            <li>
-              <a href="#">More</a>
-            </li>
-          </ul>
-          <div className={styles.copyrightInfo}>
-            <img src="./image/main/Logo.svg" alt="Logo" />
-            <p> Linkedin Corporation © 2024</p>
-          </div>
-        </footer>
+   
+
+        <AsideFooter />
       </aside>
     </PageWrapper>
   );

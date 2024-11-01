@@ -24,13 +24,12 @@ export default function AppRoutes() {
   const location = useLocation();
   const [widthWindow, setWidthWindow] = useState(window.innerWidth);
   // console.log(widthWindow);
-  
 
   useEffect(() => {
     const resizeWidth = () => {
       console.log(window.innerWidth);
-      
-      setWidthWindow(window.innerWidth)
+
+      setWidthWindow(window.innerWidth);
     };
 
     window.addEventListener("resize", resizeWidth);
@@ -39,7 +38,6 @@ export default function AppRoutes() {
       window.removeEventListener("resize", resizeWidth);
     };
   }, []);
-
 
   const handleLogout = () => {
     dispatch(logout());
@@ -53,13 +51,14 @@ export default function AppRoutes() {
   return (
     <>
       {/* Показуємо Header тільки якщо це не FirstPage */}
-      {!isFirstPage && <Header /> }
+      {!isFirstPage && <Header />}
       {!isFirstPage && widthWindow < 911 && <HeaderMobile />}
 
       <Routes>
-        <Route 
-          path="/" 
-          element={isAuthenticated ? <Home /> : <Navigate to="/home" />} 
+        <Route
+          path="/"
+          // element={isAuthenticated ? <Home /> : <Navigate to="/home" />}
+          element={<Home />}
         />
 
         <Route path="/home" element={<FirstPage />} />
@@ -95,9 +94,9 @@ export default function AppRoutes() {
         <Route
           path="/notifications"
           element={
-            <ProtectedRoute isAuthenticated={isAuthenticated}>
-              <Notifications />
-            </ProtectedRoute>
+            // <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <Notifications />
+            // </ProtectedRoute>
           }
         />
         <Route
