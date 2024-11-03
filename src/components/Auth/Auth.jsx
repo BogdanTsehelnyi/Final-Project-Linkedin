@@ -7,10 +7,9 @@ import './Auth.css';
 const Auth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate(); 
-  const { email, password, error, isAuthenticated } = useSelector((state) => state.auth);
+  const { email, password, error, isAuthenticated, isRegistered } = useSelector((state) => state.auth);
   const [isRegistering, setIsRegistering] = useState(true);
 
- 
   useEffect(() => {
     const storedEmail = localStorage.getItem('email');
     const storedPassword = localStorage.getItem('password');
@@ -30,16 +29,20 @@ const Auth = () => {
     }
   };
 
+  // Виконуємо перенаправлення на /registration після успішної реєстрації
+  useEffect(() => {
+    if (isRegistered && isRegistering) {
+      navigate('/registration');
+    }
+  }, [isRegistered, isRegistering, navigate]);
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && !isRegistering) {
       localStorage.setItem('email', email);
       localStorage.setItem('password', password);
-
-      
       navigate('/');
     }
-  }, [isAuthenticated, email, password, navigate]);
+  }, [isAuthenticated, isRegistering, email, password, navigate]);
 
   return (
     <div className="auth-container">

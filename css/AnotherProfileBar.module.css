@@ -12,8 +12,6 @@
   background-color: black;
   border-radius: 6px;
   height: 196px;
-  background-size: cover;
-  background-position: center;
 }
 
 .photoContainer {
@@ -26,8 +24,6 @@
   height: 170px;
   border-radius: 50%;
   border: 5px solid white;
-  -o-object-fit: cover;
-     object-fit: cover;
 }
 
 .nameProfile {
@@ -98,4 +94,36 @@
   .container {
     width: 100%;
   }
+}
+.countProfileBtn {
+  color: #1e00ff;
+  font-weight: 600;
+  font-size: 18px;
+  margin-left: 20px;
+  border: none;
+  display: block;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.friendActionBtn {
+  width: 120px;
+  height: 40px;
+  background-color: rgb(14, 0, 209);
+  border-radius: 30px;
+  border: none;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 20px;
+  cursor: pointer;
+}
+
+.friendActionBtn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.friendActionBtn:hover:not(:disabled) {
+  background-color: #0056b3;
 }

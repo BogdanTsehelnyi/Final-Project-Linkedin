@@ -5,7 +5,6 @@ import styles from "./Home.module.scss";
 import AsideFooter from "../../components/AsideFooter";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProfile } from "../../redux/slices/profileSlice";
-import { fetchCarts } from "../../redux/slices/friendProfileSlice";
 
 export default function Home() {
   // ОТРИМАННЯ ДАНИХ ДЛЯ ПРАВОГО SIDEBAR
