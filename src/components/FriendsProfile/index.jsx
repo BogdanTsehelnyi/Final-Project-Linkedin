@@ -2,13 +2,21 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { removeFriend } from "../../redux/slices/friendProfileSlice";
 import styles from "./FriendsProfile.module.scss";
+import { useNavigate } from "react-router-dom";
 
 export default function FriendsProfile() {
+    // Використовуємо friendsData, оскільки він містить лише доданих друзів
     const friends = useSelector((state) => state.friend.friendsData); 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleRemoveFriend = (id) => {
         dispatch(removeFriend(id));
+    };
+
+    const handleNavigateToProfile = (id) => {
+        // Перенаправляємо на сторінку профіля з ID друга
+        navigate(`/friend/${id}`);
     };
 
     return (
@@ -18,7 +26,12 @@ export default function FriendsProfile() {
                 friends.map((friend) => (
                     <div className={styles.friendContainer} key={friend.id}>
                         <div className={styles.friendBox}>
-                            <img className={styles.friendPhoto} src={friend.profilePicture || '/path/to/default/image.jpg'} alt="profile" />
+                            <img 
+                                onClick={() => handleNavigateToProfile(friend.id)} // Викликаємо функцію для навігації з ID
+                                className={styles.friendPhoto} 
+                                src={friend.profilePicture || '/path/to/default/image.jpg'} 
+                                alt="profile" 
+                            />
                             <div className={styles.friendInfo}>
                                 <h3 className={styles.friendName}>
                                     {friend.firstName} {friend.lastName}

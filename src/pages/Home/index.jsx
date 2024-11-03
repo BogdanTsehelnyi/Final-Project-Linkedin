@@ -4,7 +4,6 @@ import ProfileDescBar from "../../components/ProfileDescBar";
 import styles from "./Home.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProfile } from "../../redux/slices/profileSlice";
-import { fetchCarts } from "../../redux/slices/friendProfileSlice";
 
 export default function Home() {
   // ОТРИМАННЯ ДАНИХ ДЛЯ ПРАВОГО SIDEBAR
@@ -13,10 +12,6 @@ export default function Home() {
     dispatch(fetchProfile());
   }, [dispatch]);
 
-  // ОТРИМАННЯ ДАНИХ ДЛЯ  ЛІВОГО SIDEBAR
-  useEffect(() => {
-    dispatch(fetchCarts());
-  }, [dispatch]);
 
   const profileData = useSelector((state) => state.profile.profileData);
   const recommendationFriendData = useSelector((state) => state.friend.friendsData);

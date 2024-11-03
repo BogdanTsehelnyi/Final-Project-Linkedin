@@ -12,6 +12,8 @@ import Header from "./components/Header";
 import FirstPage from "./pages/FirstPage/FirstPage";
 import { useState, useEffect } from "react";
 import HeaderMobile from "./components/HeaderMobile";
+import RegistrationFormPage from "./pages/RegistrationFormPage/RegistrationFormPage";
+import AnotherProfilePage from "./pages/AnotherProfilePage/AnotherProfilePage";
 
 // Захищений маршрут
 const ProtectedRoute = ({ isAuthenticated, children }) => {
@@ -47,11 +49,17 @@ export default function AppRoutes() {
     localStorage.removeItem("password");
   };
 
-  // Перевіряємо, чи ми на FirstPage (додаємо логіку для '/login' пізніше)
-  const isFirstPage = location.pathname === "/home";
+  // Перевіряємо, чи ми на FirstPage
+const isFirstPage = location.pathname === "/home";
+const isRegistrationFormPage = location.pathname === "/registration";
+const isAuth = location.pathname === "/login";
+
+
 
   return (
     <>
+
+{!isFirstPage && isRegistrationFormPage && isAuth && <Header />}
       {/* Показуємо Header тільки якщо це не FirstPage */}
       {!isFirstPage && <Header /> }
       {!isFirstPage && widthWindow < 911 && <HeaderMobile />}
@@ -61,6 +69,8 @@ export default function AppRoutes() {
           path="/" 
           element={isAuthenticated ? <Home /> : <Navigate to="/home" />} 
         />
+
+      <Route path="/registration" element={<RegistrationFormPage />} />
 
         <Route path="/home" element={<FirstPage />} />
 
@@ -101,13 +111,21 @@ export default function AppRoutes() {
           }
         />
         <Route
-          path="/profile"
-          element={
-            <ProtectedRoute isAuthenticated={isAuthenticated}>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
+path="/profile"
+element={
+  <ProtectedRoute isAuthenticated={isAuthenticated}>
+    <Profile />
+  </ProtectedRoute>
+}
+/>
+<Route
+ path="/friend/:friendId"
+element={
+  <ProtectedRoute isAuthenticated={isAuthenticated}>
+    <AnotherProfilePage />
+  </ProtectedRoute>
+}
+/>
 
         {/* Перенаправляємо на логін для невідомих маршрутів */}
         <Route path="*" element={<Navigate to="/login" />} />
@@ -115,3 +133,10 @@ export default function AppRoutes() {
     </>
   );
 }
+
+
+
+
+
+
+
