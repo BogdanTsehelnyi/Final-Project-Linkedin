@@ -9,6 +9,7 @@ import { fetchProfile } from "../../redux/slices/profileSlice";
 export default function Home() {
   // ОТРИМАННЯ ДАНИХ ДЛЯ ПРАВОГО SIDEBAR
 
+
   const profileData = useSelector((state) => state.profile.profileData);
 
   // const recommendationFriendData = useSelector((state) => state.friend.friendsData);
