@@ -1,9 +1,17 @@
 import React, { useEffect } from "react";
 import styles from "./ProfileDescBar.module.scss";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchProfile } from "../../redux/slices/profileSlice";
 
-export default function ProfileDescBar({ profileData, loading, error }) {
+// import { fetchProfile } from "../../redux/slices/profileSlice";
+
+export default function ProfileDescBar() {
+  const profileData = useSelector((state) => state.profile.profileData);
+  console.log(profileData);
+
+  const loading = useSelector((state) => state.profile.loading);
+
+  const error = useSelector((state) => state.profile.error);
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
