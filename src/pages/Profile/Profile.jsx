@@ -12,6 +12,7 @@ import {
 } from '../../redux/slices/modal';
 import FullProfileInfoModal from '../../components/FullProfileInfoModal';
 import ProfileBar from '../../components/ProfileBar';
+import ProfileFooter from '../../components/ProfileFooter';
 
 export default function Profile() {
   const dispatch = useDispatch();
@@ -53,6 +54,7 @@ export default function Profile() {
         open={openInfoModal}
         handleClose={closeInfoModalHandler}
       />
+      <ProfileFooter />
     </div>
   );
 }
