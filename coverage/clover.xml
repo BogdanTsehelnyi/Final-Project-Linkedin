@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1729760974784" clover="3.2.0">
-  <project timestamp="1729760974784" name="All files">
+<coverage generated="1730632844222" clover="3.2.0">
+  <project timestamp="1730632844223" name="All files">
     <metrics statements="82" coveredstatements="78" conditionals="16" coveredconditionals="13" methods="25" coveredmethods="25" elements="123" coveredelements="116" complexity="0" loc="82" ncloc="82" packages="1" files="4" classes="4"/>
     <file name="authSlice.js" path="C:\Users\Asus\Desktop\Frontend\FinalProject\Final-Project-Linkedin\src\redux\slices\authSlice.js">
       <metrics statements="34" coveredstatements="32" conditionals="10" coveredconditionals="9" methods="5" coveredmethods="5"/>
