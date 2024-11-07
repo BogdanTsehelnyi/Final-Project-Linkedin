@@ -13,7 +13,7 @@ const ForgotPassword = () => {
         { email },
         {
           headers: {
-            'Content-Type': 'application/json', // Изменим на JSON
+            'Content-Type': 'application/json', 
           },
           withCredentials: true,
         }
