@@ -37,7 +37,7 @@ const Auth = () => {
 
       try {
         
-        const response = await axios.post('http://localhost:9000/api/auth', {
+        const response = await axios.post('https://final-project-link.onrender.com/auth', {
           email,
           password,
         });

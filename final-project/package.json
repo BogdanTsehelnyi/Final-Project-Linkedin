@@ -15,7 +15,7 @@
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@mui/material": "^6.1.1",
-    "@reduxjs/toolkit": "^2.2.8",
+    "@reduxjs/toolkit": "^2.3.0",
     "axios": "^1.7.7",
     "classnames": "^2.5.1",
     "cors": "^2.8.5",
