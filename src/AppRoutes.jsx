@@ -14,6 +14,7 @@ import { useState, useEffect } from "react";
 import HeaderMobile from "./components/HeaderMobile";
 import RegistrationFormPage from "./pages/RegistrationFormPage/RegistrationFormPage";
 import AnotherProfilePage from "./pages/AnotherProfilePage/AnotherProfilePage";
+import ResetPassword from "./components/Auth/ResetPassword"; // Импорт ResetPassword
 
 // Захищений маршрут
 const ProtectedRoute = ({ isAuthenticated, children }) => {
@@ -75,6 +76,8 @@ const isAuth = location.pathname === "/login";
 
         {/* Додаємо маршрут для логіну */}
         <Route path="/login" element={<Auth />} />
+
+        <Route path="/password-reset/:token" element={<ResetPassword />} />
 
         {/* Захищені маршрути */}
         <Route
