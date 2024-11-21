@@ -22,6 +22,7 @@
     text-align: center;
     list-style: none;
     margin-bottom: 20px;
+    color: #7b7878;
 }
 .user {
     list-style: none;
@@ -44,10 +45,12 @@
 .headerText {
     display: flex;
     justify-content: space-between;
+    color: #7b7878;
 }
 .name, .date {
     font-size: 18px;
     font-weight: 700;
+    color: #7b7878;
 }
 .discription {
     height: 50px;
@@ -62,6 +65,7 @@
 }
 .headerChat {
     padding-bottom: 24px;
+    color: #7b7878;
     border-bottom: 1px solid #7b787859;
 }
 .inp {
@@ -73,6 +77,11 @@
     resize: none;
     overflow: hidden;
     outline: none;
+    background-color: #7b7878;
+    color: white;
+    &::placeholder {
+        color: white;
+    }
 }
 .chatWrapper {
     display: flex;

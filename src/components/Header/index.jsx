@@ -127,6 +127,7 @@ export default function Header() {
           >
             <div className={styles.group}>
               <Messages className={styles.mes} />
+              <div className={styles.new}>1</div>
             </div>
             Messages
           </NavLink>

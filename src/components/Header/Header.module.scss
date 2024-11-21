@@ -103,6 +103,19 @@
   background-color: transparent;
   cursor: pointer;
 }
+.new {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #dbdcdd;
+  background-color: red;
+  width: 15px;
+  height: 15px;
+  border-radius: 50px;
+  position: absolute;
+  top: -8px;
+  right: -10px;
+}
 @media (max-width: 911px) {
   .item {
     display: none;

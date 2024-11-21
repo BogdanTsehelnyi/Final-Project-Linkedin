@@ -1,5 +1,7 @@
-import { useEffect, useRef, useState } from "react";
-import styles from "./Chat.module.scss";
+import { useEffect, useRef, useState, useContext } from "react";
+import { ContextTheme } from "../../context/contextTheme/ContextTheme";
+import light from "./Chat.module.scss";
+import dark from "./ChatDark.module.scss";
 
 // Заглушка для пользователей
 const usersArr = [
@@ -20,6 +22,10 @@ export default function Chat() {
   const [messages, setMessages] = useState([]);
   const [users, setUsers] = useState([]);
   const endMessageRef = useRef(null);
+
+  const { theme } = useContext(ContextTheme);
+
+  const styles = theme === "light" ? light : dark;
 
   useEffect(() => {
     setMessages(messagesArr);
