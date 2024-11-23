@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const ResetPassword = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  const { token } = useParams();
+
+  const location = useLocation();
   const navigate = useNavigate();
+
+  // Получение токена из query-параметров
+  const queryParams = new URLSearchParams(location.search);
+  const token = queryParams.get('token');
 
   const handleResetPassword = async (e) => {
     e.preventDefault();

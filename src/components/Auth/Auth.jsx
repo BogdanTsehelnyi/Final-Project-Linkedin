@@ -5,6 +5,8 @@ import axios from 'axios';
 import { setEmail, setPassword, register, login } from '../../redux/slices/authSlice';
 import './Auth.css';
 import google_img from './images-login/G+.svg';
+import qs from 'qs';
+
 
 const Auth = () => {
   const dispatch = useDispatch();
@@ -49,13 +51,15 @@ const Auth = () => {
       }
     } else {
       try {
+        // Форматируем данные с помощью qs.stringify и меняем заголовок Content-Type
         const response = await axios.post(
           'https://final-project-link.onrender.com/login',
-          { username: email, password, 'remember-me': rememberMe },
+          qs.stringify({ username: email, password, 'remember-me': rememberMe }),  // Преобразуем данные
           {
-            headers: { 'Content-Type': 'application/json' },
-            withCredentials: true, 
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },  // Заменяем заголовок
+            withCredentials: true,
           }
+          
         );
         console.log('Login successful:', response.data);
         dispatch(login());
@@ -116,10 +120,11 @@ const Auth = () => {
         <button type="submit">{isRegistering ? 'Зарегистрироваться' : 'Войти'}</button>
         {!isRegistering && (
           <button
-            type="button"
-            onClick={() => {
-              window.location.href = 'https://final-project-link.onrender.com/oauth2/authorization/google';
-            }}
+          type="button"
+          onClick={() => {
+            console.log('Перенаправляем на Google OAuth');
+            window.location.href =  'https://final-project-link.onrender.com/oauth2/authorization/google';
+          }}
           >
             Вход через Google <img src={google_img} alt="Google Login" />
           </button>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import qs from 'qs';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -12,11 +13,13 @@ const ForgotPassword = () => {
     setError('');
 
     try {
+      console.log("Отправляем запрос:", { email });
+
       const response = await axios.post(
         'https://final-project-link.onrender.com/password-forgot',
-        { email },
+        qs.stringify({ email }), // Преобразуем данные для сервера
         {
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           withCredentials: true,
         }
       );
@@ -27,7 +30,7 @@ const ForgotPassword = () => {
         setError('Ошибка отправки письма');
       }
     } catch (error) {
-      console.error('Ошибка отправки:', error);
+      console.error('Ошибка отправки:', error.response || error.message);
       setError('Ошибка подключения к серверу');
     }
   };
@@ -50,5 +53,6 @@ const ForgotPassword = () => {
 };
 
 export default ForgotPassword;
+
 
 

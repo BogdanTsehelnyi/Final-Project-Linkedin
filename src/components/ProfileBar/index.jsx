@@ -2,16 +2,17 @@ import React, { useState, useEffect } from 'react';
 import styles from './ProfileBar.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import { setProfileData } from '../../redux/slices/profileSlice';
+import axios from 'axios';
+import { logout } from '../../redux/slices/authSlice'; // Импортируем экшен для выхода
 
 export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
     const { profileData, loading, error } = useSelector((state) => state.profile);
     const dispatch = useDispatch();
-    
-    const [profilePicture, setProfilePicture] = useState('/path/to/default/profile.jpg'); // Локальне фото профілю
-    const [backgroundImage, setBackgroundImage] = useState('/path/to/default/background.jpg'); // Локальне фон зображення
+
+    const [profilePicture, setProfilePicture] = useState('/path/to/default/profile.jpg');
+    const [backgroundImage, setBackgroundImage] = useState('/path/to/default/background.jpg');
 
     useEffect(() => {
-        // Перевірка, чи є профільне фото в даних профілю
         if (profileData.profilePicture) {
             setProfilePicture(profileData.profilePicture);
         }
@@ -22,8 +23,8 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setProfilePicture(reader.result); // Змінюємо локальний стан на нове фото
-                dispatch(setProfileData({ ...profileData, profilePicture: reader.result })); // Оновлюємо Redux стан
+                setProfilePicture(reader.result);
+                dispatch(setProfileData({ ...profileData, profilePicture: reader.result }));
             };
             reader.readAsDataURL(file);
         }
@@ -34,9 +35,28 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setBackgroundImage(reader.result); // Змінюємо фон
+                setBackgroundImage(reader.result);
             };
             reader.readAsDataURL(file);
+        }
+    };
+
+    const handleLogout = async () => {
+        try {
+            const response = await axios.post(
+                "https://final-project-link.onrender.com/logout",
+                {},
+                {
+                    withCredentials: true,
+                    maxRedirects: 0
+                }
+            );
+            if (response.status === 200) {
+                console.log('Logout response:', response);
+                dispatch(logout()); // Вызываем экшен выхода
+            }
+        } catch (error) {
+            console.error('Ошибка при выходе из системы:', error);
         }
     };
 
@@ -61,7 +81,7 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
                 </label>
                 <div className={styles.photoContainer}>
                     <label className={styles.customFileUpload}>
-                        <img src={profilePicture} alt="Профіль" /> {/* Використовуємо локальний стан */}
+                        <img src={profilePicture} alt="Профіль" />
                         <input type="file" accept="image/*" onChange={handleImageUpload} />
                     </label>
                 </div>
@@ -77,6 +97,11 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
                 <img src="/image/main/Edit.svg" alt="Редагувати профіль" />
             </button>   
             <button className={styles.aboutProfileBtn} onClick={handleOpenModalInfo}>More</button>
+
+           
+            <button className={styles.logoutButton} onClick={handleLogout}>
+                Выйти из аккаунта
+            </button>
         </div>
     );
 }

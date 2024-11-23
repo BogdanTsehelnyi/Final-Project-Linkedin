@@ -14,7 +14,8 @@ import { useState, useEffect } from "react";
 import HeaderMobile from "./components/HeaderMobile";
 import RegistrationFormPage from "./pages/RegistrationFormPage/RegistrationFormPage";
 import AnotherProfilePage from "./pages/AnotherProfilePage/AnotherProfilePage";
-import ResetPassword from "./components/Auth/ResetPassword"; // Импорт ResetPassword
+import ResetPassword from "./components/Auth/ResetPassword"; 
+import ForgotPassword from "./components/Auth/ForgotPassword";
 
 // Захищений маршрут
 const ProtectedRoute = ({ isAuthenticated, children }) => {
@@ -68,16 +69,19 @@ const isAuth = location.pathname === "/login";
           path="/"
           // element={isAuthenticated ? <Home /> : <Navigate to="/home" />}
           element={<Home />}
-        />
+        />  {/* местами поменяй назат  element={<Home />} />  */}
 
       <Route path="/registration" element={<RegistrationFormPage />} />
 
-        <Route path="/home" element={<FirstPage />} />
+        <Route path="/home" element={<FirstPage />} /> {/* местами поменяй назат  element={<FirstPage />} */}
 
         {/* Додаємо маршрут для логіну */}
         <Route path="/login" element={<Auth />} />
 
-        <Route path="/password-reset/:token" element={<ResetPassword />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+
+        <Route path="/password-reset" element={<ResetPassword />} />
+
 
         {/* Захищені маршрути */}
         <Route
