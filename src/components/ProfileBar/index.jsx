@@ -99,6 +99,9 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
             <button className={styles.aboutProfileBtn} onClick={handleOpenModalInfo}>More</button>
 
            
+
+
+           
             <button className={styles.logoutButton} onClick={handleLogout}>
                 Выйти из аккаунта
             </button>
