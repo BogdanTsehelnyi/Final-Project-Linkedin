@@ -1,14 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios'; 
 import { setEmail, setPassword, register, login } from '../../redux/slices/authSlice';
 import './Auth.css';
+import google_img from './images-login/G+.svg';
+import qs from 'qs';
+
 
 const Auth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate(); 
-  const { email, password, error, isAuthenticated, isRegistered } = useSelector((state) => state.auth);
+  const { email, password, error, isAuthenticated } = useSelector((state) => state.auth);
   const [isRegistering, setIsRegistering] = useState(true);
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false); 
+  const [serverError, setServerError] = useState('');
 
   useEffect(() => {
     const storedEmail = localStorage.getItem('email');
@@ -16,70 +23,121 @@ const Auth = () => {
     if (storedEmail && storedPassword) {
       dispatch(setEmail(storedEmail));
       dispatch(setPassword(storedPassword));
-      setIsRegistering(false); 
+      setIsRegistering(false);
     }
   }, [dispatch]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setServerError(''); 
+
     if (isRegistering) {
-      dispatch(register());
+      if (password !== confirmPassword) { 
+        alert('Паролі не співпадають');
+        return;
+      }
+
+      try {
+        const response = await axios.post('https://final-project-link.onrender.com/auth', {
+          email,
+          password,
+        });
+        console.log('Registration successful:', response.data);
+        dispatch(register());
+        navigate('/login'); // Перенаправляем на страницу входа
+      } catch (error) {
+        console.error('Ошибка регистрации:', error);
+        setServerError('Ошибка регистрации. Попробуйте снова.');
+      }
     } else {
-      dispatch(login());
+      try {
+        // Форматируем данные с помощью qs.stringify и меняем заголовок Content-Type
+        const response = await axios.post(
+          'https://final-project-link.onrender.com/login',
+          qs.stringify({ username: email, password, 'remember-me': rememberMe }),  // Преобразуем данные
+          {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },  // Заменяем заголовок
+            withCredentials: true,
+          }
+          
+        );
+        console.log('Login successful:', response.data);
+        dispatch(login());
+        navigate('/home');
+      } catch (error) {
+        console.error('Ошибка входа:', error);
+        setServerError('Ошибка входа. Проверьте данные.');
+      }
     }
   };
 
-  // Виконуємо перенаправлення на /registration після успішної реєстрації
   useEffect(() => {
-    if (isRegistered && isRegistering) {
-      navigate('/registration');
-    }
-  }, [isRegistered, isRegistering, navigate]);
-
-  useEffect(() => {
-    if (isAuthenticated && !isRegistering) {
+    if (isAuthenticated) {
       localStorage.setItem('email', email);
       localStorage.setItem('password', password);
       navigate('/');
     }
-  }, [isAuthenticated, isRegistering, email, password, navigate]);
+  }, [isAuthenticated, email, password, navigate]);
 
   return (
     <div className="auth-container">
-      {isAuthenticated ? (
-        <h2>Ви успішно {isRegistering ? 'зареєстровані' : 'авторизовані'}!</h2>
-      ) : (
-        <form onSubmit={handleSubmit} className="auth-form">
-          <h2>{isRegistering ? 'Реєстрація' : 'Авторизація'}</h2>
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
+      <form onSubmit={handleSubmit} className="auth-form">
+        <h2>{isRegistering ? 'Реєстрація' : 'Авторизація'}</h2>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => dispatch(setEmail(e.target.value))}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Пароль"
+          value={password}
+          onChange={(e) => dispatch(setPassword(e.target.value))}
+          required
+        />
+        {isRegistering && (
+          <input
+            type="password"
+            placeholder="Подтвердите пароль"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
+        )}
+        {!isRegistering && (
+          <label>
+            Remember me
             <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => dispatch(setEmail(e.target.value))}
-              placeholder="Введіть email"
-              required
+              type="checkbox"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
             />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Пароль</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => dispatch(setPassword(e.target.value))}
-              placeholder="Введіть пароль"
-              required
-            />
-          </div>
-          {error && <p className="error">{error}</p>}
-          <button type="submit">{isRegistering ? 'Зареєструватися' : 'Увійти'}</button>
-          <p onClick={() => setIsRegistering(!isRegistering)} className="toggle">
-            {isRegistering ? 'Уже маєте акаунт? Увійдіть' : 'Немає акаунта? Зареєструйтеся'}
+          </label>
+        )}
+        {serverError && <p className="error">{serverError}</p>}
+        <button type="submit">{isRegistering ? 'Зарегистрироваться' : 'Войти'}</button>
+        {!isRegistering && (
+          <button
+          type="button"
+          onClick={() => {
+            console.log('Перенаправляем на Google OAuth');
+            window.location.href =  'https://final-project-link.onrender.com/oauth2/authorization/google';
+          }}
+          >
+            Вход через Google <img src={google_img} alt="Google Login" />
+          </button>
+        )}
+        <p onClick={() => setIsRegistering(!isRegistering)}>
+          {isRegistering ? 'Уже есть аккаунт? Войти' : 'Нет аккаунта? Зарегистрироваться'}
+        </p>
+        {!isRegistering && (
+          <p>
+            <a href="/forgot-password">Забыли пароль?</a>
           </p>
-        </form>
-      )}
+        )}
+      </form>
     </div>
   );
 };
