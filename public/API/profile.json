@@ -1,0 +1,47 @@
+{
+  "id": "1234567890",
+  "firstName": "John",
+  "lastName": "Doe",
+  "birthday": "1995-07-07",
+  "email": "johndoe@example.com",
+  "password": "strongPassword123!",
+  "headline": "Software Engineer at Example Inc.",
+  "location": {
+    "country": "USA",
+    "city": "San Francisco"
+  },
+  "industry": "Information Technology",
+  "experience": [
+    {
+      "title": "Senior Software Engineer",
+      "company": "Example Inc.",
+      "startDate": "2020-01",
+      "endDate": null,
+      "currentlyWorking": true,
+      "description": "Leading a team of developers to build web applications using React, Node.js, and MongoDB."
+    }
+  ],
+  "education": [
+    {
+      "degree": "Bachelor of Science in Computer Science",
+      "fieldOfStudy": "Computer Science",
+      "startDate": "2013-09",
+      "endDate": "2017-06"
+    }
+  ],
+  "skills": ["JavaScript", "React", "Node.js", "MongoDB", "Python"],
+  "languages": [
+    {
+      "language": "English",
+      "proficiency": "Native"
+    }
+  ],
+  "certifications": [
+    {
+      "name": "AWS Certified Solutions Architect",
+      "authority": "Amazon Web Services",
+      "date": "2021-04"
+    }
+  ],
+  "profilePicture": "https://static.vecteezy.com/system/resources/previews/009/734/564/non_2x/default-avatar-profile-icon-of-social-media-user-vector.jpg"
+}

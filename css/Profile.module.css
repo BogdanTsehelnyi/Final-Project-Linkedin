@@ -1,0 +1,26 @@
+.profileBox {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 50px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-top: 20px;
+}
+.profileBox :first-child {
+  -ms-flex-item-align: start;
+      align-self: start;
+}
+
+@media (max-width: 787px) {
+  .profileBox {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 50px;
+    margin: 20px 30px;
+  }
+}
+.profileFooter {
+  margin-top: 40px;
+}

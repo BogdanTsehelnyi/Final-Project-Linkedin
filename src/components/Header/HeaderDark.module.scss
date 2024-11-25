@@ -1,0 +1,155 @@
+.wrapper {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    height: 7.9;
+    background-color: #222121;
+    // border: 1px solid #dbdcdd;
+    box-sizing: border-box;
+    padding: 10px;
+    z-index: 200;
+  }
+  .searchGroup {
+    display: flex;
+    gap: 17px;
+    align-items: center;
+    position: relative;
+  }
+  .wrapperFocus {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #7b787859;
+    z-index: 1000;
+  }
+  .focusModal {
+    position: absolute;
+    top: 7%;
+    left: 10.5%;
+    width: 30vw;
+    height: 50vh;
+    padding: 15px;
+    // background-color: #fff;
+    background-color: #7b7878;
+    border-radius: 4px;
+    color: white;
+  }
+  .items {
+    color: black;
+    font-size: 20px;
+    font-weight: 500;
+    font-family: sans-serif;
+    margin-top: 15px;
+    list-style: none;
+  }
+  .inputWrapper {
+    position: relative;
+  }
+  .search {
+    border-radius: 4px;
+    height: 4.9vh;
+    // width: 279px;
+    min-width: 20vw;
+    border: none;
+    // background-color: #eef3f8;
+    background-color: #7b787859;
+    padding-left: 20%;
+  }
+  .nav {
+    display: flex;
+    gap: 3vw;
+    align-items: center;
+  }
+  .item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    color: #666;
+    font-family: sans-serif;
+    font-size: 10px;
+    text-decoration: none;
+  }
+  .prem {
+    font-family: sans-serif;
+    font-size: 12px;
+    color: #915907;
+    text-decoration: underline;
+  }
+  .group {
+    position: relative;
+  }
+  .active {
+    cursor: default;
+    border-bottom: 2px solid gray;
+    svg {
+      transform: rotate(30deg);
+    }
+  }
+  .arr {
+    display: flex;
+    gap: 2px;
+  }
+  .mess {
+    display: none;
+  }
+  .switchTheme {
+    display: block;
+    width: 30px;
+    height: 30px;
+    background-image: url("/public/image/header/theme.png");
+    background-size: cover;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+  }
+  .new {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #dbdcdd;
+    background-color: red;
+    width: 15px;
+    height: 15px;
+    border-radius: 50px;
+    position: absolute;
+    top: -8px;
+    right: -10px;
+  }
+  @media (max-width: 911px) {
+    .item {
+      display: none;
+    }
+    .name {
+      display: none;
+    }
+  }
+  @media (max-width: 910px) {
+    .wrapper {
+      flex-direction: row-reverse;
+    }
+    .inputWrapper {
+      display: flex;
+    }
+    .itemDisplay {
+      display: flex;
+    }
+    .search {
+      min-width: 30vw;
+      padding-left: 55px;
+    }
+    .mess {
+      display: flex;
+      align-items: center;
+    }
+    .focusModal {
+      width: 100vw;
+      height: 100vh;
+      top: 8%;
+      left: 0;
+    }
+  }
+  

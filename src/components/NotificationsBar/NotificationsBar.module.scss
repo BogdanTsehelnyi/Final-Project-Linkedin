@@ -1,0 +1,97 @@
+// .notifications {
+//     padding: 30px 0;
+//     width: 100vw;
+//     box-sizing: border-box;
+//     position: relative;
+// }
+
+// .notificationsBar {
+//   display: flex;
+//   width: 100%;
+//   justify-content: center;
+//   flex-direction: column;
+//   align-items: center;
+//   z-index: 10; /* Можна знизити значення, щоб порівняти */
+//   position: relative; /* Це важливо для роботи `z-index` */
+// }
+
+.notificationsBarItem {
+  display: flex;
+  width: 100%; /* Ширина буде обмежена межами батьківського контейнера */
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+}
+
+.notificationsBarContainer {
+  display: block;
+  border: 1px solid #e0dfdc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  color: #181818;
+  padding: 10px 25px;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  justify-content: space-between;
+  margin-bottom: -1px; // щоб не накладалися бордери
+}
+
+.notificationsPhotoContainer {
+  display: block;
+  width: 80px;
+  height: 80px;
+  .notificationsBarPhoto {
+    display: block;
+    object-fit: cover;
+    object-position: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+  }
+}
+
+.notificationsBarInfo {
+  display: flex;
+  gap: 30px;
+}
+
+.fixedImg {
+  position: fixed;
+  right: 80px;
+  top: 130px;
+  z-index: 1; /* Значення менше, ніж у notificationsBar */
+
+  img {
+    border-radius: 15px;
+  }
+}
+
+.notificationsBarItemMenu {
+  width: 30px;
+  height: 20px;
+  cursor: pointer;
+}
+
+@media (max-width: 911px) {
+  .notificationsBarContainer {
+    width: 80vw;
+  }
+  .fixedImg {
+    display: none;
+  }
+  .notifications {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 478px) {
+  .notificationsBar {
+    width: 100%;
+  }
+  .notificationsBarContainer {
+    width: 90vw;
+  }
+}

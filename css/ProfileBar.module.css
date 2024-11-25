@@ -1,0 +1,101 @@
+.container {
+  border: 1px solid #e0dfdc;
+  border-radius: 6px;
+  color: #181818;
+  width: 50vw;
+  position: relative;
+  background-color: #fff;
+}
+
+.backgroundProfile {
+  position: relative;
+  background-color: black;
+  border-radius: 6px;
+  height: 196px;
+  background-size: cover;
+  background-position: center;
+}
+
+.photoContainer {
+  padding: 20px;
+  position: absolute;
+  top: 60px;
+}
+.photoContainer img {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  border: 5px solid white;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.nameProfile {
+  margin-top: 70px;
+  font-weight: 500;
+  font-size: 22px;
+  margin-left: 24px;
+}
+
+.professionProfile, .cityProfile {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+  margin-left: 24px;
+}
+
+.customFileUpload, .customFileBacgroundUpload {
+  cursor: pointer;
+}
+.customFileUpload input[type=file], .customFileBacgroundUpload input[type=file] {
+  display: none;
+}
+
+.customFileBacgroundUpload {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background-color: azure;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding-top: 3px;
+  padding-right: 1px;
+}
+
+.openModal {
+  border: none;
+  background-color: white;
+  position: absolute;
+  bottom: 130px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.aboutProfileBtn {
+  width: 120px;
+  height: 40px;
+  background-color: rgb(14, 0, 209);
+  border-radius: 30px;
+  border: none;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 20px;
+  cursor: pointer;
+}
+
+@media (max-width: 787px) {
+  .container {
+    width: 100%;
+  }
+}

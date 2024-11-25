@@ -1,0 +1,57 @@
+// ProfileFooter.module.scss
+
+.container {
+    padding: 50px; // Збільшений відступ для основного контейнера
+    background-color: #f3f3f3;
+    color: #333;
+    font-family: Arial, sans-serif;
+    margin-top: 70px;
+  
+    // Контейнер копірайту
+    p {
+      text-align: center;
+      font-size: 10px; // Ще менший розмір шрифту для копірайту
+      color: #777;
+      margin-top: 25px;
+    }
+  }
+  
+  .footerGridContainer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px; // Менший відступ між колонками
+    max-width: 100%;
+    align-items: flex-start;
+  
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr 1fr; // Дві колонки на планшетах
+    }
+  
+    @media (max-width: 480px) {
+      grid-template-columns: 1fr; // Одна колонка на телефонах
+    }
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+  
+    li {
+      margin-bottom: 6px; // Зменшений відступ між пунктами списку
+      font-size: 11px; // Ще менший розмір шрифту для елементів списку
+      line-height: 1.3;
+      color: #333;
+  
+      span {
+        display: block; // Розміщення span на новому рядку
+        font-size: 10px; // Ще менший розмір шрифту для підтексту
+        color: #555;
+        margin-top: 2px;
+      }
+    }
+  }
+  
+  .firstColumn, .secondColumn, .thirdColumn, .fourthColumn {
+    text-align: left;
+  }
+  
