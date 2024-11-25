@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import PageWrapper from "../../components/Wrappers/PageWrapper";
 import ProfileDescBar from "../../components/ProfileDescBar";
 import styles from "./Home.module.scss";
+import ConnectionAside from "../../components/ConnectionAside";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProfile } from "../../redux/slices/profileSlice";
 import { fetchCarts } from "../../redux/slices/friendProfileSlice";
@@ -29,21 +30,8 @@ export default function Home() {
     <PageWrapper>
       <aside className={styles.leftSideBar}>
         <ProfileDescBar profileData={profileData} loading={loading} error={error} />
+        <ConnectionAside />
 
-        {/* <div>
-          <p>Unlock Premium tools & insights</p>
-          <p>Try Premium for UAH0</p>
-        </div> */}
-        <div className={styles.connectionWrapper}>
-          <a>
-            <div className={styles.amountConnections}>
-              <p>Connections</p>
-              <p>10</p>
-            </div>
-
-            <p className={styles.textConnections}>Grow your network</p>
-          </a>
-        </div>
         <nav className={styles.profileNavWrapper}>
           <ul className={styles.linkItems}>
             <li>
