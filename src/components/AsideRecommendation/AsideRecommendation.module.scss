@@ -1,0 +1,115 @@
+.recommendationsContainer {
+  display: block;
+  background-color: #fff;
+  border: 1px solid #e0dfdc;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
+  width: 100%;
+  padding: 20px;
+}
+
+.titleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  .title {
+    color: #181818;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .excludeBtn {
+    display: block;
+    width: 12.097px;
+    height: 12.097px;
+    cursor: pointer;
+    border: none;
+    background-image: url("./image/publication/exclude.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
+.usersListContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.usersItemContainer {
+  display: flex;
+  gap: 12px;
+}
+.userAvatarContainer {
+  display: block;
+  width: 48px;
+  height: 48px;
+  img {
+    display: block;
+    height: 100%;
+    object-fit: cover; /* аналог background-size: cover */
+    object-position: center; /* аналог background-position: center */
+    border-radius: 26px;
+  }
+}
+.infoContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  .userName {
+    color: #181818;
+
+    font-weight: 500;
+  }
+  .userInformation {
+    color: #666;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 20px;
+  }
+  .followBtn {
+    cursor: pointer;
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 150%;
+    border-radius: 16px;
+    border: 1px solid #666;
+    padding: 5.65px 17.45px 5.65px 32.92px;
+    position: relative;
+    &::before {
+      content: "";
+      display: block;
+      width: 12.532px;
+      height: 12.252px;
+      background-image: url("./image/profile/grayPlus.svg");
+      background-position: center;
+      background-repeat: no-repeat;
+
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      // transform: translate(-50%, -50%);
+      transform: translateY(-50%);
+    }
+  }
+}
+.showMoreLink {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 18px;
+  color: #949494;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+
+  span {
+    content: "";
+    display: inline-block;
+    width: 14.374px;
+    height: 9.855px;
+    background-image: url("./image/main/ArrowRight.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}

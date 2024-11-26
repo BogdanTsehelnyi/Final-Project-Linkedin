@@ -1,0 +1,32 @@
+.profileNavWrapper {
+  background-color: #fff;
+  border: 1px solid #e0dfdc;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
+  width: 100%;
+
+  padding: 20px;
+
+  .linkItems {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: black;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.eventsLink {
+  img {
+    display: block;
+    width: 15px;
+    height: 15px;
+  }
+}

@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 export default function ProfileDescBar() {
   const profileData = useSelector((state) => state.profile.profileData);
-  console.log(profileData);
+  // console.log(profileData);
 
   const loading = useSelector((state) => state.profile.loading);
 
