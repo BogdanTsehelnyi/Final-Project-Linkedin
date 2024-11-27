@@ -12,7 +12,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import useMediaQuery from '@mui/material/useMediaQuery';  // Для адаптивності
 import { useDispatch } from 'react-redux';
-import { setProfileData } from '../../redux/slices/profileSlice';  // Імпорт дії з Redux
+import { createProfile } from '../../redux/slices/profileSlice';  // Використовуємо дію для POST
 import { useNavigate } from "react-router-dom";
 
 const style = {
@@ -44,103 +44,131 @@ export default function RegistrationForm() {
       </Typography>
 
       <Formik
-  initialValues={{
-    firstName: "",
-    lastName: "",
-    headline: "",
-    country: "",
-    city: "",
-    birthDate: dayjs()  // Початкове значення для дати
-  }}
-  onSubmit={(values) => {
-    // Оновлюємо профіль через Redux після натискання Save
-    dispatch(setProfileData({
-      firstName: values.firstName,
-      lastName: values.lastName,
-      headline: values.headline,
-      location: {
-        country: values.country,
-        city: values.city
-      },
-      birthDate: values.birthDate
-    }));
+        initialValues={{
+          firstName: "",
+          lastName: "",
+          position: "", // Поле для посади (position)
+          country: "",
+          city: "",
+          birthDate: dayjs(), // Початкове значення для дати
+          status: "", // Поле для статусу
+          headerPhotoUrl: "", // Поле для URL фото
+        }}
+        onSubmit={async (values, { setSubmitting, resetForm }) => {
+          try {
+            // Формуємо дані у форматі Swagger
+            const profileData = {
+              userId: 0, // Замініть на реальний userId, якщо це необхідно
+              name: values.firstName,
+              surname: values.lastName,
+              position: values.position,
+              address: `${values.city}, ${values.country}`,
+              birthdate: values.birthDate.toISOString(),
+              status: values.status || "Active", // Додаємо статус за замовчуванням
+              headerPhotoUrl: values.headerPhotoUrl || "", // URL фото, якщо є
+            };
 
-    // Після успішного збереження, перенаправляємо на сторінку профілю
-    navigate('/profile');
-  }}
->
-  {({ values, handleChange, setFieldValue }) => (
-    <Form>
-      <TextField
-        name="firstName"
-        label="First Name"
-        value={values.firstName}
-        onChange={handleChange}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        name="lastName"
-        label="Last Name"
-        value={values.lastName}
-        onChange={handleChange}
-        fullWidth
-        margin="normal"
-      />
+            await dispatch(createProfile(profileData)).unwrap(); // Очікуємо завершення POST-запиту
 
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        {isMobile ? (
-          <MobileDatePicker
-            label="Birth Date"
-            inputFormat="MM/DD/YYYY"
-            value={values.birthDate}
-            onChange={(value) => setFieldValue('birthDate', value)}
-            renderInput={(params) => <TextField {...params} fullWidth margin="normal" />}
-          />
-        ) : (
-          <DatePicker
-            label="Birth Date"
-            inputFormat="MM/DD/YYYY"
-            value={values.birthDate}
-            onChange={(value) => setFieldValue('birthDate', value)}
-            renderInput={(params) => <TextField {...params} fullWidth margin="normal" />}
-          />
+            // Перенаправляємо на сторінку профілю після успішної реєстрації
+            navigate('/profile');
+          } catch (error) {
+            console.error("Помилка реєстрації:", error);
+            alert("Не вдалося створити профіль. Спробуйте ще раз.");
+          } finally {
+            setSubmitting(false); // Завершення обробки форми
+            resetForm(); // Очищення форми
+          }
+        }}
+      >
+        {({ values, handleChange, setFieldValue, isSubmitting }) => (
+          <Form>
+            <TextField
+              name="firstName"
+              label="First Name"
+              value={values.firstName}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              name="lastName"
+              label="Last Name"
+              value={values.lastName}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+            />
+
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              {isMobile ? (
+                <MobileDatePicker
+                  label="Birth Date"
+                  inputFormat="MM/DD/YYYY"
+                  value={values.birthDate}
+                  onChange={(value) => setFieldValue('birthDate', value)}
+                  renderInput={(params) => <TextField {...params} fullWidth margin="normal" />}
+                />
+              ) : (
+                <DatePicker
+                  label="Birth Date"
+                  inputFormat="MM/DD/YYYY"
+                  value={values.birthDate}
+                  onChange={(value) => setFieldValue('birthDate', value)}
+                  renderInput={(params) => <TextField {...params} fullWidth margin="normal" />}
+                />
+              )}
+            </LocalizationProvider>
+
+            <TextField
+              name="position"
+              label="Position"
+              value={values.position}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              name="country"
+              label="Country"
+              value={values.country}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              name="city"
+              label="City"
+              value={values.city}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              name="status"
+              label="Status"
+              value={values.status}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              name="headerPhotoUrl"
+              label="Header Photo URL"
+              value={values.headerPhotoUrl}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+            />
+
+            <Stack spacing={2} direction="row">
+              <Button type="submit" variant="contained" disabled={isSubmitting}>
+                {isSubmitting ? "Saving..." : "Save"}
+              </Button>
+            </Stack>
+          </Form>
         )}
-      </LocalizationProvider>
-
-      <TextField
-        name="headline"
-        label="Headline"
-        value={values.headline}
-        onChange={handleChange}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        name="country"
-        label="Country"
-        value={values.country}
-        onChange={handleChange}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        name="city"
-        label="City"
-        value={values.city}
-        onChange={handleChange}
-        fullWidth
-        margin="normal"
-      />
-
-      <Stack spacing={2} direction="row">
-        <Button type="submit" variant="contained">
-          Save
-        </Button>
-      </Stack>
-    </Form>
-  )}
-</Formik>
+      </Formik>
     </Box>
   );
 }

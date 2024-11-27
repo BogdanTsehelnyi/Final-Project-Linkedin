@@ -1,15 +1,17 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './slices/authSlice';
 import profileReducer from './slices/profileSlice';
-import moduleChangeProfileReducer from './slices/modal';
+import modalReducer from './slices/modal';
 import friendProfileReducer from './slices/friendProfileSlice';
+import friendsReducer from './slices/friendsSlice';
 
 const store = configureStore({
   reducer: {
-    profile: profileReducer,
-    changeProfileModal: moduleChangeProfileReducer,
-    friend: friendProfileReducer,
+    profile: profileReducer,         // Використовується state.profile
+    changeProfileModal: modalReducer,
+    friend: friendProfileReducer,    // Використовується state.friend
     auth: authReducer,
+    friends: friendsReducer,         // Використовується state.friends
   },
 });
 

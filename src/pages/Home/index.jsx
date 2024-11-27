@@ -4,7 +4,7 @@ import ProfileDescBar from "../../components/ProfileDescBar";
 import styles from "./Home.module.scss";
 import AsideFooter from "../../components/AsideFooter";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProfile } from "../../redux/slices/profileSlice";
+// import { fetchProfile } from "../../redux/slices/profileSlice";
 
 export default function Home() {
   // ОТРИМАННЯ ДАНИХ ДЛЯ ПРАВОГО SIDEBAR
