@@ -1,22 +1,22 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { removeFriend } from "../../redux/slices/friendProfileSlice";
+import { removeFriend } from "../../redux/slices/friendProfileSlice"; // Подключаем действие removeFriend
 import styles from "./FriendsProfile.module.scss";
 import { useNavigate } from "react-router-dom";
 
 export default function FriendsProfile() {
-    // Використовуємо friendsData, оскільки він містить лише доданих друзів
-    const friends = useSelector((state) => state.friend.friendsData); 
+    const friends = useSelector((state) => state.friend.friendsData); // Получаем список друзей из состояния
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    // Удаление друга
     const handleRemoveFriend = (id) => {
-        dispatch(removeFriend(id));
+        dispatch(removeFriend(id)); // Удаляем друга по ID
     };
 
+    // Переход к профилю друга
     const handleNavigateToProfile = (id) => {
-        // Перенаправляємо на сторінку профіля з ID друга
-        navigate(`/friend/${id}`);
+        navigate(`/profile/${id}`); // Переходим на страницу профиля
     };
 
     return (
@@ -27,23 +27,28 @@ export default function FriendsProfile() {
                     <div className={styles.friendContainer} key={friend.id}>
                         <div className={styles.friendBox}>
                             <img 
-                                onClick={() => handleNavigateToProfile(friend.id)} // Викликаємо функцію для навігації з ID
+                                onClick={() => handleNavigateToProfile(friend.id)} 
                                 className={styles.friendPhoto} 
-                                src={friend.profilePicture || '/path/to/default/image.jpg'} 
+                                src={friend.profilePicture || "/path/to/default/image.jpg"} 
                                 alt="profile" 
                             />
                             <div className={styles.friendInfo}>
                                 <h3 className={styles.friendName}>
-                                    {friend.firstName} {friend.lastName}
+                                    {friend.name} {friend.surname}
                                 </h3>
-                                <p className={styles.friendHeadline}>{friend.headline}</p>
+                                <p className={styles.friendHeadline}>{friend.position}</p>
                             </div>
                         </div>
                         <div className={styles.btnBox}>
-                            <button className={styles.friendBtn}>Message</button>
                             <button 
-                                onClick={() => handleRemoveFriend(friend.id)} 
                                 className={styles.friendBtn}
+                                onClick={() => console.log("Message to", friend.name)}
+                            >
+                                Message
+                            </button>
+                            <button 
+                                className={styles.friendBtn} 
+                                onClick={() => handleRemoveFriend(friend.id)}
                             >
                                 Remove Friend
                             </button>

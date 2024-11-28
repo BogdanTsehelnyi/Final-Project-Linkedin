@@ -1,15 +1,21 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-// Асинхронное загрузка данных с API
+const BASE_URL = 'https://final-project-link.onrender.com';
+
+// Асинхронное загрузка данных с API (реальный путь из Swagger)
 export const fetchCarts = createAsyncThunk(
   'friend/fetchCarts',
-  async () => {
-    const response = await fetch('/API/anotherProfile.json'); // Ваш API путь
-    if (!response.ok) {
-      throw new Error('Failed to fetch friends data');
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`${BASE_URL}/profiles`); // Реальный API путь
+      if (!response.ok) {
+        throw new Error('Failed to fetch profiles data');
+      }
+      const data = await response.json();
+      return data; // Возвращаем данные
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
-    const data = await response.json();
-    return data;  // Возвращаем данные
   }
 );
 
@@ -27,19 +33,19 @@ const friendsProfileSlice = createSlice({
   initialState,
   reducers: {
     addFriend(state, action) {
-      const existingFriend = state.friendsData.find(item => item.id === action.payload.id);
+      const existingFriend = state.friendsData.find(item => item.profileId === action.payload.profileId);
       if (!existingFriend) {
         state.friendsData.push({ ...action.payload, isFriend: true }); // Добавляем в список друзей
-        delete state.pendingRequests[action.payload.id]; // Удаляем из списка запросов
+        delete state.pendingRequests[action.payload.profileId]; // Удаляем из списка запросов
       }
     },
     removeFriend(state, action) {
       // Удаляем только из списка друзей, но не из всех профилей
-      state.friendsData = state.friendsData.filter(item => item.id !== action.payload);
+      state.friendsData = state.friendsData.filter(item => item.profileId !== action.payload);
     },
     cancelRequest(state, action) {
-      const { id } = action.payload;
-      delete state.pendingRequests[id]; // Удаляем запрос
+      const { profileId } = action.payload;
+      delete state.pendingRequests[profileId]; // Удаляем запрос
     },
   },
   extraReducers: (builder) => {
@@ -54,10 +60,11 @@ const friendsProfileSlice = createSlice({
       })
       .addCase(fetchCarts.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       });
   },
 });
 
+// Экспортируем действия
 export const { addFriend, removeFriend, cancelRequest } = friendsProfileSlice.actions;
 export default friendsProfileSlice.reducer;

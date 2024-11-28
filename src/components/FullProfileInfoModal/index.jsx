@@ -5,7 +5,7 @@ import Modal from '@mui/material/Modal';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-import { fetchProfile } from '../../redux/slices/profileSlice';  
+import { fetchProfileById } from '../../redux/slices/profileSlice'; 
 import { useSelector, useDispatch } from 'react-redux';
 
 const style = {
@@ -38,7 +38,7 @@ export default function FullProfileInfoModal({ open, handleClose }) {
   
   useEffect(() => {
     if (open) {
-      dispatch(fetchProfile()); // Завантажуємо профіль, якщо модалка відкрита
+      dispatch(fetchProfileById()); // Завантажуємо профіль, якщо модалка відкрита
     }
   }, [dispatch, open]);
 
