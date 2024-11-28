@@ -1,25 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; 
-import { setEmail, setPassword, register, login } from '../../redux/slices/authSlice';
-import './Auth.css';
-import google_img from './images-login/G+.svg';
-import qs from 'qs';
-
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { setEmail, setPassword, register, login, setUserId } from "../../redux/slices/authSlice";
+import "./Auth.css";
+import google_img from "./images-login/G+.svg";
+import qs from "qs";
 
 const Auth = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const { email, password, error, isAuthenticated } = useSelector((state) => state.auth);
   const [isRegistering, setIsRegistering] = useState(true);
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false); 
-  const [serverError, setServerError] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+  const [serverError, setServerError] = useState("");
 
   useEffect(() => {
-    const storedEmail = localStorage.getItem('email');
-    const storedPassword = localStorage.getItem('password');
+    const storedEmail = localStorage.getItem("email");
+    const storedPassword = localStorage.getItem("password");
     if (storedEmail && storedPassword) {
       dispatch(setEmail(storedEmail));
       dispatch(setPassword(storedPassword));
@@ -29,60 +28,60 @@ const Auth = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setServerError(''); 
+    setServerError("");
 
     if (isRegistering) {
-      if (password !== confirmPassword) { 
-        alert('Паролі не співпадають');
+      if (password !== confirmPassword) {
+        alert("Паролі не співпадають");
         return;
       }
 
       try {
-        const response = await axios.post('https://final-project-link.onrender.com/auth', {
+        const response = await axios.post("https://final-project-link.onrender.com/auth", {
           email,
           password,
         });
-        console.log('Registration successful:', response.data);
+        console.log("Registration successful:", response.data);
         dispatch(register());
-        navigate('/login'); // Перенаправляем на страницу входа
+        dispatch(setUserId(response.data.id)); // Збереження id
+        navigate("/login"); // Перенаправлення на сторінку входу
       } catch (error) {
-        console.error('Ошибка регистрации:', error);
-        setServerError('Ошибка регистрации. Попробуйте снова.');
+        console.error("Ошибка регистрации:", error);
+        setServerError("Ошибка регистрации. Попробуйте снова.");
       }
     } else {
       try {
-        // Форматируем данные с помощью qs.stringify и меняем заголовок Content-Type
         const response = await axios.post(
-          'https://final-project-link.onrender.com/login',
-          qs.stringify({ username: email, password, 'remember-me': rememberMe }),  // Преобразуем данные
+          "https://final-project-link.onrender.com/login",
+          qs.stringify({ username: email, password, "remember-me": rememberMe }),
           {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },  // Заменяем заголовок
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
             withCredentials: true,
           }
-          
         );
-        console.log('Login successful:', response.data);
+        console.log("Login successful:", response.data);
         dispatch(login());
-        navigate('/home');
+        dispatch(setUserId(response.data.id)); // Збереження id після входу
+        navigate("/home");
       } catch (error) {
-        console.error('Ошибка входа:', error);
-        setServerError('Ошибка входа. Проверьте данные.');
+        console.error("Ошибка входа:", error);
+        setServerError("Ошибка входа. Проверьте данные.");
       }
     }
   };
 
   useEffect(() => {
     if (isAuthenticated) {
-      localStorage.setItem('email', email);
-      localStorage.setItem('password', password);
-      navigate('/');
+      localStorage.setItem("email", email);
+      localStorage.setItem("password", password);
+      navigate("/");
     }
   }, [isAuthenticated, email, password, navigate]);
 
   return (
     <div className="auth-container">
       <form onSubmit={handleSubmit} className="auth-form">
-        <h2>{isRegistering ? 'Реєстрація' : 'Авторизація'}</h2>
+        <h2>{isRegistering ? "Реєстрація" : "Авторизація"}</h2>
         <input
           type="email"
           placeholder="Email"
@@ -117,20 +116,21 @@ const Auth = () => {
           </label>
         )}
         {serverError && <p className="error">{serverError}</p>}
-        <button type="submit">{isRegistering ? 'Зарегистрироваться' : 'Войти'}</button>
+        <button type="submit">{isRegistering ? "Зарегистрироваться" : "Войти"}</button>
         {!isRegistering && (
           <button
-          type="button"
-          onClick={() => {
-            console.log('Перенаправляем на Google OAuth');
-            window.location.href =  'https://final-project-link.onrender.com/oauth2/authorization/google';
-          }}
+            type="button"
+            onClick={() => {
+              console.log("Перенаправляем на Google OAuth");
+              window.location.href =
+                "https://final-project-link.onrender.com/oauth2/authorization/google";
+            }}
           >
             Вход через Google <img src={google_img} alt="Google Login" />
           </button>
         )}
         <p onClick={() => setIsRegistering(!isRegistering)}>
-          {isRegistering ? 'Уже есть аккаунт? Войти' : 'Нет аккаунта? Зарегистрироваться'}
+          {isRegistering ? "Уже есть аккаунт? Войти" : "Нет аккаунта? Зарегистрироваться"}
         </p>
         {!isRegistering && (
           <p>
