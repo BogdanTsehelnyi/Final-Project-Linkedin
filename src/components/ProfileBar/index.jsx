@@ -6,6 +6,7 @@ import axios from 'axios';
 import { logout } from '../../redux/slices/authSlice';
 
 export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
+
   const { profileData, loading, error } = useSelector((state) => state.profile);
   const dispatch = useDispatch();
 
@@ -29,6 +30,7 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
       reader.readAsDataURL(file);
     }
   };
+
 
   const handleBackgroundUpload = (event) => {
     const file = event.target.files[0];
