@@ -50,6 +50,7 @@ export default function Profile() {
         <AnotherProfiles />
       </div>
       <ChangeProfileModal />
+      
       <FullProfileInfoModal
         open={openInfoModal}
         handleClose={closeInfoModalHandler}

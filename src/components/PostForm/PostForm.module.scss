@@ -1,0 +1,82 @@
+.form {
+  padding: 16px;
+}
+
+.iconContainer {
+  width: 40px;
+  height: 40px;
+}
+.input,
+.textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.input.error,
+.textarea.error {
+  border-color: red;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.photoUploadLabel {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.photoUploadIcon {
+  display: block;
+  width: 40px;
+  height: 40px;
+}
+
+.photoUploadInput {
+  display: none;
+}
+
+.photoPreview {
+  width: 100%; /* Займає всю ширину контейнера */
+  max-height: 300px; /* Максимальна висота контейнера */
+  overflow-y: auto; /* Додає вертикальний скрол */
+  text-align: center;
+  border: 1px solid #ccc; /* Для візуалізації меж контейнера */
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.photo {
+  max-width: 100%;
+  max-height: auto;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.submitButton {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.submitButton:hover {
+  background-color: #0056b3;
+}
+.botContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}

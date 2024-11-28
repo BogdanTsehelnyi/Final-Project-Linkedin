@@ -1,4 +1,4 @@
-@import "./base/reset.scss";
-@import "./base/general.scss";
-@import "./variables/colors.scss";
-@import "./variables/fonts.scss";
+@use "./base/reset";
+@use "./base/general.scss";
+@use "./variables/colors.scss";
+@use "./variables/fonts.scss";

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const BASE_URL = 'https://final-project-link.onrender.com';
 
@@ -70,7 +70,7 @@ const initialState = {
 
 // Slice
 const profileSlice = createSlice({
-  name: 'profile',
+  name: "profile",
   initialState,
   reducers: {
     clearProfile: (state) => {
@@ -112,6 +112,7 @@ const profileSlice = createSlice({
       .addCase(updateProfile.pending, (state) => {
         state.loading = true;
         state.error = null;
+        state.error = null;
       })
       .addCase(updateProfile.fulfilled, (state, action) => {
         state.loading = false;
@@ -129,3 +130,4 @@ export const { clearProfile, setProfileData } = profileSlice.actions;
 
 // Експортуємо редюсер та функцію updateProfile
 export default profileSlice.reducer;
+

@@ -10,7 +10,7 @@ import qs from 'qs';
 
 const Auth = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const { email, password, error, isAuthenticated } = useSelector((state) => state.auth);
   const [isRegistering, setIsRegistering] = useState(true);
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -21,8 +21,8 @@ const Auth = () => {
 
 
   useEffect(() => {
-    const storedEmail = localStorage.getItem('email');
-    const storedPassword = localStorage.getItem('password');
+    const storedEmail = localStorage.getItem("email");
+    const storedPassword = localStorage.getItem("password");
     if (storedEmail && storedPassword) {
       dispatch(setEmail(storedEmail));
       dispatch(setPassword(storedPassword));
@@ -77,16 +77,16 @@ const Auth = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      localStorage.setItem('email', email);
-      localStorage.setItem('password', password);
-      navigate('/');
+      localStorage.setItem("email", email);
+      localStorage.setItem("password", password);
+      navigate("/");
     }
   }, [isAuthenticated, email, password, navigate]);
 
   return (
     <div className="auth-container">
       <form onSubmit={handleSubmit} className="auth-form">
-        <h2>{isRegistering ? 'Реєстрація' : 'Авторизація'}</h2>
+        <h2>{isRegistering ? "Реєстрація" : "Авторизація"}</h2>
         <input
           className='input-defolt input-emeil'
           type="email"
