@@ -17,6 +17,7 @@ import AnotherProfilePage from "./pages/AnotherProfilePage/AnotherProfilePage";
 import ResetPassword from "./components/Auth/ResetPassword"; 
 import ForgotPassword from "./components/Auth/ForgotPassword";
 
+
 // Захищений маршрут
 const ProtectedRoute = ({ isAuthenticated, children }) => {
   return isAuthenticated ? children : <Navigate to="/login" />;
@@ -77,6 +78,8 @@ const isAuth = location.pathname === "/login";
 
         {/* Додаємо маршрут для логіну */}
         <Route path="/login" element={<Auth />} />
+
+       
 
         <Route path="/forgot-password" element={<ForgotPassword />} />
 

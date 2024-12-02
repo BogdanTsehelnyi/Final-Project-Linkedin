@@ -30,6 +30,8 @@ const style = {
   p: 4,
 };
 
+
+
 export default function RegistrationForm() {
   const dispatch = useDispatch();  // Для оновлення профілю через Redux
   const navigate = useNavigate();
@@ -165,6 +167,9 @@ export default function RegistrationForm() {
               <Button type="submit" variant="contained" disabled={isSubmitting}>
                 {isSubmitting ? "Saving..." : "Save"}
               </Button>
+              <p className='highlight '>
+                  <a href="/home">Повернутися на головну</a>
+              </p>
             </Stack>
           </Form>
         )}
