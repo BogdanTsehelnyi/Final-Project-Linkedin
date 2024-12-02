@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './Auth.css';
-
+// коміт 02.12.2024 11:59
 const ResetPassword = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -16,6 +16,7 @@ const ResetPassword = () => {
   const navigate = useNavigate();
 
   // Получение токена из query-параметров
+
   const queryParams = new URLSearchParams(location.search);
   const token = queryParams.get('token');
 
