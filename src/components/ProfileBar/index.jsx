@@ -1,15 +1,47 @@
 import React, { useState, useEffect } from "react";
 import styles from "./ProfileBar.module.scss";
 import { useSelector, useDispatch } from "react-redux";
-import { setProfileData } from "../../redux/slices/profileSlice";
-import axios from "axios";
+import { fetchProfile, setProfileData } from "../../redux/slices/profileSlice";
+import { logout } from "../../redux/slices/authSlice";
+import { useNavigate } from "react-router-dom";
+import { fetchProfileByUserId } from "../../redux/slices/profileSlice";
 
 export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
-  const { profileData, loading, error } = useSelector((state) => state.profile);
-  const dispatch = useDispatch();
+  const { profileData, profileId, loading, error } = useSelector((state) => state.profile);
+  const userId = useSelector((state) => state.auth.userId);
+  console.log(profileData);
 
-  const [profilePicture, setProfilePicture] = useState("/path/to/default/profile.jpg");
-  const [backgroundImage, setBackgroundImage] = useState("/path/to/default/background.jpg");
+  console.log("userId in ProfileBar", userId);
+
+  console.log("Профіль айдішка в ProfileBar", profileId);
+  console.log("Профіль в ProfileBar", profileData);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userId) {
+      dispatch(fetchProfileByUserId(userId));
+    }
+  }, [dispatch, userId]);
+
+
+  
+  useEffect(() => {
+    if (profileId) {
+      dispatch(fetchProfile(profileId));
+    }
+  }, [dispatch, profileId]);
+
+  const [profilePicture, setProfilePicture] = useState("./image/profile/photo_ava_default.png");
+  const [backgroundImage, setBackgroundImage] = useState(
+    "./image/profile/profileBackgroundDefault.svg"
+  );
+
+  const handleLogout = async () => {
+    dispatch(logout()); // Використовуємо dispatch для виклику logout
+    navigate("/login");
+  };
 
   useEffect(() => {
     if (profileData.profilePicture) {
@@ -40,36 +72,24 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      const response = await axios.post(
-        "https://final-project-link.onrender.com/logout",
-        {},
-        {
-          withCredentials: true,
-          maxRedirects: 0,
-        }
-      );
-      if (response.status === 200) {
-        console.log("Logout response:", response);
-        dispatch(logout()); // Вызываем экшен выхода
-      }
-    } catch (error) {
-      console.error("Ошибка при выходе из системы:", error);
-    }
-  };
+  // if (loading) {
+  //   return <p>Завантаження профілю...</p>;
+  // }
 
-  if (loading) {
-    return <p>Завантаження профілю...</p>;
-  }
+  // if (error) {
+  //   return <p>Помилка завантаження профілю: {error}</p>;
+  // }
 
-  if (error) {
-    return <p>Помилка завантаження профілю: {error}</p>;
-  }
-
-  if (!profileData.firstName) {
-    return <p>Дані профілю не знайдено</p>;
-  }
+  // if (!profileData.firstName) {
+  //   return <p>Дані профілю не знайдено</p>;
+  // }
+  const country = profileData?.location?.country || "Unknown country";
+  const city = profileData?.location?.city || "Unknown city";
+  // const profilePicture = profileData?.profilePicture || "./image/profile/profileDefault.svg";
+  const firstName = profileData?.firstName || "Unknown";
+  const lastName = profileData?.lastName || "Unknown";
+  // const backgroundUrl =
+  //   profileData?.backgroundImageUrl || "./image/profile/profileBackgroundDefault.svg";
 
   return (
     <div className={styles.container}>
@@ -89,11 +109,11 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
         </div>
       </div>
       <h2 className={styles.nameProfile}>
-        {profileData.firstName} {profileData.lastName}
+        {firstName} {lastName}
       </h2>
-      <h3 className={styles.professionProfile}>{profileData.headline}</h3>
+      <h3 className={styles.professionProfile}>developer</h3>
       <h3 className={styles.cityProfile}>
-        {profileData.location.country}, {profileData.location.city}
+        {country}, {city}
       </h3>
       <button onClick={handleOpenModal} className={styles.openModal}>
         <img src="/image/main/Edit.svg" alt="Редагувати профіль" />

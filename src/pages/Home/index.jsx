@@ -36,11 +36,19 @@ export default function Home() {
   const loading = useSelector((state) => state.profile.loading);
   const error = useSelector((state) => state.profile.error);
 
+  const country = profileData?.location?.country || "Unknown country";
+  const city = profileData?.location?.city || "Unknown city";
+  const profilePicture = profileData?.profilePicture || "./image/profile/photo_ava_default.png";
+  const firstName = profileData?.firstName || "Unknown";
+  const lastName = profileData?.lastName || "Unknown";
+  const backgroundUrl =
+    profileData?.backgroundImageUrl || "./image/profile/profileBackgroundDefault.svg";
+
   return (
     <>
       <PageWrapper>
         <aside className={styles.leftSideBar}>
-          <ProfileDescBar profileData={profileData} loading={loading} error={error} />
+          <ProfileDescBar />
           <ConnectionAside />
           <NavAsideMenu />
         </aside>
@@ -48,16 +56,16 @@ export default function Home() {
         {/* Main Content of home */}
         <div className={styles.mainContentContainer}>
           <div className={styles.userDetails}>
-            <img src={profileData.profilePicture} alt="imageLink" />
+            <img src={profilePicture} alt="imageLink" />
             <p className={styles.name}>
-              {profileData.firstName} {profileData.lastName}
+              {firstName} {lastName}
             </p>
             {/* <p className={styles.headline}>{profileData.lastName}</p> */}
           </div>
 
           {/* CREATING NEW PUBLICATION */}
           <div className={styles.postStatus}>
-            <img className={styles.postImage} src={profileData.profilePicture} alt="imageLink" />
+            <img className={styles.postImage} src={profilePicture} alt="imageLink" />
             <button
               className={styles.openPostModal}
               onClick={() => {

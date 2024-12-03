@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { setEmail, setPassword, register, login, setUserId } from "../../redux/slices/authSlice";
+import {
+  setEmail,
+  setPassword,
+  fetchRegistration,
+  fetchAuthorization,
+} from "../../redux/slices/authSlice";
 import "./Auth.css";
 import google_img from "./images-login/G+.svg";
-import qs from "qs";
+import { fetchProfileByUserId } from "../../redux/slices/profileSlice";
 
 const Auth = () => {
   const dispatch = useDispatch();
@@ -14,7 +18,19 @@ const Auth = () => {
   const [isRegistering, setIsRegistering] = useState(true);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-  const [serverError, setServerError] = useState("");
+  const { profileData } = useSelector((state) => state.profile);
+  const [isProfileLoading, setIsProfileLoading] = useState(true);
+
+  const userId = useSelector((state) => state.auth.userId);
+
+  useEffect(() => {
+    if (userId) {
+      setIsProfileLoading(true);
+      dispatch(fetchProfileByUserId(userId))
+        .unwrap()
+        .finally(() => setIsProfileLoading(false));
+    }
+  }, [dispatch, userId]);
 
   useEffect(() => {
     const storedEmail = localStorage.getItem("email");
@@ -28,7 +44,6 @@ const Auth = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setServerError("");
 
     if (isRegistering) {
       if (password !== confirmPassword) {
@@ -36,37 +51,23 @@ const Auth = () => {
         return;
       }
 
-      try {
-        const response = await axios.post("https://final-project-link.onrender.com/auth", {
-          email,
-          password,
-        });
-        console.log("Registration successful:", response.data);
-        dispatch(register());
-        dispatch(setUserId(response.data.id)); // Збереження id
-        navigate("/login"); // Перенаправлення на сторінку входу
-      } catch (error) {
-        console.error("Ошибка регистрации:", error);
-        setServerError("Ошибка регистрации. Попробуйте снова.");
-      }
+      dispatch(fetchRegistration({ email, password }))
+        .unwrap()
+        .then(() => navigate("/home"))
+        .catch((err) => console.error(err));
     } else {
-      try {
-        const response = await axios.post(
-          "https://final-project-link.onrender.com/login",
-          qs.stringify({ username: email, password, "remember-me": rememberMe }),
-          {
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            withCredentials: true,
+      dispatch(fetchAuthorization({ email, password, rememberMe }))
+        .unwrap()
+        .then(() => {
+          if (!isProfileLoading) {
+            if (!profileData || Object.keys(profileData).length === 0) {
+              navigate("/registration");
+            } else {
+              navigate("/home");
+            }
           }
-        );
-        console.log("Login successful:", response.data);
-        dispatch(login());
-        dispatch(setUserId(response.data.id)); // Збереження id після входу
-        navigate("/home");
-      } catch (error) {
-        console.error("Ошибка входа:", error);
-        setServerError("Ошибка входа. Проверьте данные.");
-      }
+        })
+        .catch((err) => console.error(err));
     }
   };
 
@@ -74,9 +75,8 @@ const Auth = () => {
     if (isAuthenticated) {
       localStorage.setItem("email", email);
       localStorage.setItem("password", password);
-      navigate("/");
     }
-  }, [isAuthenticated, email, password, navigate]);
+  }, [isAuthenticated, email, password]);
 
   return (
     <div className="auth-container">
@@ -115,16 +115,15 @@ const Auth = () => {
             />
           </label>
         )}
-        {serverError && <p className="error">{serverError}</p>}
+        {error && <p className="error">{error}</p>}
         <button type="submit">{isRegistering ? "Зарегистрироваться" : "Войти"}</button>
         {!isRegistering && (
           <button
             type="button"
-            onClick={() => {
-              console.log("Перенаправляем на Google OAuth");
-              window.location.href =
-                "https://final-project-link.onrender.com/oauth2/authorization/google";
-            }}
+            onClick={() =>
+              (window.location.href =
+                "https://final-project-link.onrender.com/oauth2/authorization/google")
+            }
           >
             Вход через Google <img src={google_img} alt="Google Login" />
           </button>

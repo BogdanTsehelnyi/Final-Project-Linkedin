@@ -50,7 +50,7 @@ export default function AppRoutes() {
   };
 
   // Перевіряємо, чи ми на FirstPage
-  const isFirstPage = location.pathname === "/home";
+  const isFirstPage = location.pathname === "/";
   const isRegistrationFormPage = location.pathname === "/registration";
   const isAuth = location.pathname === "/login";
 
@@ -63,13 +63,13 @@ export default function AppRoutes() {
 
       <Routes>
         <Route
-          path="/"
+          path="/home"
           element={isAuthenticated ? <Home /> : <Navigate to="/home" />}
           // element={<Home />}
-        />{" "}
+        />
         {/* местами поменяй назат  element={<Home />} />  */}
         <Route path="/registration" element={<RegistrationFormPage />} />
-        <Route path="/home" element={<FirstPage />} />{" "}
+        <Route path="/" element={<FirstPage />} />
         {/* местами поменяй назат  element={<FirstPage />} */}
         {/* Додаємо маршрут для логіну */}
         <Route path="/login" element={<Auth />} />
