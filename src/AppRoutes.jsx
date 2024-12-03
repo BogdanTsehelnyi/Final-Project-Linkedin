@@ -12,7 +12,7 @@ import Header from "./components/Header";
 import FirstPage from "./pages/FirstPage/FirstPage";
 import { useState, useEffect } from "react";
 import HeaderMobile from "./components/HeaderMobile";
-import RegistrationFormPage from "./pages/RegistrationFormPage/RegistrationFormPage";
+import RegistrationForm from './components/RegistrationForm/index';
 import AnotherProfilePage from "./pages/AnotherProfilePage/AnotherProfilePage";
 import ResetPassword from "./components/Auth/ResetPassword"; 
 import ForgotPassword from "./components/Auth/ForgotPassword";
@@ -72,7 +72,7 @@ const isAuth = location.pathname === "/login";
           element={<Home />}
         />  {/* местами поменяй назат  element={<Home />} />  */}
 
-      <Route path="/registration" element={<RegistrationFormPage />} />
+      <Route path="/registration" element={<RegistrationForm/>} />
 
         <Route path="/home" element={<FirstPage />} /> {/* местами поменяй назат  element={<FirstPage />} */}
 
