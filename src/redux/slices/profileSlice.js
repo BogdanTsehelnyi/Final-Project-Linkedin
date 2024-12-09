@@ -1,132 +1,112 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
-const BASE_URL = 'https://final-project-link.onrender.com';
-
-// GET: Отримання даних профілю
-export const fetchProfileById = createAsyncThunk(
-  'profile/fetchProfileById',
-  async (profileId, { rejectWithValue }) => {
-    try {
-      const response = await fetch(`${BASE_URL}/profiles/${profileId}`);
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
-      const data = await response.json();
-      return data; // Повертаємо отримані дані профілю
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
-
-// POST: Створення нового профілю
+// Запит для створення профілю
 export const createProfile = createAsyncThunk(
-  'profile/createProfile',
+  "profile/createProfile",
   async (profileData, { rejectWithValue }) => {
     try {
-      const response = await fetch(`${BASE_URL}/profiles`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(profileData),
-      });
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
-      const data = await response.json();
-      return data;
+      const response = await axios.post(
+        "https://final-project-link.onrender.com/profiles",
+        profileData,
+        { withCredentials: true }
+      );
+      console.log("Запит для створення профілю (відповідь модалки)", response.data);
+
+      return response.data; // Очікуємо об'єкт з profileId
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
 
-// PUT: Оновлення профілю
-export const updateProfile = createAsyncThunk(
-  'profile/updateProfile',
-  async ({ profileId, profileData }, { rejectWithValue }) => {
+// Запит для отримання профілю за profileId
+export const fetchProfile = createAsyncThunk(
+  "profile/fetchProfile",
+  async (profileId, { rejectWithValue }) => {
     try {
-      const response = await fetch(`${BASE_URL}/profiles/${profileId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(profileData),
-      });
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
-      const data = await response.json();
-      return data;
+      const response = await axios.get(
+        `https://final-project-link.onrender.com/profiles/${profileId}`,
+        { withCredentials: true }
+      );
+      console.log("отримання профілю за profileId", response.data);
+
+      return response.data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
 
-// Початковий стан
+export const fetchProfileByUserId = createAsyncThunk(
+  "profile/fetchProfileByUserId",
+  async (userId, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`https://final-project-link.onrender.com/profiles/user`, {
+        params: {
+          userId: userId, // передаємо userId як параметр запиту
+        },
+        withCredentials: true,
+      });
+      console.log("отримання профілю за userId ", response.data);
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
 const initialState = {
-  profileData: {}, // Поточний профіль
+  profileData: {},
+  profileId: null,
   loading: false,
   error: null,
 };
 
-// Slice
 const profileSlice = createSlice({
   name: "profile",
   initialState,
   reducers: {
-    clearProfile: (state) => {
-      state.profileData = {}; // Очищення даних профілю
-    },
     setProfileData: (state, action) => {
-      state.profileData = { ...state.profileData, ...action.payload };
+      state.profileData = {
+        ...state.profileData,
+        ...action.payload,
+      };
     },
   },
   extraReducers: (builder) => {
     builder
-      // GET
-      .addCase(fetchProfileById.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchProfileById.fulfilled, (state, action) => {
-        state.loading = false;
-        state.profileData = action.payload;
-      })
-      .addCase(fetchProfileById.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-      // POST
       .addCase(createProfile.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(createProfile.fulfilled, (state, action) => {
         state.loading = false;
+        state.profileId = action.payload.profileId; // Зберігаємо profileId
         state.profileData = action.payload;
       })
       .addCase(createProfile.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
-      // PUT
-      .addCase(updateProfile.pending, (state) => {
+      .addCase(fetchProfile.pending, (state) => {
         state.loading = true;
         state.error = null;
-        state.error = null;
       })
-      .addCase(updateProfile.fulfilled, (state, action) => {
+      .addCase(fetchProfile.fulfilled, (state, action) => {
         state.loading = false;
         state.profileData = action.payload;
       })
-      .addCase(updateProfile.rejected, (state, action) => {
+      .addCase(fetchProfile.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(fetchProfileByUserId.fulfilled, (state, action) => {
+        state.profileData = action.payload; // profileData перезаписується новими даними
       });
   },
 });
 
-// Експортуємо дії
-export const { clearProfile, setProfileData } = profileSlice.actions;
-
-// Експортуємо редюсер та функцію updateProfile
+export const { setProfileData } = profileSlice.actions;
 export default profileSlice.reducer;

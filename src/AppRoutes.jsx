@@ -14,7 +14,7 @@ import { useState, useEffect } from "react";
 import HeaderMobile from "./components/HeaderMobile";
 import RegistrationForm from './components/RegistrationForm/index';
 import AnotherProfilePage from "./pages/AnotherProfilePage/AnotherProfilePage";
-import ResetPassword from "./components/Auth/ResetPassword"; 
+import ResetPassword from "./components/Auth/ResetPassword";
 import ForgotPassword from "./components/Auth/ForgotPassword";
 
 
@@ -51,41 +51,33 @@ export default function AppRoutes() {
   };
 
   // Перевіряємо, чи ми на FirstPage
-const isFirstPage = location.pathname === "/home";
-const isRegistrationFormPage = location.pathname === "/registration";
-const isAuth = location.pathname === "/login";
-
-
+  const isFirstPage = location.pathname === "/";
+  const isRegistrationFormPage = location.pathname === "/registration";
+  const isAuth = location.pathname === "/login";
 
   return (
     <>
-
-{!isFirstPage && isRegistrationFormPage && isAuth && <Header />}
+      {!isFirstPage && isRegistrationFormPage && isAuth && <Header />}
       {/* Показуємо Header тільки якщо це не FirstPage */}
       {!isFirstPage && <Header />}
       {!isFirstPage && widthWindow < 911 && <HeaderMobile />}
 
       <Routes>
         <Route
-          path="/"
-          // element={isAuthenticated ? <Home /> : <Navigate to="/home" />}
-          element={<Home />}
-        />  {/* местами поменяй назат  element={<Home />} />  */}
 
-      <Route path="/registration" element={<RegistrationForm/>} />
-
-        <Route path="/home" element={<FirstPage />} /> {/* местами поменяй назат  element={<FirstPage />} */}
-
+          path="/home"
+          element={isAuthenticated ? <Home /> : <Navigate to="/home" />}
+          // element={<Home />}
+        />
+        {/* местами поменяй назат  element={<Home />} />  */}
+        <Route path="/registration" element={<RegistrationFormPage />} />
+        <Route path="/" element={<FirstPage />} />
+        {/* местами поменяй назат  element={<FirstPage />} */}
         {/* Додаємо маршрут для логіну */}
         <Route path="/login" element={<Auth />} />
 
-       
-
         <Route path="/forgot-password" element={<ForgotPassword />} />
-
         <Route path="/password-reset" element={<ResetPassword />} />
-
-
         {/* Захищені маршрути */}
         <Route
           path="/net"
@@ -114,31 +106,33 @@ const isAuth = location.pathname === "/login";
         <Route
           path="/notifications"
           element={
-            // <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <Notifications />
-            // </ProtectedRoute>
+            <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <Notifications />
+            </ProtectedRoute>
           }
         />
         <Route
-path="/profile"
-element={
-  <ProtectedRoute isAuthenticated={isAuthenticated}>
-    <Profile />
-  </ProtectedRoute>
-}
-/>
-<Route
- path="/friend/:friendId"
-element={
-  <ProtectedRoute isAuthenticated={isAuthenticated}>
-    <AnotherProfilePage />
-  </ProtectedRoute>
-}
-/>
-
+          path="/profile"
+          element={
+            <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/friend/:friendId"
+          element={
+            <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <AnotherProfilePage />
+            </ProtectedRoute>
+          }
+        />
         {/* Перенаправляємо на логін для невідомих маршрутів */}
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </>
   );
+ HEAD
+
 }
+
