@@ -7,7 +7,7 @@ import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateProfile } from '../../redux/slices/profileSlice'; // Використовуємо PUT дію
+import { setProfileData } from '../../redux/slices/profileSlice'; // Використовуємо PUT дію
 import { handleCloseProfileModal } from '../../redux/slices/modal'; // Дія для закриття модалки
 
 // Стиль для модалки
