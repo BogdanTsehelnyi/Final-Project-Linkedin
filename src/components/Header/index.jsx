@@ -87,7 +87,7 @@ export default function Header() {
       <div className={styles.groupTwoWrapper}>
         <nav className={styles.nav}>
           <NavLink
-            to="/"
+            to="/home"
             className={({ isActive }) =>
               `${styles.item} ${isActive ? styles.active : ""}`
             }

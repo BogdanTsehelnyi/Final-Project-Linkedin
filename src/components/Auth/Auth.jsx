@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  setEmail,
-  setPassword,
-  fetchRegistration,
-  fetchAuthorization,
-} from "../../redux/slices/authSlice";
+import {setEmail,setPassword,fetchRegistration,fetchAuthorization,} from "../../redux/slices/authSlice";
 import "./Auth.css";
 import google_img from "./images-login/G+.svg";
 import { fetchProfileByUserId } from "../../redux/slices/profileSlice";
