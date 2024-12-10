@@ -1,27 +1,42 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./App.css";
 import AppRoutes from "./AppRoutes";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchProfileById } from "./redux/slices/profileSlice"; // Для глобального завантаження профілю
+import HeaderMobile from "./components/HeaderMobile";
+import { useDispatch } from "react-redux";
+import { fetchCarts } from "./redux/slices/friendProfileSlice";
+import { fetchProfile } from "./redux/slices/profileSlice";
 import { ContextTheme } from "./context/contextTheme/ContextTheme";
 
 function App() {
+  // const [widthWindow, setWidthWindow] = useState(window.innerWidth);
   const dispatch = useDispatch();
-  const { profileData } = useSelector((state) => state.profile);
-  const { theme } = useContext(ContextTheme);
 
   useEffect(() => {
-    if (!profileData.profileId) {
-      // Замінити на актуальний ID користувача
-      const profileId = 1; 
-      dispatch(fetchProfileById(profileId)); // Завантаження профілю
-    }
-  }, [dispatch, profileData.profileId]);
+    dispatch(fetchProfile()); // Завантажуємо дані профілю при рендері
+  }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(fetchCarts());
+  }, [dispatch]);
+
+  // useEffect(() => {
+  //   const resizeWidth = () => setWidthWindow(window.innerWidth);
+
+  //   window.addEventListener("resize", resizeWidth);
+
+  //   return () => {
+  //     window.removeEventListener("resize", resizeWidth);
+  //   };
+  // }, []);
+
+  const {theme} = useContext(ContextTheme);
   return (
-    <div className="wrapper" style={{ backgroundColor: theme === "light" ? "#fff" : "#3a3939" }}>
-      <AppRoutes />
-    </div>
+    <>
+        <div className="wrapper" style={{ backgroundColor: theme === "light" ? "#fff" : "#3a3939" }}>
+          <AppRoutes />
+        </div>
+        {/* {widthWindow <= 911 && <HeaderMobile />} */}
+    </>
   );
 }
 

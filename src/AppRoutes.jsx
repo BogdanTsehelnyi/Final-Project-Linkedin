@@ -12,11 +12,10 @@ import Header from "./components/Header";
 import FirstPage from "./pages/FirstPage/FirstPage";
 import { useState, useEffect } from "react";
 import HeaderMobile from "./components/HeaderMobile";
-import RegistrationForm from './components/RegistrationForm/index';
+import RegistrationFormPage from "./pages/RegistrationFormPage/RegistrationFormPage";
 import AnotherProfilePage from "./pages/AnotherProfilePage/AnotherProfilePage";
 import ResetPassword from "./components/Auth/ResetPassword";
 import ForgotPassword from "./components/Auth/ForgotPassword";
-
 
 // Захищений маршрут
 const ProtectedRoute = ({ isAuthenticated, children }) => {
@@ -64,7 +63,6 @@ export default function AppRoutes() {
 
       <Routes>
         <Route
-
           path="/home"
           element={isAuthenticated ? <Home /> : <Navigate to="/home" />}
           // element={<Home />}
@@ -75,7 +73,6 @@ export default function AppRoutes() {
         {/* местами поменяй назат  element={<FirstPage />} */}
         {/* Додаємо маршрут для логіну */}
         <Route path="/login" element={<Auth />} />
-
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/password-reset" element={<ResetPassword />} />
         {/* Захищені маршрути */}
@@ -132,7 +129,4 @@ export default function AppRoutes() {
       </Routes>
     </>
   );
- HEAD
-
 }
-

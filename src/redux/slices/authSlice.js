@@ -1,4 +1,3 @@
-
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import qs from "qs";
@@ -11,12 +10,13 @@ export const fetchRegistration = createAsyncThunk(
         email,
         password,
       });
-      return response.data; // Очікуємо id користувача
+      return response.data; // ожидается ID пользователя
     } catch (error) {
       return rejectWithValue(error.response?.data || "Ошибка регистрации");
     }
   }
 );
+
 
 export const fetchAuthorization = createAsyncThunk(
   "auth/fetchAuthorization",
@@ -30,9 +30,14 @@ export const fetchAuthorization = createAsyncThunk(
           withCredentials: true,
         }
       );
-      return response.data; // Очікуємо id користувача
+      return response.data; // ожидается ID пользователя
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Ошибка входа");
+      // Обновленный код для обработки ошибки
+      const message =
+        error.response?.status === 401
+          ? "Неверный пароль. Проверьте введённые данные."
+          : error.response?.data || "Ошибка входа";
+      return rejectWithValue({ message }); // Передаем ошибку с сообщением
     }
   }
 );
@@ -54,13 +59,15 @@ const authSlice = createSlice({
     setPassword(state, action) {
       state.password = action.payload;
     },
-
     logout(state) {
       state.email = "";
       state.password = "";
       state.userId = null;
-
       state.isAuthenticated = false;
+      state.error = null;
+    },
+    // Новый action для очистки ошибки
+    clearError(state) {
       state.error = null;
     },
   },
@@ -72,7 +79,7 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchRegistration.rejected, (state, action) => {
-        state.error = action.payload;
+        state.error = action.payload?.message || "Ошибка регистрации";
       })
       .addCase(fetchAuthorization.fulfilled, (state, action) => {
         state.userId = action.payload.id;
@@ -80,55 +87,10 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchAuthorization.rejected, (state, action) => {
-        state.error = action.payload;
+        state.error = action.payload?.message || "Ошибка входа";
       });
   },
 });
 
-
-export const { setEmail, setPassword, logout } = authSlice.actions;
+export const { setEmail, setPassword, logout, clearError } = authSlice.actions;
 export default authSlice.reducer;
-
-// import { createSlice } from "@reduxjs/toolkit";
-
-// export const fetchRegistration = creareAsyncThunk("auth/fetchRegistration", async () => {})
-// export const fetchAuthorization= creareAsyncThunk("auth/fetchRegistration", async () => {})
-
-// const authSlice = createSlice({
-//   name: "auth",
-//   initialState: {
-//     email: "",
-//     password: "",
-//     userId: null, // Додаємо поле для userId
-//     error: null,
-//     isAuthenticated: false,
-//   },
-//   reducers: {
-//     setEmail(state, action) {
-//       state.email = action.payload;
-//     },
-//     setPassword(state, action) {
-//       state.password = action.payload;
-//     },
-//     setUserId(state, action) {
-//       state.userId = action.payload; // Задаємо id користувача
-//     },
-//     register(state) {
-//       state.error = null;
-//       state.isAuthenticated = true;
-//     },
-//     login(state) {
-//       state.error = null;
-//       state.isAuthenticated = true;
-//     },
-//     logout(state) {
-//       state.email = "";
-//       state.password = "";
-//       state.userId = null; // Очищаємо userId при виході
-//       state.isAuthenticated = false;
-//     },
-//   },
-// });
-
-// export const { setEmail, setPassword, setUserId, register, login, logout } = authSlice.actions;
-// export default authSlice.reducer
