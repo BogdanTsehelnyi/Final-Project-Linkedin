@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './Auth.css';
-// коміт 02.12.2024 11:59
+// коміт 10.12.2024 11:59
 const ResetPassword = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -71,15 +71,7 @@ const ResetPassword = () => {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              style={{
-                position: 'absolute',
-                right: '10px',
-                top: '30%',
-                transform: 'translateY(-50%)',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-              }}
+              className="password-toggle-btn"
             >
               {showPassword ? '🙈' : '👁️'}
             </button>
@@ -97,15 +89,7 @@ const ResetPassword = () => {
            <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              style={{
-                position: 'absolute',
-                right: '10px',
-                top: '30%',
-                transform: 'translateY(-50%)',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-              }}
+              className="password-toggle-btn"
             >
               {showConfirmPassword ? '🙈' : '👁️'}
             </button>
