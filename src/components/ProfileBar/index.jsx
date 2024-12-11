@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import styles from "./ProfileBar.module.scss";
 import { useSelector, useDispatch } from "react-redux";
@@ -96,6 +97,7 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
         className={styles.backgroundProfile}
         style={{ backgroundImage: `url(${backgroundImage})` }}
       >
+
         <label className={styles.customFileBacgroundUpload}>
           <img src="/image/main/Edit.svg" alt="Редагувати фон" />
           <input type="file" accept="image/*" onChange={handleBackgroundUpload} />
@@ -108,6 +110,7 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
         </div>
       </div>
       <h2 className={styles.nameProfile}>
+
         {firstName} {lastName}
       </h2>
       <h3 className={styles.professionProfile}>developer</h3>
@@ -123,6 +126,7 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
 
       <button className={styles.logoutButton} onClick={handleLogout}>
         Выйти из аккаунта
+
       </button>
     </div>
   );

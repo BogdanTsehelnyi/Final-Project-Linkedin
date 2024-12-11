@@ -11,12 +11,13 @@ export const fetchRegistration = createAsyncThunk(
         email,
         password,
       });
-      return response.data;
+      return response.data; // ожидается ID пользователя
     } catch (error) {
       return rejectWithValue(error.response?.data || "Ошибка регистрации");
     }
   }
 );
+
 
 export const fetchAuthorization = createAsyncThunk(
   "auth/fetchAuthorization",
@@ -30,50 +31,17 @@ export const fetchAuthorization = createAsyncThunk(
           withCredentials: true,
         }
       );
-      return response.data;
+      return response.data; // ожидается ID пользователя
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Ошибка входа");
+      // Обновленный код для обработки ошибки
+      const message =
+        error.response?.status === 401
+          ? "Неверный пароль. Проверьте введённые данные."
+          : error.response?.data || "Ошибка входа";
+      return rejectWithValue({ message }); // Передаем ошибку с сообщением
     }
   }
 );
-
-// export const fetchForgotPassword = createAsyncThunk(
-//   "auth/fetchForgotPassword",
-//   async (email, { rejectWithValue }) => {
-//     try {
-//       const response = await axios.post(
-//         "https://final-project-link.onrender.com/password-forgot",
-//         qs.stringify({ email }),
-//         {
-//           headers: { "Content-Type": "application/x-www-form-urlencoded" },
-//           withCredentials: true,
-//         }
-//       );
-//       return response.data;
-//     } catch (error) {
-//       return rejectWithValue(error.response?.data || "Ошибка отправки письма");
-//     }
-//   }
-// );
-
-// export const fetchResetPassword = createAsyncThunk(
-//   "auth/fetchResetPassword",
-//   async ({ token, password }, { rejectWithValue }) => {
-//     try {
-//       const response = await axios.post(
-//         `https://final-project-link.onrender.com/password-reset?token=${token}`,
-//         { password },
-//         {
-//           headers: { "Content-Type": "application/json" },
-//           withCredentials: true,
-//         }
-//       );
-//       return response.data;
-//     } catch (error) {
-//       return rejectWithValue(error.response?.data || "Токен не валиден или истек");
-//     }
-//   }
-// );
 
 const authSlice = createSlice({
   name: "auth",
@@ -86,6 +54,7 @@ const authSlice = createSlice({
     isAuthenticated: false,
     message: null,
   },
+
   reducers: {
     setEmail(state, action) {
       state.email = action.payload;
@@ -104,6 +73,10 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.error = null;
     },
+    // Новый action для очистки ошибки
+    clearError(state) {
+      state.error = null;
+    },
   },
 
   extraReducers: (builder) => {
@@ -113,7 +86,7 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchRegistration.rejected, (state, action) => {
-        state.error = action.payload;
+        state.error = action.payload?.message || "Ошибка регистрации";
       })
       .addCase(fetchAuthorization.fulfilled, (state, action) => {
         state.userId = action.payload.id;
@@ -122,7 +95,7 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchAuthorization.rejected, (state, action) => {
-        state.error = action.payload;
+        state.error = action.payload?.message || "Ошибка входа";
       });
     // .addCase(fetchForgotPassword.fulfilled, (state, action) => {
     //   state.message = "Лист для скидання пароля надіслано";
@@ -141,5 +114,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setEmail, setPassword, setToken, logout } = authSlice.actions;
+export const { setEmail, setPassword, logout, clearError } = authSlice.actions;
 export default authSlice.reducer;

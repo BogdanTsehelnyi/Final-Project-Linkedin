@@ -1,6 +1,8 @@
 import styles from './ProfileFooter.module.scss';
 
 
+
+
 export default function ProfileFooter(){
     return(
         <>
@@ -37,8 +39,12 @@ export default function ProfileFooter(){
             </li>
         </ul>
         </div>
+        <p className='highlight '>
+            <a href="/registration">Реєстрація профіля</a>
+        </p>
         <p>LinkedIn Corporation © 2024</p>
         </div>
         </>
+        
     )
 }

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import qs from 'qs';
-
+import './Auth.css';
+// коміт 02.12.2024 11:59
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState(null);
@@ -36,19 +37,27 @@ const ForgotPassword = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <div className='auth-container'>
+    <form className='form-fogot' onSubmit={handleSubmit}>
       <h2>Восстановление пароля</h2>
       <input
+        className='input-defolt input-emeil'
         type="email"
         placeholder="Введите ваш email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
       />
-      <button type="submit">Отправить</button>
+      <button className='submit-button2' type="submit">Відправити</button>
       {message && <p className="success">{message}</p>}
       {error && <p className="error">{error}</p>}
+
+      <p className='highlight '>
+            <a href="/login">Повернутися до входу</a>
+      </p>
     </form>
+      
+    </div>
   );
 };
 

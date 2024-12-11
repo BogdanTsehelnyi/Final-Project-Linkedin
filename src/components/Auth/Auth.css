@@ -37,8 +37,7 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     width: 280px;
-    
-
+    margin-bottom: 20px;
   }
   
   .input-password{
@@ -105,16 +104,15 @@ h2 {
 
 .remember-label{
   display: flex;
-  justify-content: center;
-  align-items: center;  
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
   gap: 15px;
   color: rgb(10, 102, 194);
+  margin-bottom: 20px;
 }
 
 .toggle{
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   color: black;
   text-decoration: none;
   cursor: pointer;
@@ -123,9 +121,9 @@ h2 {
 
 .highlight {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-  margin-bottom: 15px;
-  color: rgb(10, 102, 194);
-  text-decoration: none;
+  
+  color:blue ;
+ 
   cursor: pointer;
   transition: color 0.3s ease;
 }
@@ -135,3 +133,55 @@ h2 {
   text-decoration: underline; 
 }
 
+.auth-line{
+  width: 100%;
+  margin-bottom: 20px;
+}
+.container-pasword{
+  position: relative;
+}
+
+.submit-button2{
+ 
+    height: 43px;
+    color: white;
+    background-color: rgb(10, 102, 194);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    
+}
+.submit-button2:hover {
+  background-color: #0056b3;
+}
+.input-reset__pasword{
+  width: 280px;
+  height: 40px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.reset-button{
+  padding: 10px 15px;
+  font-size: 18px;
+  color: white;
+  background-color: rgb(10, 102, 194);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.password-toggle-btn{
+  position: absolute;
+  right: 25px;
+  top: 33%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+}

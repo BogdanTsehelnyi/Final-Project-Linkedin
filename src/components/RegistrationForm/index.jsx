@@ -1,10 +1,12 @@
 import React from "react";
 import { Formik, Form } from "formik";
+
 import { TextField, Button, Box, Typography, Stack } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useDispatch, useSelector } from "react-redux";
 import { createProfile, fetchProfile } from "../../redux/slices/profileSlice";
+
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
@@ -65,6 +67,7 @@ export default function RegistrationForm() {
         initialValues={{
           firstName: "",
           lastName: "",
+
           position: "",
           country: "",
           city: "",
@@ -73,6 +76,7 @@ export default function RegistrationForm() {
         onSubmit={handleSubmit}
       >
         {({ values, handleChange, setFieldValue }) => (
+
           <Form>
             <TextField
               name="firstName"
@@ -90,6 +94,7 @@ export default function RegistrationForm() {
               fullWidth
               margin="normal"
             />
+
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label="Birth Date"
@@ -99,6 +104,7 @@ export default function RegistrationForm() {
                 renderInput={(params) => <TextField {...params} fullWidth margin="normal" />}
               />
             </LocalizationProvider>
+
             <TextField
               name="position"
               label="Position"
@@ -123,9 +129,11 @@ export default function RegistrationForm() {
               fullWidth
               margin="normal"
             />
+
             <Stack spacing={2} direction="row">
               <Button type="submit" variant="contained">
                 Save
+
               </Button>
             </Stack>
           </Form>

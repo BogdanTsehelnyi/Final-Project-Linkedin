@@ -4,6 +4,7 @@ import ProfileDescBar from "../../components/ProfileDescBar";
 import styles from "./Home.module.scss";
 import ConnectionAside from "../../components/ConnectionAside";
 import { useDispatch, useSelector } from "react-redux";
+
 import { fetchProfile } from "../../redux/slices/profileSlice";
 import { fetchCarts } from "../../redux/slices/friendProfileSlice";
 import NavAsideMenu from "../../components/NavAsideMenu";
@@ -12,6 +13,7 @@ import AsideFooter from "../../components/AsideFooter";
 import Post from "../../components/Post";
 import { useState } from "react";
 import CreatePostModal from "../../components/CreatePostModal";
+
 
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
