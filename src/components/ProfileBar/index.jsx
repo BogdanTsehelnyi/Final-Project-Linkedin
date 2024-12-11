@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchProfile, setProfileData } from "../../redux/slices/profileSlice";
 import { logout } from "../../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
-import { fetchProfileByUserId } from "../../redux/slices/profileSlice";
+import { fetchProfileByUserId, logoutProfile } from "../../redux/slices/profileSlice";
 
 export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
   const { profileData, profileId, loading, error } = useSelector((state) => state.profile);
@@ -25,13 +25,11 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
     }
   }, [dispatch, userId]);
 
-
-  
-  useEffect(() => {
-    if (profileId) {
-      dispatch(fetchProfile(profileId));
-    }
-  }, [dispatch, profileId]);
+  // useEffect(() => {
+  //   if (profileId) {
+  //     dispatch(fetchProfile(profileId));
+  //   }
+  // }, [dispatch, profileId]);
 
   const [profilePicture, setProfilePicture] = useState("./image/profile/photo_ava_default.png");
   const [backgroundImage, setBackgroundImage] = useState(
@@ -39,7 +37,8 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
   );
 
   const handleLogout = async () => {
-    dispatch(logout()); // Використовуємо dispatch для виклику logout
+    dispatch(logout());
+    dispatch(logoutProfile());
     navigate("/login");
   };
 

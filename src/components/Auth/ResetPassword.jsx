@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const ResetPassword = () => {
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
   const location = useLocation();
@@ -13,14 +13,15 @@ const ResetPassword = () => {
 
   // Получение токена из query-параметров
   const queryParams = new URLSearchParams(location.search);
-  const token = queryParams.get('token');
+  const token = queryParams.get("token");
+  console.log("token", token);
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     if (password !== confirmPassword) {
-      setError('Пароли не совпадают');
+      setError("Пароли не совпадают");
       return;
     }
 
@@ -29,19 +30,19 @@ const ResetPassword = () => {
         `https://final-project-link.onrender.com/password-reset?token=${token}`,
         { password },
         {
-          headers: { 'Content-Type': 'application/json' },
+          headers: { "Content-Type": "application/json" },
           withCredentials: true,
         }
       );
 
       if (response.status === 200) {
         setSuccess(true);
-        setTimeout(() => navigate('/login'), 2000);
+        setTimeout(() => navigate("/login"), 2000);
       } else {
-        setError('Ошибка сброса пароля');
+        setError("Ошибка сброса пароля");
       }
     } catch (err) {
-      setError('Токен не валиден или истек');
+      setError("Токен не валиден или истек");
     }
   };
 

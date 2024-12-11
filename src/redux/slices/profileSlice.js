@@ -74,9 +74,14 @@ const profileSlice = createSlice({
         ...action.payload,
       };
     },
+    logoutProfile(state) {
+      Object.assign(state, initialState); // Скидаємо стейт до початкового
+    },
   },
+
   extraReducers: (builder) => {
     builder
+      // Створення профілю
       .addCase(createProfile.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -90,6 +95,8 @@ const profileSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+
+      // Отримання профілю за profileId
       .addCase(fetchProfile.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -102,11 +109,22 @@ const profileSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+
+      // Отримання профілю за userId
+      .addCase(fetchProfileByUserId.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(fetchProfileByUserId.fulfilled, (state, action) => {
-        state.profileData = action.payload; // profileData перезаписується новими даними
+        state.loading = false;
+        state.profileData = action.payload; // Оновлюємо профільні дані
+      })
+      .addCase(fetchProfileByUserId.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
-export const { setProfileData } = profileSlice.actions;
+export const { setProfileData, logoutProfile } = profileSlice.actions;
 export default profileSlice.reducer;

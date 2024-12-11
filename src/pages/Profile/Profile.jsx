@@ -46,7 +46,7 @@ export default function Profile() {
           handleOpenModal={openProfileModalHandler}
           handleOpenModalInfo={openInfoModalHandler}
         />
-        <AnotherProfiles />
+        {/* <AnotherProfiles /> */}
       </div>
       <ChangeProfileModal />
       <FullProfileInfoModal open={openInfoModal} handleClose={closeInfoModalHandler} />

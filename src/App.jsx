@@ -11,9 +11,9 @@ function App() {
   // const [widthWindow, setWidthWindow] = useState(window.innerWidth);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(fetchProfile()); // Завантажуємо дані профілю при рендері
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchProfile()); // Завантажуємо дані профілю при рендері
+  // }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchCarts());
@@ -29,17 +29,15 @@ function App() {
   //   };
   // }, []);
 
-  const {theme} = useContext(ContextTheme);
+  const { theme } = useContext(ContextTheme);
   return (
     <>
-        <div className="wrapper" style={{ backgroundColor: theme === "light" ? "#fff" : "#3a3939" }}>
-          <AppRoutes />
-        </div>
-        {/* {widthWindow <= 911 && <HeaderMobile />} */}
+      <div className="wrapper" style={{ backgroundColor: theme === "light" ? "#fff" : "#3a3939" }}>
+        <AppRoutes />
+      </div>
+      {/* {widthWindow <= 911 && <HeaderMobile />} */}
     </>
   );
 }
 
 export default App;
-
-

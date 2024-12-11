@@ -7,34 +7,36 @@ import {
   fetchRegistration,
   fetchAuthorization,
 } from "../../redux/slices/authSlice";
+import { fetchProfileByUserId } from "../../redux/slices/profileSlice";
 import "./Auth.css";
 import google_img from "./images-login/G+.svg";
-import { fetchProfileByUserId } from "../../redux/slices/profileSlice";
 
 const Auth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { email, password, error, isAuthenticated } = useSelector((state) => state.auth);
+
+  const { email, password, error, isAuthenticated, userId, isVerified } = useSelector(
+    (state) => state.auth
+  );
+  const { profileData } = useSelector((state) => state.profile);
+  const profileLoading = useSelector((state) => state.profile.loading);
+
   const [isRegistering, setIsRegistering] = useState(true);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-  const { profileData } = useSelector((state) => state.profile);
-  const [isProfileLoading, setIsProfileLoading] = useState(true);
 
-  const userId = useSelector((state) => state.auth.userId);
-
+  // Завантаження профілю користувача
   useEffect(() => {
     if (userId) {
-      setIsProfileLoading(true);
-      dispatch(fetchProfileByUserId(userId))
-        .unwrap()
-        .finally(() => setIsProfileLoading(false));
+      dispatch(fetchProfileByUserId(userId));
     }
   }, [dispatch, userId]);
 
+  // Перевірка локального збереження email і пароля
   useEffect(() => {
     const storedEmail = localStorage.getItem("email");
     const storedPassword = localStorage.getItem("password");
+
     if (storedEmail && storedPassword) {
       dispatch(setEmail(storedEmail));
       dispatch(setPassword(storedPassword));
@@ -42,35 +44,7 @@ const Auth = () => {
     }
   }, [dispatch]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (isRegistering) {
-      if (password !== confirmPassword) {
-        alert("Паролі не співпадають");
-        return;
-      }
-
-      dispatch(fetchRegistration({ email, password }))
-        .unwrap()
-        .then(() => navigate("/home"))
-        .catch((err) => console.error(err));
-    } else {
-      dispatch(fetchAuthorization({ email, password, rememberMe }))
-        .unwrap()
-        .then(() => {
-          if (!isProfileLoading) {
-            if (!profileData || Object.keys(profileData).length === 0) {
-              navigate("/registration");
-            } else {
-              navigate("/home");
-            }
-          }
-        })
-        .catch((err) => console.error(err));
-    }
-  };
-
+  // Збереження email і пароля після успішної авторизації
   useEffect(() => {
     if (isAuthenticated) {
       localStorage.setItem("email", email);
@@ -78,10 +52,80 @@ const Auth = () => {
     }
   }, [isAuthenticated, email, password]);
 
+  // Обробка сабміту форми
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      if (isRegistering) {
+        if (password !== confirmPassword) {
+          alert("Паролі не співпадають");
+          return;
+        }
+
+
+
+
+
+        const registrationResult = await dispatch(fetchRegistration({ email, password })).unwrap();
+
+        if (registrationResult.meta.requestStatus === "fulfilled") {
+          alert("Перевірте свою електронну пошту для підтвердження.");
+
+          // Цикл перевірки підтвердження
+          let isUserVerified = false;
+          while (!isUserVerified) {
+            const authResult =  dispatch(fetchAuthorization({ email, password }));
+
+
+
+            if (authResult.meta.requestStatus === "fulfilled") {
+              isUserVerified = authResult.payload.isVerified;
+
+              if (isUserVerified) {
+                alert("Електронна пошта підтверджена!");
+                navigate("/dashboard"); // Перехід на захищену сторінку
+              } else {
+                alert("Будь ласка, підтвердьте свою електронну пошту.");
+              }
+            } else {
+              alert("Помилка авторизації: " + authResult.payload);
+              break;
+            }
+          }
+        } else {
+          alert("Помилка реєстрації: " + registrationResult.payload);
+        }
+
+
+
+
+
+
+
+
+      } else {
+        await dispatch(fetchAuthorization({ email, password, rememberMe })).unwrap();
+
+        if (!profileData || Object.keys(profileData).length === 0) {
+          console.log("profileData navigate(/registration); ", profileData);
+
+          navigate("/registration");
+        } else {
+          console.log("profileData navigate(/home); ", profileData);
+          navigate("/home");
+        }
+      }
+    } catch (err) {
+      console.error("Помилка:", err);
+    }
+  };
+
   return (
     <div className="auth-container">
-      <form onSubmit={handleSubmit} className="auth-form">
+      <form  onSubmit={(e)=>handleSubmit(e)} className="auth-form">
         <h2>{isRegistering ? "Реєстрація" : "Авторизація"}</h2>
+
         <input
           type="email"
           placeholder="Email"
@@ -89,6 +133,7 @@ const Auth = () => {
           onChange={(e) => dispatch(setEmail(e.target.value))}
           required
         />
+
         <input
           type="password"
           placeholder="Пароль"
@@ -96,18 +141,20 @@ const Auth = () => {
           onChange={(e) => dispatch(setPassword(e.target.value))}
           required
         />
+
         {isRegistering && (
           <input
             type="password"
-            placeholder="Подтвердите пароль"
+            placeholder="Підтвердіть пароль"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
         )}
+
         {!isRegistering && (
           <label>
-            Remember me
+            Запам'ятати мене
             <input
               type="checkbox"
               checked={rememberMe}
@@ -115,8 +162,11 @@ const Auth = () => {
             />
           </label>
         )}
+
         {error && <p className="error">{error}</p>}
-        <button type="submit">{isRegistering ? "Зарегистрироваться" : "Войти"}</button>
+
+        <button type="submit">{isRegistering ? "Зареєструватися" : "Увійти"}</button>
+
         {!isRegistering && (
           <button
             type="button"
@@ -125,15 +175,17 @@ const Auth = () => {
                 "https://final-project-link.onrender.com/oauth2/authorization/google")
             }
           >
-            Вход через Google <img src={google_img} alt="Google Login" />
+            Вхід через Google <img src={google_img} alt="Google Login" />
           </button>
         )}
+
         <p onClick={() => setIsRegistering(!isRegistering)}>
-          {isRegistering ? "Уже есть аккаунт? Войти" : "Нет аккаунта? Зарегистрироваться"}
+          {isRegistering ? "Вже маєте акаунт? Увійти" : "Немає акаунта? Зареєструватися"}
         </p>
+
         {!isRegistering && (
           <p>
-            <a href="/forgot-password">Забыли пароль?</a>
+            <a href="/forgot-password">Забули пароль?</a>
           </p>
         )}
       </form>
