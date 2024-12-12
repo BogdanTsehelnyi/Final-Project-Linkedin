@@ -67,32 +67,13 @@ const Auth = () => {
           return;
         }
 
-        const registrationResult = await dispatch(fetchRegistration({ email, password })).unwrap();
+        const { data, status } = await dispatch(fetchRegistration({ email, password })).unwrap();
 
-        if (registrationResult.meta.requestStatus === "fulfilled") {
-          alert("Перевірте свою електронну пошту для підтвердження.");
-
-          // Цикл перевірки підтвердження
-          let isUserVerified = false;
-          while (!isUserVerified) {
-            const authResult = dispatch(fetchAuthorization({ email, password }));
-
-            if (authResult.meta.requestStatus === "fulfilled") {
-              isUserVerified = authResult.payload.isVerified;
-
-              if (isUserVerified) {
-                alert("Електронна пошта підтверджена!");
-                navigate("/dashboard"); // Перехід на захищену сторінку
-              } else {
-                alert("Будь ласка, підтвердьте свою електронну пошту.");
-              }
-            } else {
-              alert("Помилка авторизації: " + authResult.payload);
-              break;
-            }
-          }
+        if (status === 201) {
+          alert("Реєстрація пройшла успішно. Перевірте вашу пошту для підтвердження аккаунта.");
+          navigate("/");
         } else {
-          alert("Помилка реєстрації: " + registrationResult.payload);
+          alert("Помилка реєстрації");
         }
       } else {
         await dispatch(fetchAuthorization({ email, password, rememberMe })).unwrap();
