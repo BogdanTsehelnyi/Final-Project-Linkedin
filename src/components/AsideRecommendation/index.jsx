@@ -2,9 +2,12 @@ import React from "react";
 import styles from "./AsideRecommendation.module.scss";
 
 export default function AsideRecommendation({ profileData = [] }) {
+
   const profilePicture = profileData?.profilePicture || "./image/profile/photo_ava_default.png";
 
   profileData?.backgroundImageUrl || "./image/profile/profileBackgroundDefault.svg";
+
+
   return (
     <div className={styles.recommendationsContainer}>
       <div className={styles.titleContainer}>
@@ -14,7 +17,11 @@ export default function AsideRecommendation({ profileData = [] }) {
       <ul className={styles.usersListContainer}>
         <li className={styles.usersItemContainer}>
           <a className={styles.userAvatarContainer} href="#">
+
             <img src={profilePicture} alt="avatar" />
+
+            
+
           </a>
           <div className={styles.infoContainer}>
             <p className={styles.userName}>Mykhailo Fedorov</p>
@@ -24,7 +31,11 @@ export default function AsideRecommendation({ profileData = [] }) {
         </li>
         <li className={styles.usersItemContainer}>
           <a className={styles.userAvatarContainer} href="#">
+
             <img src={profilePicture} alt="avatar" />
+
+            
+
           </a>
           <div className={styles.infoContainer}>
             <p className={styles.userName}>Mykhailo Fedorov</p>
