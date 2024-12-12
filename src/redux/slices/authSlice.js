@@ -11,13 +11,14 @@ export const fetchRegistration = createAsyncThunk(
         email,
         password,
       });
-      return response.data; // ожидается ID пользователя
+      console.log("fetchRegistration", response.data);
+      return { data: response.data, status: response.status };
     } catch (error) {
+      console.error("Registration Error:", error); // Вивід повної помилки
       return rejectWithValue(error.response?.data || "Ошибка регистрации");
     }
   }
 );
-
 
 export const fetchAuthorization = createAsyncThunk(
   "auth/fetchAuthorization",
@@ -31,8 +32,10 @@ export const fetchAuthorization = createAsyncThunk(
           withCredentials: true,
         }
       );
+      console.log("fetchAuthorization", response.data);
       return response.data; // ожидается ID пользователя
     } catch (error) {
+      console.error("Registration Error:", error); // Вивід повної помилки
       // Обновленный код для обработки ошибки
       const message =
         error.response?.status === 401
