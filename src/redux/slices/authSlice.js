@@ -1,16 +1,63 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+import qs from "qs";
 
-const initialState = {
-  email: "",
-  password: "",
-  userId: null, // Додаємо поле для userId
-  error: null,
-  isAuthenticated: false,
-};
+// Thunks
+export const fetchRegistration = createAsyncThunk(
+  "auth/fetchRegistration",
+  async ({ email, password }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post("https://final-project-link.onrender.com/auth", {
+        email,
+        password,
+      });
+      console.log("fetchRegistration", response.data);
+      return { data: response.data, status: response.status };
+    } catch (error) {
+      console.error("Registration Error:", error); // Вивід повної помилки
+      return rejectWithValue(error.response?.data || "Ошибка регистрации");
+    }
+  }
+);
+
+export const fetchAuthorization = createAsyncThunk(
+  "auth/fetchAuthorization",
+  async ({ email, password, rememberMe }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        "https://final-project-link.onrender.com/login",
+        qs.stringify({ username: email, password, "remember-me": rememberMe }),
+        {
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          withCredentials: true,
+        }
+      );
+      console.log("fetchAuthorization", response.data);
+      return response.data; // ожидается ID пользователя
+    } catch (error) {
+      console.error("Registration Error:", error); // Вивід повної помилки
+      // Обновленный код для обработки ошибки
+      const message =
+        error.response?.status === 401
+          ? "Неверный пароль. Проверьте введённые данные."
+          : error.response?.data || "Ошибка входа";
+      return rejectWithValue({ message }); // Передаем ошибку с сообщением
+    }
+  }
+);
 
 const authSlice = createSlice({
   name: "auth",
-  initialState,
+  initialState: {
+    email: "",
+    password: "",
+    userId: null,
+    token: "",
+    error: null,
+    isAuthenticated: false,
+    message: null,
+  },
+
   reducers: {
     setEmail(state, action) {
       state.email = action.payload;
@@ -18,25 +65,57 @@ const authSlice = createSlice({
     setPassword(state, action) {
       state.password = action.payload;
     },
-    setUserId(state, action) {
-      state.userId = action.payload; // Задаємо id користувача
-    },
-    register(state) {
-      state.error = null;
-      state.isAuthenticated = true;
-    },
-    login(state) {
-      state.error = null;
-      state.isAuthenticated = true;
+    setToken(state, action) {
+      state.token = action.payload;
     },
     logout(state) {
       state.email = "";
       state.password = "";
-      state.userId = null; // Очищаємо userId при виході
+      state.userId = null;
+      state.token = "";
       state.isAuthenticated = false;
+      state.error = null;
     },
+    // Новый action для очистки ошибки
+    clearError(state) {
+      state.error = null;
+    },
+  },
+
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchRegistration.fulfilled, (state, action) => {
+        state.userId = action.payload.id;
+        state.error = null;
+      })
+      .addCase(fetchRegistration.rejected, (state, action) => {
+        state.error = action.payload?.message || "Ошибка регистрации";
+      })
+      .addCase(fetchAuthorization.fulfilled, (state, action) => {
+        state.userId = action.payload.id;
+        state.isVerified = action.payload.isVerified;
+        state.isAuthenticated = true;
+        state.error = null;
+      })
+      .addCase(fetchAuthorization.rejected, (state, action) => {
+        state.error = action.payload?.message || "Ошибка входа";
+      });
+    // .addCase(fetchForgotPassword.fulfilled, (state, action) => {
+    //   state.message = "Лист для скидання пароля надіслано";
+    //   state.error = null;
+    // })
+    // .addCase(fetchForgotPassword.rejected, (state, action) => {
+    //   state.error = action.payload;
+    // })
+    // .addCase(fetchResetPassword.fulfilled, (state) => {
+    //   state.message = "Пароль успішно змінено!";
+    //   state.error = null;
+    // })
+    // .addCase(fetchResetPassword.rejected, (state, action) => {
+    //   state.error = action.payload;
+    // });
   },
 });
 
-export const { setEmail, setPassword, setUserId, register, login, logout } = authSlice.actions;
+export const { setEmail, setPassword, logout, clearError } = authSlice.actions;
 export default authSlice.reducer;

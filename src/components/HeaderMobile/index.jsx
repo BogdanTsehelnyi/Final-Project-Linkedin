@@ -10,7 +10,7 @@ export default function HeaderMobile() {
   return (
     <div className={styles.wrapper}>
       <NavLink
-        to="/"
+        to="/home"
         className={({ isActive }) =>
           `${styles.item} ${isActive ? styles.active : ""}`
         }

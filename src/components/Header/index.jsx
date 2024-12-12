@@ -87,10 +87,8 @@ export default function Header() {
       <div className={styles.groupTwoWrapper}>
         <nav className={styles.nav}>
           <NavLink
-            to="/"
-            className={({ isActive }) =>
-              `${styles.item} ${isActive ? styles.active : ""}`
-            }
+            to="/home"
+            className={({ isActive }) => `${styles.item} ${isActive ? styles.active : ""}`}
           >
             <div className={styles.group}>
               <Home />
@@ -99,9 +97,7 @@ export default function Header() {
           </NavLink>
           <NavLink
             to="/net"
-            className={({ isActive }) =>
-              `${styles.item} ${isActive ? styles.active : ""}`
-            }
+            className={({ isActive }) => `${styles.item} ${isActive ? styles.active : ""}`}
           >
             <div className={styles.group}>
               <Net />
@@ -110,9 +106,7 @@ export default function Header() {
           </NavLink>
           <NavLink
             to="/jobs"
-            className={({ isActive }) =>
-              `${styles.item} ${isActive ? styles.active : ""}`
-            }
+            className={({ isActive }) => `${styles.item} ${isActive ? styles.active : ""}`}
           >
             <div className={styles.group}>
               <Jobs />
@@ -121,9 +115,7 @@ export default function Header() {
           </NavLink>
           <NavLink
             to="/messages"
-            className={({ isActive }) =>
-              `${styles.item} ${isActive ? styles.active : ""}`
-            }
+            className={({ isActive }) => `${styles.item} ${isActive ? styles.active : ""}`}
           >
             <div className={styles.group}>
               <Messages className={styles.mes} />
@@ -133,19 +125,14 @@ export default function Header() {
           </NavLink>
           <NavLink
             to="/notifications"
-            className={({ isActive }) =>
-              `${styles.item} ${isActive ? styles.active : ""}`
-            }
+            className={({ isActive }) => `${styles.item} ${isActive ? styles.active : ""}`}
           >
             <div className={styles.group}>
               <Notifications />
             </div>
             Notifications
           </NavLink>
-          <NavLink
-            to="/profile"
-            className={classNames(styles.item, styles.itemDisplay)}
-          >
+          <NavLink to="/profile" className={classNames(styles.item, styles.itemDisplay)}>
             <Profile />
             <div className={styles.arr}>
               <span>Profile</span>

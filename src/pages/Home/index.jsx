@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import PageWrapper from "../../components/Wrappers/PageWrapper";
-// import ProfileDescBar from "../../components/ProfileDescBar";
+import ProfileDescBar from "../../components/ProfileDescBar";
 import styles from "./Home.module.scss";
 import ConnectionAside from "../../components/ConnectionAside";
 import { useDispatch, useSelector } from "react-redux";
-// import { fetchProfile } from "../../redux/slices/profileSlice";
+
+import { fetchProfile } from "../../redux/slices/profileSlice";
 import { fetchCarts } from "../../redux/slices/friendProfileSlice";
 import NavAsideMenu from "../../components/NavAsideMenu";
 import AsideRecommendation from "../../components/AsideRecommendation";
@@ -12,6 +13,7 @@ import AsideFooter from "../../components/AsideFooter";
 import Post from "../../components/Post";
 import { useState } from "react";
 import CreatePostModal from "../../components/CreatePostModal";
+
 
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -21,26 +23,34 @@ export default function Home() {
   };
 
   // ОТРИМАННЯ ДАНИХ ДЛЯ ПРАВОГО SIDEBAR
-  // const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(fetchProfile());
-  // }, [dispatch]);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchProfile());
+  }, [dispatch]);
 
   // ОТРИМАННЯ ДАНИХ ДЛЯ  ЛІВОГО SIDEBAR
-  // useEffect(() => {
-  //   dispatch(fetchCarts());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchCarts());
+  }, [dispatch]);
 
-  // const profileData = useSelector((state) => state.profile.profileData);
+  const profileData = useSelector((state) => state.profile.profileData);
 
-  // const loading = useSelector((state) => state.profile.loading);
-  // const error = useSelector((state) => state.profile.error);
+  const loading = useSelector((state) => state.profile.loading);
+  const error = useSelector((state) => state.profile.error);
+
+  const country = profileData?.location?.country || "Unknown country";
+  const city = profileData?.location?.city || "Unknown city";
+  const profilePicture = profileData?.profilePicture || "./image/profile/photo_ava_default.png";
+  const firstName = profileData?.firstName || "Unknown";
+  const lastName = profileData?.lastName || "Unknown";
+  const backgroundUrl =
+    profileData?.backgroundImageUrl || "./image/profile/profileBackgroundDefault.svg";
 
   return (
     <>
       <PageWrapper>
         <aside className={styles.leftSideBar}>
-          {/* <ProfileDescBar profileData={profileData} loading={loading} error={error} /> */}
+          <ProfileDescBar />
           <ConnectionAside />
           <NavAsideMenu />
         </aside>
@@ -48,14 +58,16 @@ export default function Home() {
         {/* Main Content of home */}
         <div className={styles.mainContentContainer}>
           <div className={styles.userDetails}>
-            {/* <img src={profileData?.profilePicture} alt="imageLink" /> */}
-            <p className={styles.name}>{/* {profileData.firstName} {profileData.lastName} */}</p>
+            <img src={profilePicture} alt="imageLink" />
+            <p className={styles.name}>
+              {firstName} {lastName}
+            </p>
             {/* <p className={styles.headline}>{profileData.lastName}</p> */}
           </div>
 
           {/* CREATING NEW PUBLICATION */}
           <div className={styles.postStatus}>
-            {/* <img className={styles.postImage} src={profileData?.profilePicture} alt="imageLink" /> */}
+            <img className={styles.postImage} src={profilePicture} alt="imageLink" />
             <button
               className={styles.openPostModal}
               onClick={() => {
@@ -74,7 +86,7 @@ export default function Home() {
         {/* LEFT SIDEBAR */}
 
         <aside>
-          {/* <AsideRecommendation profileData={profileData} /> */}
+          <AsideRecommendation profileData={profileData} />
 
           <AsideFooter />
         </aside>

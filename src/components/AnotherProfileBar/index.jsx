@@ -1,63 +1,88 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { fetchProfileById, clearProfile } from '../../redux/slices/profileSlice'; // Експортуємо clearProfile
-import styles from './AnotherProfileBar.module.scss';
+import { addFriend, removeFriend } from '../../redux/slices/friendProfileSlice'; // Імпортуємо дії
+import styles from './AnotherProfileBar.module.scss'; 
 
 export default function AnotherProfileBar() {
-  const { profileId } = useParams(); // Отримуємо ID профілю з URL
-  const dispatch = useDispatch();
-  const { profileData: profile, loading, error } = useSelector((state) => state.profile);
+    const { friendId } = useParams(); // Отримуємо friendId з URL
+    const dispatch = useDispatch();
+    const { allProfiles, friendsData, loading, error } = useSelector((state) => state.friend); // Отримуємо всі профілі та список друзів
+    
+    const [pendingAction, setPendingAction] = useState(false); // Для блокування кнопок під час очікування
 
-  // Завантаження даних профілю
-  useEffect(() => {
-    if (profileId) {
-      dispatch(fetchProfileById(profileId)); // Викликаємо Redux-дію для отримання даних
-    }
+    // Знаходимо профіль за friendId
+    const friendProfile = allProfiles.find(profile => profile.id === friendId);
 
-    return () => {
-      dispatch(clearProfile()); // Очищення даних при розмонтуванні компонента
+    // Перевіряємо, чи цей профіль вже є другом
+    const isFriend = friendsData.some(friend => friend.id === friendId);
+
+    useEffect(() => {
+        console.log("Rendering profile for friendId:", friendId);
+        console.log("Friend Profile:", friendProfile);
+    }, [friendId, friendProfile]);
+
+    if (loading) return <p>Завантаження профілю...</p>;
+    if (error) return <p>Помилка завантаження профілю: {error}</p>;
+    if (!friendProfile) return <p>Профіль не знайдено</p>;
+
+    // Функція для додавання в друзі
+    const handleAddFriend = () => {
+        setPendingAction(true);
+        dispatch(addFriend(friendProfile)).finally(() => {
+            setPendingAction(false);
+        });
     };
-  }, [dispatch, profileId]);
 
-  if (loading) return <p>Завантаження профілю...</p>;
-  if (error) return <p>Помилка завантаження профілю: {error}</p>;
-  if (!profile || Object.keys(profile).length === 0) return <p>Профіль не знайдено</p>;
+    // Функція для видалення з друзів
+    const handleRemoveFriend = () => {
+        setPendingAction(true);
+        dispatch(removeFriend(friendId)).finally(() => {
+            setPendingAction(false);
+        });
+    };
 
-  // Розділяємо адресу на місто і країну
-  const [city, country] = profile.address ? profile.address.split(', ') : ["", ""];
+    return (
+        <div className={styles.container}>
+            <div className={styles.backgroundProfile} style={{
+                backgroundImage: `url(${friendProfile.backgroundProfile || '/path/to/default/background.jpg'})`
+            }}>
+                <div className={styles.photoContainer}>
+                    <img 
+                        src={friendProfile.profilePicture || '/path/to/default/profile.jpg'} 
+                        alt="Профіль" 
+                        className={styles.friendPhoto}
+                    />
+                </div>
+            </div>
+            <h2 className={styles.nameProfile}>
+                {friendProfile.firstName} {friendProfile.lastName}
+            </h2>
+            <h3 className={styles.professionProfile}>{friendProfile.headline}</h3>
+            <h3 className={styles.cityProfile}>
+                {friendProfile.location.country}, {friendProfile.location.city}
+            </h3>
 
-  return (
-    <div className={styles.container}>
-      <div className={styles.backgroundProfile} style={{
-        backgroundImage: `url(${profile.headerPhotoUrl || '/path/to/default/background.jpg'})`
-      }}>
-        <div className={styles.photoContainer}>
-          <img 
-            src={profile.headerPhotoUrl || '/path/to/default/profile.jpg'} 
-            alt="Профіль" 
-            className={styles.friendPhoto}
-          />
+            {/* Відображаємо кнопку для додавання або видалення з друзів */}
+            <div className={styles.actionButtons}>
+                {isFriend ? (
+                    <button 
+                        onClick={handleRemoveFriend} 
+                        className={styles.friendActionBtn}
+                        disabled={pendingAction}  // Блокуємо кнопку під час очікування
+                    >
+                        {pendingAction ? 'Removing...' : 'Remove'}
+                    </button>
+                ) : (
+                    <button 
+                        onClick={handleAddFriend} 
+                        className={styles.friendActionBtn}
+                        disabled={pendingAction}  // Блокуємо кнопку під час очікування
+                    >
+                        {pendingAction ? 'Adding...' : 'Establish contact'}
+                    </button>
+                )}
+            </div>
         </div>
-      </div>
-      <h2 className={styles.nameProfile}>
-        {profile.name} {profile.surname}
-      </h2>
-      <h3 className={styles.professionProfile}>
-        {profile.position || 'Посада не вказана'}
-      </h3>
-      <h3 className={styles.cityProfile}>
-        {country || 'Країна не вказана'}, {city || 'Місто не вказане'}
-      </h3>
-      <p className={styles.statusProfile}>
-        {profile.status || 'Статус не вказаний'}
-      </p>
-      <p className={styles.birthdateProfile}>
-        Дата народження: {profile.birthdate ? new Date(profile.birthdate).toLocaleDateString() : 'Не вказано'}
-      </p>
-      <p className={styles.createdAtProfile}>
-        Профіль створено: {profile.createAt ? new Date(profile.createAt).toLocaleDateString() : 'Невідомо'}
-      </p>
-    </div>
-  );
+    );
 }

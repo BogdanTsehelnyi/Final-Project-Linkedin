@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import qs from 'qs';
 import './Auth.css';
-
+// коміт 02.12.2024 11:59
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState(null);

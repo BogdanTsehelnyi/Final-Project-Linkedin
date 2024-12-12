@@ -1,28 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; 
-import { setEmail, setPassword, register, login, setUserId } from "../../redux/slices/authSlice"; // Додано Олегом 
-import './Auth.css';
-import google_img from './images-login/G+.svg';
-import qs from 'qs';
-
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import {
+  setEmail,
+  setPassword,
+  fetchRegistration,
+  fetchAuthorization,
+} from "../../redux/slices/authSlice";
+import { fetchProfileByUserId } from "../../redux/slices/profileSlice";
+import "./Auth.css";
+import google_img from "./images-login/G+.svg";
 
 const Auth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { email, password, error, isAuthenticated } = useSelector((state) => state.auth);
+
+  const { email, password, error, isAuthenticated, userId, isVerified } = useSelector(
+    (state) => state.auth
+  );
+
+  const profileLoading = useSelector((state) => state.profile.loading);
+
   const [isRegistering, setIsRegistering] = useState(true);
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false); 
-  const [serverError, setServerError] = useState('');
-  const [showPassword, setShowPassword] = useState(false); // Управление видимостью пароля
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Для подтверждения пароля
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+  const { profileData } = useSelector((state) => state.profile);
+  const [isProfileLoading, setIsProfileLoading] = useState(true);
+  const [showPassword, setShowPassword] = useState(false); // Глазок для пароля
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Глазок для подтверждения пароля
 
+  // Завантаження профілю користувача
+  useEffect(() => {
+    if (userId) {
+      dispatch(fetchProfileByUserId(userId));
+    }
+  }, [dispatch, userId]);
 
+  // Перевірка локального збереження email і пароля
   useEffect(() => {
     const storedEmail = localStorage.getItem("email");
     const storedPassword = localStorage.getItem("password");
+
     if (storedEmail && storedPassword) {
       dispatch(setEmail(storedEmail));
       dispatch(setPassword(storedPassword));
@@ -30,65 +48,56 @@ const Auth = () => {
     }
   }, [dispatch]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setServerError("");
-    
-    if (isRegistering) {
-    if (password !== confirmPassword) {
-    alert("Паролі не співпадають");
-    return;
-    }
-    
-    try {
-    const response = await axios.post("https://final-project-link.onrender.com/auth", {
-    email,
-    password,
-    });
-    console.log("Registration successful:", response.data);
-    dispatch(register());
-    dispatch(setUserId(response.data.id)); // Збереження id
-    navigate("/login"); // Перенаправлення на сторінку входу
-    } catch (error) {
-    console.error("Ошибка регистрации:", error);
-    setServerError("Ошибка регистрации. Попробуйте снова.");
-    }
-    } else {
-    try {
-    const response = await axios.post(
-    "https://final-project-link.onrender.com/login",
-    qs.stringify({ username: email, password, "remember-me": rememberMe }),
-    {
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    withCredentials: true,
-    }
-    );
-    console.log("Login successful:", response.data);
-    dispatch(login());
-    dispatch(setUserId(response.data.id)); // Збереження id після входу
-    navigate("/home");
-    } catch (error) {
-    console.error("Ошибка входа:", error);
-    setServerError("Ошибка входа. Проверьте данные.");
-    }
-    }
-    };
-    
-
+  // Збереження email і пароля після успішної авторизації
   useEffect(() => {
     if (isAuthenticated) {
       localStorage.setItem("email", email);
       localStorage.setItem("password", password);
-      navigate("/");
     }
-  }, [isAuthenticated, email, password, navigate]);
+  }, [isAuthenticated, email, password]);
+
+  // Обробка сабміту форми
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      if (isRegistering) {
+        if (password !== confirmPassword) {
+          alert("Паролі не співпадають");
+          return;
+        }
+
+        const { data, status } = await dispatch(fetchRegistration({ email, password })).unwrap();
+
+        if (status === 201) {
+          alert("Реєстрація пройшла успішно. Перевірте вашу пошту для підтвердження аккаунта.");
+          navigate("/");
+        } else {
+          alert("Помилка реєстрації");
+        }
+      } else {
+        await dispatch(fetchAuthorization({ email, password, rememberMe })).unwrap();
+
+        if (!profileData || Object.keys(profileData).length === 0) {
+          console.log("profileData navigate(/registration); ", profileData);
+
+          navigate("/registration");
+        } else {
+          console.log("profileData navigate(/home); ", profileData);
+          navigate("/home");
+        }
+      }
+    } catch (err) {
+      console.error("Помилка:", err);
+    }
+  };
 
   return (
     <div className="auth-container">
       <form onSubmit={handleSubmit} className="auth-form">
         <h2>{isRegistering ? "Реєстрація" : "Авторизація"}</h2>
         <input
-          className='input-defolt input-emeil'
+          className="input-defolt input-emeil"
           type="email"
           placeholder="Email"
           value={email}
@@ -96,70 +105,45 @@ const Auth = () => {
           required
         />
 
-
-        <div className='container-pasword'>
-        <input
-          className='input-defolt '
-         
-          type={showPassword ? 'text' : 'password'}
-          placeholder="Пароль"
-          value={password}
-          onChange={(e) => dispatch(setPassword(e.target.value))}
-          required
-        />
-
-         <button
+        <div className="container-pasword">
+          <input
+            className="input-reset__pasword"
+            type={showPassword ? "text" : "password"} // Управление видимостью
+            placeholder="Новый пароль"
+            value={password}
+            onChange={(e) => dispatch(setPassword(e.target.value))}
+            required
+          />
+          <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            style={{
-              position: 'absolute',
-              right: '10px',
-              top: '33%',
-              transform: 'translateY(-50%)',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              width: '50px',
-              height: '50px',
-            }}
+            className="password-toggle-btn"
           >
-            {showPassword ? '🙈' : '👁️'}
+            {showPassword ? "🙈" : "👁️"}
           </button>
-          </div>
-
+        </div>
 
         {isRegistering && (
-          <div className='container-pasword'>
-          <input
-          className='input-defolt '
-         
-          type={showConfirmPassword ? 'text' : 'password'}
-          placeholder="Подтвердите пароль"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-          />
-
-              <button
+          <div className="container-pasword">
+            <input
+              className="input-reset__pasword"
+              type={showConfirmPassword ? "text" : "password"} // Управление видимостью
+              placeholder="Подтвердите пароль"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+            <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              style={{
-                position: 'absolute',
-                right: '25px',
-                top: '33%',
-                transform: 'translateY(-50%)',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-              }}
+              className="password-toggle-btn"
             >
-              {showConfirmPassword ? '🙈' : '👁️'}
+              {showConfirmPassword ? "🙈" : "👁️"}
             </button>
-
           </div>
         )}
         {!isRegistering && (
-          <label className='remember-label'>
+          <label className="remember-label">
             Remember me
             <input
               type="checkbox"
@@ -168,26 +152,31 @@ const Auth = () => {
             />
           </label>
         )}
-        {serverError && <p className="error">{serverError}</p>}
-        <button className='submit-button' type="submit">{isRegistering ? 'Зарегистрироваться' : 'Войти'}</button>
+
+        {/* Показ сообщения об ошибке */}
+        {error && <p className="error">{error}</p>}
+
+        <button className="submit-button" type="submit">
+          {isRegistering ? "Зарегистрироваться" : "Войти"}
+        </button>
         {!isRegistering && (
           <button
-          type="button"
-          className='gogle-button'
-          onClick={() => {
-            console.log('Перенаправляем на Google OAuth');
-            window.location.href =  'https://final-project-link.onrender.com/oauth2/authorization/google';
-          }}
+            className="gogle-button"
+            type="button"
+            onClick={() =>
+              (window.location.href =
+                "https://final-project-link.onrender.com/oauth2/authorization/google")
+            }
           >
             Вход через Google <img src={google_img} alt="Google Login" />
           </button>
         )}
-        <hr className='auth-line'></hr>
-        <p onClick={() => setIsRegistering(!isRegistering)} className='toggle'>
-          {isRegistering ? 'Вже маєте аккаунт? Увійти' : 'Немає акаунта? Зареєструватися'}
+        <hr className="auth-line"></hr>
+        <p onClick={() => setIsRegistering(!isRegistering)} className="toggle">
+          {isRegistering ? "Уже есть аккаунт? Войти" : "Нет аккаунта? Зарегистрироваться"}
         </p>
         {!isRegistering && (
-          <p className='highlight '>
+          <p className="highlight ">
             <a href="/forgot-password">Забыли пароль?</a>
           </p>
         )}
