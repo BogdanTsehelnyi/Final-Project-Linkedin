@@ -14,7 +14,6 @@ import Post from "../../components/Post";
 import { useState } from "react";
 import CreatePostModal from "../../components/CreatePostModal";
 
-
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
   const openModal = () => {

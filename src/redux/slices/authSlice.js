@@ -52,10 +52,10 @@ const authSlice = createSlice({
     email: "",
     password: "",
     userId: null,
-    token: "",
     error: null,
     isAuthenticated: false,
     message: null,
+    loading: false,
   },
 
   reducers: {
@@ -65,14 +65,11 @@ const authSlice = createSlice({
     setPassword(state, action) {
       state.password = action.payload;
     },
-    setToken(state, action) {
-      state.token = action.payload;
-    },
+
     logout(state) {
       state.email = "";
       state.password = "";
       state.userId = null;
-      state.token = "";
       state.isAuthenticated = false;
       state.error = null;
     },
@@ -84,21 +81,32 @@ const authSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
+      .addCase(fetchRegistration.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(fetchRegistration.fulfilled, (state, action) => {
-        state.userId = action.payload.id;
+        state.userId = action.payload.data.id;
+       
         state.error = null;
+        state.loading = false;
       })
       .addCase(fetchRegistration.rejected, (state, action) => {
         state.error = action.payload?.message || "Ошибка регистрации";
+        state.loading = false;
+      })
+      .addCase(fetchAuthorization.pending, (state) => {
+        state.loading = true;
       })
       .addCase(fetchAuthorization.fulfilled, (state, action) => {
         state.userId = action.payload.id;
-        state.isVerified = action.payload.isVerified;
+        
         state.isAuthenticated = true;
         state.error = null;
+        state.loading = false;
       })
       .addCase(fetchAuthorization.rejected, (state, action) => {
         state.error = action.payload?.message || "Ошибка входа";
+        state.loading = false;
       });
     // .addCase(fetchForgotPassword.fulfilled, (state, action) => {
     //   state.message = "Лист для скидання пароля надіслано";
