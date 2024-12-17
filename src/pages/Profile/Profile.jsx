@@ -21,19 +21,6 @@ export default function Profile() {
   const openInfoModal = useSelector((state) => state.changeProfileModal.openInfoModal);
   const profileData = useSelector((state) => state.profile.profileData);
 
-  // useEffect(() => {
-  //   const fetchProfileData = async () => {
-  //       try {
-  //           const response = await axios.get('/API/profile.json');
-  //           console.log('Fetched profile data:', response.data); // Логую дані
-  //       } catch (error) {
-  //           console.error('Помилка завантаження даних:', error);
-  //       }
-  //   };
-
-  //   fetchProfileData();
-  // }, [dispatch]);
-
   const openProfileModalHandler = () => dispatch(handleOpenProfileModal());
   const closeProfileModalHandler = () => dispatch(handleCloseProfileModal());
   const openInfoModalHandler = () => dispatch(handleOpenInfoModal());

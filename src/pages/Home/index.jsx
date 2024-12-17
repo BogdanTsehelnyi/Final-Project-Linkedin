@@ -3,9 +3,8 @@ import PageWrapper from "../../components/Wrappers/PageWrapper";
 import ProfileDescBar from "../../components/ProfileDescBar";
 import styles from "./Home.module.scss";
 import ConnectionAside from "../../components/ConnectionAside";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
-import { fetchProfile } from "../../redux/slices/profileSlice";
 import { fetchCarts } from "../../redux/slices/friendProfileSlice";
 import NavAsideMenu from "../../components/NavAsideMenu";
 import AsideRecommendation from "../../components/AsideRecommendation";
@@ -21,16 +20,7 @@ export default function Home() {
     document.body.style.overflow = "hidden";
   };
 
-  // ОТРИМАННЯ ДАНИХ ДЛЯ ПРАВОГО SIDEBAR
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchProfile());
-  }, [dispatch]);
-
   // ОТРИМАННЯ ДАНИХ ДЛЯ  ЛІВОГО SIDEBAR
-  useEffect(() => {
-    dispatch(fetchCarts());
-  }, [dispatch]);
 
   const profileData = useSelector((state) => state.profile.profileData);
 

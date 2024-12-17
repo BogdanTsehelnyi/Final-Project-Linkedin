@@ -1,36 +1,19 @@
-
 import React, { useState, useEffect } from "react";
 import styles from "./ProfileBar.module.scss";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchProfile, setProfileData } from "../../redux/slices/profileSlice";
+import { setProfileData } from "../../redux/slices/profileSlice";
 import { logout } from "../../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
-import { fetchProfileByUserId, logoutProfile } from "../../redux/slices/profileSlice";
+import { logoutProfile } from "../../redux/slices/profileSlice";
 
 export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
   const { profileData, profileId, loading, error } = useSelector((state) => state.profile);
   const userId = useSelector((state) => state.auth.userId);
-  console.log(profileData);
 
-  console.log("userId in ProfileBar", userId);
-
-  console.log("Профіль айдішка в ProfileBar", profileId);
   console.log("Профіль в ProfileBar", profileData);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (userId) {
-      dispatch(fetchProfileByUserId(userId));
-    }
-  }, [dispatch, userId]);
-
-  // useEffect(() => {
-  //   if (profileId) {
-  //     dispatch(fetchProfile(profileId));
-  //   }
-  // }, [dispatch, profileId]);
 
   const [profilePicture, setProfilePicture] = useState("./image/profile/photo_ava_default.png");
   const [backgroundImage, setBackgroundImage] = useState(
@@ -72,22 +55,11 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
     }
   };
 
-  // if (loading) {
-  //   return <p>Завантаження профілю...</p>;
-  // }
-
-  // if (error) {
-  //   return <p>Помилка завантаження профілю: {error}</p>;
-  // }
-
-  // if (!profileData.firstName) {
-  //   return <p>Дані профілю не знайдено</p>;
-  // }
-  const country = profileData?.location?.country || "Unknown country";
-  const city = profileData?.location?.city || "Unknown city";
+  const location = profileData?.address || "Unknown";
   // const profilePicture = profileData?.profilePicture || "./image/profile/profileDefault.svg";
-  const firstName = profileData?.firstName || "Unknown";
-  const lastName = profileData?.lastName || "Unknown";
+  const firstName = profileData?.name || "Unknown";
+  const lastName = profileData?.surname || "Unknown";
+  const position = profileData?.position || "Unknown";
   // const backgroundUrl =
   //   profileData?.backgroundImageUrl || "./image/profile/profileBackgroundDefault.svg";
 
@@ -97,7 +69,6 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
         className={styles.backgroundProfile}
         style={{ backgroundImage: `url(${backgroundImage})` }}
       >
-
         <label className={styles.customFileBacgroundUpload}>
           <img src="/image/main/Edit.svg" alt="Редагувати фон" />
           <input type="file" accept="image/*" onChange={handleBackgroundUpload} />
@@ -110,13 +81,10 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
         </div>
       </div>
       <h2 className={styles.nameProfile}>
-
         {firstName} {lastName}
       </h2>
-      <h3 className={styles.professionProfile}>developer</h3>
-      <h3 className={styles.cityProfile}>
-        {country}, {city}
-      </h3>
+      <h3 className={styles.professionProfile}>{position}</h3>
+      <h3 className={styles.cityProfile}>{location}</h3>
       <button onClick={handleOpenModal} className={styles.openModal}>
         <img src="/image/main/Edit.svg" alt="Редагувати профіль" />
       </button>
@@ -126,7 +94,6 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
 
       <button className={styles.logoutButton} onClick={handleLogout}>
         Выйти из аккаунта
-
       </button>
     </div>
   );
