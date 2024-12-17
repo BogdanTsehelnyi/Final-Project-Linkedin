@@ -1,46 +1,41 @@
-import React, { useEffect } from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
-import { fetchProfile } from '../../redux/slices/profileSlice';  
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect } from "react";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+// import { fetchProfile } from "../../redux/slices/profileSlice";
+import { useSelector } from "react-redux";
 
 const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '90%',           // Зменшили ширину до 90% екрана
-  maxWidth: '600px',       // Максимальна ширина - 600px
-  height: '80%',           // Зменшили висоту до 80% екрана
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "90%",
+  maxWidth: "600px",
+  height: "auto",
+  bgcolor: "background.paper",
+  // border: "2px solid #000",
+  border: "1px solid #e0dfdc",
+  boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+  // boxShadow: 24,
   p: 4,
-  borderRadius: '10px',
-  overflowY: 'auto',       // Додаємо вертикальну прокрутку
-  display: 'flex',         // Додаємо flex для вертикального розміщення
-  flexDirection: 'column',
+  borderRadius: "10px",
+  overflowY: "auto",
+  display: "flex",
+  flexDirection: "column",
 };
 
 const typographyStyle = {
-  borderBottom: '1px solid #ccc',
-  marginBottom: '10px',
+  borderBottom: "1px solid #ccc",
+  marginBottom: "10px",
 };
 
 export default function FullProfileInfoModal({ open, handleClose }) {
-  const dispatch = useDispatch();
-
   const { profileData, loading, error } = useSelector((state) => state.profile);
-  
-  useEffect(() => {
-    if (open) {
-      dispatch(fetchProfile()); // Завантажуємо профіль, якщо модалка відкрита
-    }
-  }, [dispatch, open]);
+  const email = useSelector((state) => state.auth.email);
 
   if (loading) {
     return (
@@ -52,19 +47,18 @@ export default function FullProfileInfoModal({ open, handleClose }) {
     );
   }
 
-  if (error) {
+  if (error && typeof error === "object") {
     return (
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
           <Typography variant="body2" color="error">
-            Error: {error}
+            Error: {error.message || "An unexpected error occurred"}
           </Typography>
         </Box>
       </Modal>
     );
   }
 
-  // Перевірка наявності профілю
   if (!profileData || Object.keys(profileData).length === 0) {
     return (
       <Modal open={open} onClose={handleClose}>
@@ -75,79 +69,55 @@ export default function FullProfileInfoModal({ open, handleClose }) {
     );
   }
 
-  // Деструктуризація даних з профілю
   const {
-    firstName = "N/A",
-    lastName = "N/A",
-    headline = "N/A",
-    email = "N/A",
-    location = { country: "N/A", city: "N/A" },
-    industry = "N/A",
-    experience = [],
-    education = [],
-    certifications = [],
-    languages = []
+    name = "N/A",
+    surname = "N/A",
+    birthdate = "N/A",
+    status = "N/A",
+    position = "N/A",
+    address = "N/A",
   } = profileData;
 
-  // Функція для відображення списку даних
-  const renderList = (title, data, renderItem) => (
-    <Typography variant="body1" sx={typographyStyle}>
-      {title}:
-      {data.length > 0 ? (
-        <ul>
-          {data.map((item, index) => (
-            <li key={index}>{renderItem(item)}</li>
-          ))}
-        </ul>
-      ) : (
-        <ul>
-          <li>No {title.toLowerCase()} available</li>
-        </ul>
-      )}
-    </Typography>
-  );
-
   return (
-    <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+    <Modal
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
       <Box sx={style}>
         <Typography id="modal-modal-title" variant="h5" component="h2" sx={typographyStyle}>
-          {firstName} {lastName}
-        </Typography>
-
-        <Typography id="modal-modal-description" variant="subtitle1" component="p" sx={typographyStyle}>
-          {headline}
+          {name} {surname}
         </Typography>
 
         <Typography id="modal-modal-email" variant="body1" sx={typographyStyle}>
           Email: {email}
         </Typography>
 
-        <Typography id="modal-modal-location" variant="body1" sx={typographyStyle}>
-          Location: {location.country}, {location.city}
+        <Typography id="modal-modal-position" variant="body1" sx={typographyStyle}>
+          Position: {position}
         </Typography>
 
-        <Typography id="modal-modal-industry" variant="body1" sx={typographyStyle}>
-          Industry: {industry}
+        <Typography id="modal-modal-status" variant="body1" sx={typographyStyle}>
+          Status: {status}
         </Typography>
 
-        {renderList('Experience', experience, (exp) => (
-          `${exp.title} at ${exp.company} (${exp.startDate} - ${exp.endDate || "Present"})`
-        ))}
+        <Typography id="modal-modal-birthdate" variant="body1" sx={typographyStyle}>
+          Birthdate: {new Date(birthdate).toLocaleDateString()}
+        </Typography>
 
-        {renderList('Education', education, (edu) => (
-          `${edu.degree} in ${edu.fieldOfStudy} (${edu.startDate} - ${edu.endDate})`
-        ))}
+        <Typography id="modal-modal-address" variant="body1" sx={typographyStyle}>
+          Address: {address}
+        </Typography>
 
-        {renderList('Languages', languages, (lang) => (
-          `${lang.language} (Proficiency: ${lang.proficiency})`
-        ))}
-        
-        {renderList('Certifications', certifications, (cert) => (
-          `${cert.name} - ${cert.authority} (${cert.date})`
-        ))}
+        {/* <Typography id="modal-modal-createAt" variant="body1" sx={typographyStyle}>
+          Profile was created: {new Date(createAt).toLocaleDateString()}
+        </Typography> */}
 
         <Stack spacing={2} direction="row" sx={{ mt: 3 }}>
-          <Button variant="outlined" onClick={handleClose}>Close</Button>
+          <Button variant="outlined" onClick={handleClose}>
+            Close
+          </Button>
         </Stack>
       </Box>
     </Modal>

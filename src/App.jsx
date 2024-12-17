@@ -4,16 +4,12 @@ import AppRoutes from "./AppRoutes";
 import HeaderMobile from "./components/HeaderMobile";
 import { useDispatch } from "react-redux";
 import { fetchCarts } from "./redux/slices/friendProfileSlice";
-import { fetchProfile } from "./redux/slices/profileSlice";
+
 import { ContextTheme } from "./context/contextTheme/ContextTheme";
 
 function App() {
   // const [widthWindow, setWidthWindow] = useState(window.innerWidth);
   const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   dispatch(fetchProfile()); // Завантажуємо дані профілю при рендері
-  // }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchCarts());

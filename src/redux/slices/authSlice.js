@@ -85,8 +85,6 @@ const authSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchRegistration.fulfilled, (state, action) => {
-        state.userId = action.payload.data.id;
-       
         state.error = null;
         state.loading = false;
       })
@@ -99,7 +97,7 @@ const authSlice = createSlice({
       })
       .addCase(fetchAuthorization.fulfilled, (state, action) => {
         state.userId = action.payload.id;
-        
+        state.email = action.payload.email;
         state.isAuthenticated = true;
         state.error = null;
         state.loading = false;

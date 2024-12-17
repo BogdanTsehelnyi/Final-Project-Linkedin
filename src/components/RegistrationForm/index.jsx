@@ -3,12 +3,13 @@ import { Formik, Form } from "formik";
 
 import { TextField, Button, Box, Typography, Stack } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
+import "dayjs/locale/en-gb";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useDispatch, useSelector } from "react-redux";
-import { createProfile, fetchProfile } from "../../redux/slices/profileSlice";
+import { createProfile, fetchProfileByProfileId } from "../../redux/slices/profileSlice";
 
 import { useNavigate } from "react-router-dom";
-import dayjs from "dayjs";
 
 const style = {
   position: "absolute",
@@ -52,7 +53,7 @@ export default function RegistrationForm() {
 
       if (result.meta.requestStatus === "fulfilled") {
         const profileId = result.payload.profileId;
-        dispatch(fetchProfile(profileId));
+        dispatch(fetchProfileByProfileId(profileId));
         navigate("/profile");
       }
     } catch (error) {
@@ -76,7 +77,6 @@ export default function RegistrationForm() {
         onSubmit={handleSubmit}
       >
         {({ values, handleChange, setFieldValue }) => (
-
           <Form>
             <TextField
               name="firstName"
@@ -95,13 +95,13 @@ export default function RegistrationForm() {
               margin="normal"
             />
 
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
               <DatePicker
                 label="Birth Date"
-                inputFormat="MM/DD/YYYY"
                 value={values.birthDate}
                 onChange={(value) => setFieldValue("birthDate", value)}
                 renderInput={(params) => <TextField {...params} fullWidth margin="normal" />}
+                sx={{ width: "100%", margin: "20px 0 10px" }}
               />
             </LocalizationProvider>
 
@@ -133,7 +133,6 @@ export default function RegistrationForm() {
             <Stack spacing={2} direction="row">
               <Button type="submit" variant="contained">
                 Save
-
               </Button>
             </Stack>
           </Form>

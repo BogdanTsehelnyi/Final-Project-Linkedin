@@ -20,8 +20,30 @@ export const createProfile = createAsyncThunk(
   }
 );
 
+// Запит для оновлення профілю
+
+export const updateProfile = createAsyncThunk(
+  "profile/updateProfile",
+  async ({ newProfileData, profileId }, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(
+        `https://final-project-link.onrender.com/profiles/${profileId}`,
+        newProfileData,
+        { withCredentials: true }
+      );
+      console.log("Запит для оновлення профілю пройшло успішно", response.data);
+      
+      console.log("response.status", response.status);
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
 // Запит для отримання профілю за profileId
-export const fetchProfile = createAsyncThunk(
+export const fetchProfileByProfileId = createAsyncThunk(
   "profile/fetchProfile",
   async (profileId, { rejectWithValue }) => {
     try {
@@ -97,19 +119,31 @@ const profileSlice = createSlice({
       })
 
       // Отримання профілю за profileId
-      .addCase(fetchProfile.pending, (state) => {
+      .addCase(fetchProfileByProfileId.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchProfile.fulfilled, (state, action) => {
+      .addCase(fetchProfileByProfileId.fulfilled, (state, action) => {
         state.loading = false;
         state.profileData = action.payload;
       })
-      .addCase(fetchProfile.rejected, (state, action) => {
+      .addCase(fetchProfileByProfileId.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
-
+      // Оновлення профілю
+      .addCase(updateProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.profileData = action.payload;
+      })
+      .addCase(updateProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
       // Отримання профілю за userId
       .addCase(fetchProfileByUserId.pending, (state) => {
         state.loading = true;
@@ -117,6 +151,7 @@ const profileSlice = createSlice({
       })
       .addCase(fetchProfileByUserId.fulfilled, (state, action) => {
         state.loading = false;
+        state.profileId = action.payload.profileId; // Зберігаємо profileId
         state.profileData = action.payload; // Оновлюємо профільні дані
       })
       .addCase(fetchProfileByUserId.rejected, (state, action) => {
