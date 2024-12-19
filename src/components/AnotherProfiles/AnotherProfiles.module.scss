@@ -1,49 +1,50 @@
-.container{
-    border: 1px solid #e0dfdc;
-    border-radius: 6px;
-    width: 30vw;
-    color: #181818;
-    padding: 10px 25px;
-    background-color: #ffffff;
+.container {
+  border: 1px solid #e0dfdc;
+  border-radius: 6px;
+  width: 30vw;
+  color: #181818;
+  padding: 10px 25px;
+  background-color: #ffffff;
 }
-.profileContainer{
+.profileContainer {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  border-bottom: 1px solid rgba($color: #534f4f, $alpha: 0.3);
+}
+
+.photoContainer {
+  display: block;
+  width: 70px;
+  height: 70px;
+  margin-top: 20px;
+
+  .anotherProfilePhoto {
     display: flex;
-    border-bottom: 1px solid rgba($color: #534f4f, $alpha: 0.3);
-}
-
-.anotherProfilePhotoContainer{
-    width: 115px;
-    height: 80px;
-}
-
-.anotherProfilePhoto{
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    margin-top: 20px;
-    object-fit: cover;
+    object-fit: cover; /* аналог background-size: cover */
+    object-position: center; /* аналог background-position: center */
+  }
 }
 
-.profileInfo{
-    margin-left: 50px;
-    margin-bottom: 30px;
+.profileInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.anotherProfileBtn{
-    background-color: #ffffff;
-    font-weight: 500;
-    font-size: 16px;
-    height: 50px;
-    border-radius: 12px;
-    cursor: pointer;
-}
 @media (max-width: 980px) {
-    .container{
-        width: 40vw;
-    }
+  .container {
+    width: 40vw;
+  }
 }
 @media (max-width: 787px) {
-    .container{
-        width: 100%;
-    }
+  .container {
+    width: 100%;
+  }
 }

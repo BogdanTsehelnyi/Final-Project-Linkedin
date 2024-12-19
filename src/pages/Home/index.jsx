@@ -5,7 +5,7 @@ import styles from "./Home.module.scss";
 import ConnectionAside from "../../components/ConnectionAside";
 import { useSelector } from "react-redux";
 
-import { fetchCarts } from "../../redux/slices/friendProfileSlice";
+
 import NavAsideMenu from "../../components/NavAsideMenu";
 import AsideRecommendation from "../../components/AsideRecommendation";
 import AsideFooter from "../../components/AsideFooter";

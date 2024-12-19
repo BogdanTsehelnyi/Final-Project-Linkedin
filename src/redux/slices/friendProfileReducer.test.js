@@ -1,10 +1,15 @@
-import friendsProfileReducer, { addFriend, cancelRequest, removeFriend, fetchCarts } from './friendProfileSlice';
-import { configureStore } from '@reduxjs/toolkit';
+import friendsProfileReducer, {
+  addFriend,
+  cancelRequest,
+  removeFriend,
+  fetchCarts,
+} from "./profileRecommendationSlice";
+import { configureStore } from "@reduxjs/toolkit";
 
 global.fetch = jest.fn(() =>
   Promise.resolve({
     ok: true,
-    json: () => Promise.resolve([{ id: 1, name: 'Test User' }]),  // Мокаем массив друзей
+    json: () => Promise.resolve([{ id: 1, name: "Test User" }]), // Мокаем массив друзей
   })
 );
 
@@ -16,31 +21,30 @@ const initialState = {
   pendingRequests: {},
 };
 
-describe('Friends reducer logic', () => {
-  const newFriend = { id: 1, name: 'John Doe' };
+describe("Friends reducer logic", () => {
+  const newFriend = { id: 1, name: "John Doe" };
 
   // Тест на добавление нового друга
-  test('should add new friend and remove from pendingRequests', () => {
+  test("should add new friend and remove from pendingRequests", () => {
     const previousState = {
       friendsData: [],
       loading: false,
       error: null,
-      pendingRequests: { 1: true },  // Друг в состоянии "Pending"
+      pendingRequests: { 1: true }, // Друг в состоянии "Pending"
     };
 
     const expectedState = {
       friendsData: [{ ...newFriend, isFriend: true }],
       loading: false,
       error: null,
-      pendingRequests: {},  // Удаляем из списка "Pending"
+      pendingRequests: {}, // Удаляем из списка "Pending"
     };
 
-    expect(friendsProfileReducer(previousState, addFriend(newFriend)))
-      .toEqual(expectedState);
+    expect(friendsProfileReducer(previousState, addFriend(newFriend))).toEqual(expectedState);
   });
 
   // Тест на отмену запроса
-  test('should cancel request and remove from pendingRequests', () => {
+  test("should cancel request and remove from pendingRequests", () => {
     const previousState = {
       friendsData: [newFriend],
       loading: false,
@@ -49,38 +53,36 @@ describe('Friends reducer logic', () => {
     };
 
     const expectedState = {
-      friendsData: [newFriend],  // Оставляем друга в списке, но удаляем из списка запросов
+      friendsData: [newFriend], // Оставляем друга в списке, но удаляем из списка запросов
       loading: false,
       error: null,
       pendingRequests: {},
     };
 
-    expect(friendsProfileReducer(previousState, cancelRequest(newFriend)))
-      .toEqual(expectedState);
+    expect(friendsProfileReducer(previousState, cancelRequest(newFriend))).toEqual(expectedState);
   });
 
   // Тест на удаление друга
-  test('should remove friend by id', () => {
+  test("should remove friend by id", () => {
     const previousState = {
-      friendsData: [newFriend, { id: 2, name: 'Jane Doe' }],
+      friendsData: [newFriend, { id: 2, name: "Jane Doe" }],
       loading: false,
       error: null,
       pendingRequests: {},
     };
 
     const expectedState = {
-      friendsData: [{ id: 2, name: 'Jane Doe' }],
+      friendsData: [{ id: 2, name: "Jane Doe" }],
       loading: false,
       error: null,
       pendingRequests: {},
     };
 
-    expect(friendsProfileReducer(previousState, removeFriend(1)))
-      .toEqual(expectedState);
+    expect(friendsProfileReducer(previousState, removeFriend(1))).toEqual(expectedState);
   });
 
   // Тест на состояние "pending" во время загрузки данных
-  test('should set loading to true when fetchCarts is pending', () => {
+  test("should set loading to true when fetchCarts is pending", () => {
     const action = { type: fetchCarts.pending.type };
     const state = friendsProfileReducer(initialState, action);
 
@@ -92,12 +94,12 @@ describe('Friends reducer logic', () => {
   });
 
   // Тест на успешную загрузку данных
-  test('should set allProfiles data and loading to false when fetchCarts is fulfilled', () => {
-    const action = { type: fetchCarts.fulfilled.type, payload: [{ id: 1, name: 'Test Friend' }] };
+  test("should set allProfiles data and loading to false when fetchCarts is fulfilled", () => {
+    const action = { type: fetchCarts.fulfilled.type, payload: [{ id: 1, name: "Test Friend" }] };
     const state = friendsProfileReducer(initialState, action);
 
     expect(state).toEqual({
-      allProfiles: [{ id: 1, name: 'Test Friend' }],
+      allProfiles: [{ id: 1, name: "Test Friend" }],
       friendsData: [],
       loading: false,
       error: null,
@@ -106,10 +108,10 @@ describe('Friends reducer logic', () => {
   });
 
   // Тест на ошибку загрузки данных
-  test('should set error message and loading to false when fetchCarts is rejected', () => {
-    const action = { 
-      type: fetchCarts.rejected.type, 
-      error: { message: 'Failed to fetch friends data' } 
+  test("should set error message and loading to false when fetchCarts is rejected", () => {
+    const action = {
+      type: fetchCarts.rejected.type,
+      error: { message: "Failed to fetch friends data" },
     };
     const state = friendsProfileReducer(initialState, action);
 
@@ -117,13 +119,13 @@ describe('Friends reducer logic', () => {
       allProfiles: [],
       friendsData: [],
       loading: false,
-      error: 'Failed to fetch friends data',
+      error: "Failed to fetch friends data",
       pendingRequests: {},
     });
   });
 
   // Тест на добавление уже существующего друга
-  test('should not add friend if already exists', () => {
+  test("should not add friend if already exists", () => {
     const previousState = {
       friendsData: [newFriend],
       loading: false,
@@ -139,7 +141,7 @@ describe('Friends reducer logic', () => {
   });
 
   // Тест асинхронной функции с мок-функцией fetch
-  test('should handle fetchCarts async thunk', async () => {
+  test("should handle fetchCarts async thunk", async () => {
     const store = configureStore({ reducer: friendsProfileReducer });
 
     // Вызываем асинхронный thunk
@@ -148,10 +150,10 @@ describe('Friends reducer logic', () => {
     const state = store.getState();
 
     // Проверяем, что моканный fetch был вызван с правильным URL
-    expect(global.fetch).toHaveBeenCalledWith('/API/anotherProfile.json');
+    expect(global.fetch).toHaveBeenCalledWith("/API/anotherProfile.json");
 
     // Проверяем, что данные друзей были успешно сохранены в состоянии
-    expect(state.allProfiles).toEqual([{ id: 1, name: 'Test User' }]);  // Поскольку fetch мокаем массив друзей
+    expect(state.allProfiles).toEqual([{ id: 1, name: "Test User" }]); // Поскольку fetch мокаем массив друзей
     expect(state.loading).toBe(false);
     expect(state.error).toBe(null);
   });
