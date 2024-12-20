@@ -18,6 +18,7 @@ export default function Chat() {
   const [idOtherProfile, setIdOtherProfile] = useState(null);
   // console.log(data);
   // console.log(idOtherProfile);
+  //test
 
   const handleIdProfile = (id, name, surname) => {
     setIdOtherProfile(id);
@@ -35,7 +36,6 @@ export default function Chat() {
     };
     fetchDataLit();
   }, []);
-  //fdfsdfdfd
 
   //------------------------ Отримання усіх повідомлень з користувачем
   const { profileData } = useSelector((state) => state.profile);
@@ -49,6 +49,8 @@ export default function Chat() {
         params: {
           id1: currentIdUser,
           id2: idOtherProfile,
+          page: 0,
+          size: 300,
         },
       });
       console.log(response.data);
@@ -76,7 +78,7 @@ export default function Chat() {
     console.log(response.data);
 
     if (response.status === 200) {
-      setMessage([...message, response.data]);
+      setMessage([response.data, ...message]);
       setNewMessage("");
     }
   };
@@ -87,6 +89,13 @@ export default function Chat() {
       handleSendMessage();
     }
   };
+
+  // Автоматическая прокрутка вниз
+  useEffect(() => {
+    if (endMessageRef.current) {
+      endMessageRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [message]);
   return (
     <div className={styles.wrapper}>
       <ul className={styles.listChats}>
@@ -128,17 +137,20 @@ export default function Chat() {
           Message with {headerName.name} {headerName.surname}
         </div>
         <div className={styles.chatWrapper}>
-          {message.map((mess) =>
-            mess.senderId === currentIdUser ? (
-              <p key={mess.messageId} className={styles.sending}>
-                You: {mess.content}
-              </p>
-            ) : (
-              <p key={mess.messageId} className={styles.pending}>
-                {mess.content}
-              </p>
-            )
-          )}
+          {message
+            .slice()
+            .reverse()
+            .map((mess) =>
+              mess.senderId === currentIdUser ? (
+                <p key={mess.messageId} className={styles.sending}>
+                  You: {mess.content}
+                </p>
+              ) : (
+                <p key={mess.messageId} className={styles.pending}>
+                  {mess.content}
+                </p>
+              )
+            )}
           <div ref={endMessageRef}></div>
         </div>
         <textarea
