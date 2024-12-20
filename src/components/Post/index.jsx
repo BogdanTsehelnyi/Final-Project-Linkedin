@@ -10,7 +10,7 @@ export default function Post() {
     <li className={styles.postWrapper}>
       <div className={styles.descriptionProfile}>
         <a className={styles.postAvatarContainer} href="#">
-          <img src="./image/temporaryImgs/tempAvatar.png" alt="avatar" />
+          <img src="/image/temporaryImgs/tempAvatar.png" alt="avatar" />
         </a>
         <div className={styles.profileData}>
           <h3 className={styles.nameProfile}>Your Band</h3>
@@ -24,7 +24,7 @@ export default function Post() {
       </div>
 
       <div className={styles.postImgContainer}>
-        <img src="./image/temporaryImgs/contentImg.png" alt="postImage" />
+        <img src="/image/temporaryImgs/contentImg.png" alt="postImage" />
       </div>
       <div className={styles.reactionContainer}>
         <a className={styles.likesContainer}>

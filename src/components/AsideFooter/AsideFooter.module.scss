@@ -37,7 +37,7 @@
       display: block;
       width: 10px;
       height: 5px;
-      background-image: url("./image/publication/triangleBlack.svg");
+      background-image: url("/image/publication/triangleBlack.svg");
       background-position: center;
       background-repeat: no-repeat;
 
@@ -48,7 +48,7 @@
     }
 
     &:hover::after {
-      background-image: url("./image/publication/triangleBlue.svg");
+      background-image: url("/image/publication/triangleBlue.svg");
     }
   }
 }

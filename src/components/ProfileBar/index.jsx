@@ -5,6 +5,7 @@ import { setProfileData } from "../../redux/slices/profileSlice";
 import { logout } from "../../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 import { logoutProfile } from "../../redux/slices/profileSlice";
+import { resetProfiles } from "../../redux/slices/otherProfilesSlice";
 
 export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
   const { profileData, profileId, loading, error } = useSelector((state) => state.profile);
@@ -15,14 +16,15 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [profilePicture, setProfilePicture] = useState("./image/profile/photo_ava_default.png");
+  const [profilePicture, setProfilePicture] = useState("/image/profile/photo_ava_default.png");
   const [backgroundImage, setBackgroundImage] = useState(
-    "./image/profile/profileBackgroundDefault.svg"
+    "/image/profile/profileBackgroundDefault.svg"
   );
 
   const handleLogout = async () => {
     dispatch(logout());
     dispatch(logoutProfile());
+    dispatch(resetProfiles());
     navigate("/login");
   };
 

@@ -3,9 +3,9 @@ import styles from "./AsideRecommendation.module.scss";
 import FollowUnFollowBtn from "../common/FollowUnFollowBtn";
 
 export default function AsideRecommendation({ profileData = [] }) {
-  const profilePicture = profileData?.profilePicture || "./image/profile/photo_ava_default.png";
+  const profilePicture = profileData?.profilePicture || "/image/profile/photo_ava_default.png";
 
-  profileData?.backgroundImageUrl || "./image/profile/profileBackgroundDefault.svg";
+  profileData?.backgroundImageUrl || "/image/profile/profileBackgroundDefault.svg";
 
   return (
     <div className={styles.recommendationsContainer}>

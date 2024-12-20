@@ -5,7 +5,6 @@ import styles from "./Home.module.scss";
 import ConnectionAside from "../../components/ConnectionAside";
 import { useSelector } from "react-redux";
 
-
 import NavAsideMenu from "../../components/NavAsideMenu";
 import AsideRecommendation from "../../components/AsideRecommendation";
 import AsideFooter from "../../components/AsideFooter";
@@ -29,11 +28,11 @@ export default function Home() {
 
   const country = profileData?.location?.country || "Unknown country";
   const city = profileData?.location?.city || "Unknown city";
-  const profilePicture = profileData?.profilePicture || "./image/profile/photo_ava_default.png";
+  const profilePicture = profileData?.profilePicture || "/image/profile/photo_ava_default.png";
   const firstName = profileData?.firstName || "Unknown";
   const lastName = profileData?.lastName || "Unknown";
   const backgroundUrl =
-    profileData?.backgroundImageUrl || "./image/profile/profileBackgroundDefault.svg";
+    profileData?.backgroundImageUrl || "/image/profile/profileBackgroundDefault.svg";
 
   return (
     <>

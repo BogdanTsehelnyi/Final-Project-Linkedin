@@ -5,7 +5,7 @@ const BASE_URL = "https://final-project-link.onrender.com";
 
 // Запит на отримання профілів
 export const fetchOtherProfiles = createAsyncThunk(
-  "profileRecommendation/fetchOtherProfiles",
+  "allProfiles/fetchOtherProfiles",
   async ({ userId, page, limit }, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${BASE_URL}/profiles?page=${page}&limit=${limit}`, {
@@ -23,15 +23,21 @@ export const fetchOtherProfiles = createAsyncThunk(
 
 // Ініціалізація початкового стану
 const initialState = {
-  allProfiles: [], // Усі доступні профілі
+  allProfilesData: [], // Усі доступні профілі
   loading: false, // Стан завантаження
   error: null, // Для збереження можливих помилок
 };
 
-const profileRecommendationSlice = createSlice({
-  name: "profileRecommendation",
+const otherProfilesSlice = createSlice({
+  name: "allProfiles",
   initialState,
-  reducers: {},
+  reducers: {
+    resetProfiles: (state) => {
+      state.allProfilesData = [];
+      state.loading = false;
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchOtherProfiles.pending, (state) => {
@@ -40,7 +46,15 @@ const profileRecommendationSlice = createSlice({
       })
       .addCase(fetchOtherProfiles.fulfilled, (state, action) => {
         state.loading = false;
-        state.allProfiles = action.payload;
+
+        const uniqueProfiles = action.payload.filter(
+          (newProfile) =>
+            !state.allProfilesData.some(
+              (existingProfile) => existingProfile.userId === newProfile.userId
+            )
+        );
+
+        state.allProfilesData.push(...uniqueProfiles);
       })
       .addCase(fetchOtherProfiles.rejected, (state, action) => {
         state.loading = false;
@@ -48,6 +62,6 @@ const profileRecommendationSlice = createSlice({
       });
   },
 });
-
+export const { resetProfiles } = otherProfilesSlice.actions;
 // Експортуємо редюсер
-export default profileRecommendationSlice.reducer;
+export default otherProfilesSlice.reducer;

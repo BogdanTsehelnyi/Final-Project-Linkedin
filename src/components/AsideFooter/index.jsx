@@ -38,7 +38,7 @@ export default function AsideFooter() {
         </li>
       </ul>
       <div className={styles.copyrightInfo}>
-        <img src="./image/main/Logo.svg" alt="Logo" />
+        <img src="/image/main/Logo.svg" alt="Logo" />
         <p> Linkedin Corporation © 2024</p>
       </div>
     </footer>
