@@ -1,12 +1,11 @@
 import React from "react";
 import styles from "./AsideRecommendation.module.scss";
+import FollowUnFollowBtn from "../common/FollowUnFollowBtn";
 
 export default function AsideRecommendation({ profileData = [] }) {
+  const profilePicture = profileData?.profilePicture || "/image/profile/photo_ava_default.png";
 
-  const profilePicture = profileData?.profilePicture || "./image/profile/photo_ava_default.png";
-
-  profileData?.backgroundImageUrl || "./image/profile/profileBackgroundDefault.svg";
-
+  profileData?.backgroundImageUrl || "/image/profile/profileBackgroundDefault.svg";
 
   return (
     <div className={styles.recommendationsContainer}>
@@ -17,30 +16,22 @@ export default function AsideRecommendation({ profileData = [] }) {
       <ul className={styles.usersListContainer}>
         <li className={styles.usersItemContainer}>
           <a className={styles.userAvatarContainer} href="#">
-
             <img src={profilePicture} alt="avatar" />
-
-            
-
           </a>
           <div className={styles.infoContainer}>
             <p className={styles.userName}>Mykhailo Fedorov</p>
             <p className={styles.userInformation}>Lorem ipsum dolor sit amet consectetur</p>
-            <button className={styles.followBtn}>Follow</button>
+            <FollowUnFollowBtn />
           </div>
         </li>
         <li className={styles.usersItemContainer}>
           <a className={styles.userAvatarContainer} href="#">
-
             <img src={profilePicture} alt="avatar" />
-
-            
-
           </a>
           <div className={styles.infoContainer}>
             <p className={styles.userName}>Mykhailo Fedorov</p>
             <p className={styles.userInformation}>Lorem ipsum dolor sit amet consectetur</p>
-            <button className={styles.followBtn}>Follow</button>
+            <FollowUnFollowBtn />
           </div>
         </li>
       </ul>

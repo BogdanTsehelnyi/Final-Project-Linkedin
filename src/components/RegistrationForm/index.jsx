@@ -107,7 +107,7 @@ export default function RegistrationForm() {
 
             <TextField
               name="position"
-              label="Position"
+              label="Specialization"
               value={values.position}
               onChange={handleChange}
               fullWidth

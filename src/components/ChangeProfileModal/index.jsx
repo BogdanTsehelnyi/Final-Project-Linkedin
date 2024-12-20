@@ -126,7 +126,7 @@ export default function ChangeProfileModal() {
 
               <TextField
                 name="position"
-                label="Position"
+                label="Specialization"
                 value={values.position}
                 onChange={handleChange}
                 fullWidth
@@ -150,7 +150,7 @@ export default function ChangeProfileModal() {
               />
               <TextField
                 name="status"
-                label="status"
+                label="Status"
                 value={values.status}
                 onChange={handleChange}
                 fullWidth

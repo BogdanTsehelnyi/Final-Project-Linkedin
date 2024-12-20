@@ -3,17 +3,12 @@ import "./App.css";
 import AppRoutes from "./AppRoutes";
 import HeaderMobile from "./components/HeaderMobile";
 import { useDispatch } from "react-redux";
-import { fetchCarts } from "./redux/slices/friendProfileSlice";
 
 import { ContextTheme } from "./context/contextTheme/ContextTheme";
 
 function App() {
   // const [widthWindow, setWidthWindow] = useState(window.innerWidth);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchCarts());
-  }, [dispatch]);
 
   // useEffect(() => {
   //   const resizeWidth = () => setWidthWindow(window.innerWidth);

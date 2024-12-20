@@ -14,6 +14,8 @@ import FullProfileInfoModal from "../../components/FullProfileInfoModal";
 import ProfileBar from "../../components/ProfileBar";
 import ProfileFooter from "../../components/ProfileFooter";
 
+import Preloader from "../../components/common/Preloader";
+
 export default function Profile() {
   const dispatch = useDispatch();
 
@@ -33,7 +35,7 @@ export default function Profile() {
           handleOpenModal={openProfileModalHandler}
           handleOpenModalInfo={openInfoModalHandler}
         />
-        {/* <AnotherProfiles /> */}
+        <AnotherProfiles />
       </div>
       <ChangeProfileModal />
       <FullProfileInfoModal open={openInfoModal} handleClose={closeInfoModalHandler} />
