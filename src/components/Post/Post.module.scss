@@ -105,6 +105,7 @@
   button {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 5px;
     cursor: pointer;
     border: none;
@@ -121,4 +122,78 @@
   height: 1px;
   background-color: #bfbebb;
   margin: 15px 0 4px;
+}
+
+
+.commentModal {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.commentInput {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: none;
+}
+
+.addCommentButton {
+  width: 40px;
+  height: 40px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  position: absolute;
+  left: 58%;
+  margin-top: 5px;
+}
+
+.commentList {
+  margin-top: 10px;
+}
+
+.commentItem {
+  margin-bottom: 5px;
+  padding: 5px;
+  border: 1px solid #ddd;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  height: 50px;
+  font-size: 15px;
+  color: black ;
+ 
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+.noComments {
+  color: black;
+  font-size: 15px;
+}
+.deleteCommentButton {
+  margin-left: 10px;
+  padding: 2px 5px;
+ 
+  
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.deleteCommentButton:hover {
+  background-color: #ff7875;
+}
+
+.input-comment{
+  position: relative;
+  
 }
