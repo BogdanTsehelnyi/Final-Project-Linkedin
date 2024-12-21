@@ -3,7 +3,7 @@ import authReducer from "./slices/authSlice";
 import profileReducer from "./slices/profileSlice";
 import modalReducer from "./slices/modal";
 import otherProfilesReducer from "./slices/otherProfilesSlice";
-// import friendsReducer from "./slices/friendsSlice";
+import subscriptionReducer from "./slices/subscriptionSlice";
 
 const store = configureStore({
   reducer: {
@@ -11,7 +11,7 @@ const store = configureStore({
     changeProfileModal: modalReducer,
     auth: authReducer,
     allProfiles: otherProfilesReducer, // Використовується state.allProfiles
-    // friends: friendsReducer, // Використовується state.friends
+    subscription: subscriptionReducer,
   },
 });
 

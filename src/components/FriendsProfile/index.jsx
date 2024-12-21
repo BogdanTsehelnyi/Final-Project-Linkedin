@@ -1,42 +1,58 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-// import { removeFriend } from "../../redux/slices/profileRecommendationSlice"; // Подключаем действие removeFriend
 import styles from "./FriendsProfile.module.scss";
 import { useNavigate } from "react-router-dom";
+import { fetchQuantitySubscribed, fetchSubscriptions } from "../../redux/slices/subscriptionSlice";
 
 export default function FriendsProfile() {
-  const friends = useSelector((state) => state.friend.friendsData); // Получаем список друзей из состояния
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Удаление друга
-  // const handleRemoveFriend = (id) => {
-  //   dispatch(removeFriend(id)); // Удаляем друга по ID
-  // };
+  const { quantitySubscribed, subscribedData } = useSelector((state) => state.subscription);
+  const userId = useSelector((state) => state.auth.userId);
+  console.log("subscribedData", subscribedData);
+  
 
-  // Переход к профилю друга
-  const handleNavigateToProfile = (id) => {
-    navigate(`/profile/${id}`); // Переходим на страницу профиля
+  // Завантаження кількості підписок, якщо це значення null
+  useEffect(() => {
+    if (quantitySubscribed === null) {
+      dispatch(fetchQuantitySubscribed(userId));
+    }
+  }, [dispatch, quantitySubscribed, userId]);
+
+  // Завантаження підписок користувача, якщо кількість підписок була отримана
+  useEffect(() => {
+    if (quantitySubscribed !== null && quantitySubscribed > 0) {
+      dispatch(fetchSubscriptions({ userId, page: 0, size: quantitySubscribed }));
+    }
+  }, [dispatch, quantitySubscribed, userId]);
+
+  // Переход до профілю друга
+  const handleNavigateToProfile = (userId) => {
+    navigate(`/profile/${userId}`); // Переходимо на сторінку профілю
   };
 
   return (
     <div className={styles.container}>
       <h3 className={styles.friendsProfileTitle}>Your Friends</h3>
-      {friends.length > 0 ? (
-        friends.map((friend) => (
-          <div className={styles.friendContainer} key={friend.id}>
+      {quantitySubscribed > 0 ? (
+        subscribedData.map((friend) => (
+          <div className={styles.friendContainer} key={friend.userId}>
             <div className={styles.friendBox}>
               <img
-                onClick={() => handleNavigateToProfile(friend.id)}
+                onClick={() => handleNavigateToProfile(friend.userId)}
                 className={styles.friendPhoto}
-                src={friend.profilePicture || "/path/to/default/image.jpg"}
+                src={
+                  friend.headerPhotoUrl === "" || friend.headerPhotoUrl === undefined
+                    ? "/image/profile/photo_ava_default.png"
+                    : friend.headerPhotoUrl
+                }
                 alt="profile"
               />
               <div className={styles.friendInfo}>
                 <h3 className={styles.friendName}>
                   {friend.name} {friend.surname}
                 </h3>
-                <p className={styles.friendHeadline}>{friend.position}</p>
               </div>
             </div>
             <div className={styles.btnBox}>

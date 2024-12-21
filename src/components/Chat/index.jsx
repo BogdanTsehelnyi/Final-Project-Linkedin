@@ -42,6 +42,8 @@ export default function Chat() {
   const currentIdUser = profileData.userId;
   const [message, setMessage] = useState([]);
 
+
+  
   useEffect(() => {
     const getAllMessage = async () => {
       const response = await axios.get("https://final-project-link.onrender.com/messages/chat", {

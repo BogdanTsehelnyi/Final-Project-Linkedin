@@ -4,7 +4,6 @@ import ChatMiniBar from "../ChatMiniBar";
 import PageWrapper from "../Wrappers/PageWrapper";
 import AsideFooter from "../AsideFooter";
 import ProfileDescBar from "../../components/ProfileDescBar";
-import { removeFriend } from "../../redux/slices/friendsSlice";
 
 export default function NotificationsBar() {
   const friends = useSelector((state) => state.friends.friendsData || []); // Безпечний доступ до friendsData
