@@ -165,6 +165,7 @@ const Auth = () => {
               </label>
             )}
 
+
             {/* Показ сообщения об ошибке */}
             {error && <p className="error">{error}</p>}
 
