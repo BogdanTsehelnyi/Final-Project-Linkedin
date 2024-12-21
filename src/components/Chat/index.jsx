@@ -27,9 +27,12 @@ export default function Chat() {
 
   useEffect(() => {
     const fetchDataLit = async () => {
-      const response = await axios.get("https://final-project-link.onrender.com/profiles", {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        "https://final-project-link.onrender.com/profiles",
+        {
+          withCredentials: true,
+        }
+      );
       setData(response.data);
       // console.log(response.data);
     };
@@ -44,13 +47,16 @@ export default function Chat() {
 
   useEffect(() => {
     const getAllMessage = async () => {
-      const response = await axios.get("https://final-project-link.onrender.com/messages/chat", {
-        withCredentials: true,
-        params: {
-          id1: currentIdUser,
-          id2: idOtherProfile,
-        },
-      });
+      const response = await axios.get(
+        "https://final-project-link.onrender.com/messages/chat",
+        {
+          withCredentials: true,
+          params: {
+            id1: currentIdUser,
+            id2: idOtherProfile,
+          },
+        }
+      );
       console.log(response.data);
       setMessage(response.data);
     };
@@ -87,6 +93,7 @@ export default function Chat() {
       handleSendMessage();
     }
   };
+
   return (
     <div className={styles.wrapper}>
       <ul className={styles.listChats}>
@@ -104,11 +111,7 @@ export default function Chat() {
                 <div className={styles.imgWrapper}>
                   <img
                     className={styles.img}
-                    src={
-                      user.headerPhotoUrl === "" || user.headerPhotoUrl === undefined
-                        ? "/image/profile/photo_ava_default.png"
-                        : user.headerPhotoUrl
-                    }
+                    src={user.headerPhotoUrl}
                     alt="photo"
                   />
                 </div>
@@ -131,7 +134,7 @@ export default function Chat() {
           {message.map((mess) =>
             mess.senderId === currentIdUser ? (
               <p key={mess.messageId} className={styles.sending}>
-                You: {mess.content}
+               You: {mess.content}
               </p>
             ) : (
               <p key={mess.messageId} className={styles.pending}>
