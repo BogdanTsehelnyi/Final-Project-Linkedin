@@ -2,16 +2,18 @@ import React, { useState } from "react";
 import { Field, Form, Formik } from "formik";
 // import * as Yup from "yup";
 import styles from "./PostForm.module.scss"; // Імпорт стилів
+import { uploadFile } from "../../utils/uploadFile";
 
 const PostForm = () => {
   const [photoPreview, setPhotoPreview] = useState(null);
-
+  const folderName = "contentPhoto";
   const initialValues = {
     title: "",
     content: "",
     photoUrl: null,
   };
 
+  // 1731982417325
   return (
     <Formik
       initialValues={initialValues}
@@ -71,11 +73,18 @@ const PostForm = () => {
                   type="file"
                   accept="image/*"
                   className={styles.photoUploadInput}
-                  onChange={(event) => {
-                    const file = event.target.files[0];
-                    setFieldValue("photoUrl", file);
-                    if (file) {
-                      setPhotoPreview(URL.createObjectURL(file));
+                  onChange={async (event) => {
+                    const fileImg = event.target.files[0];
+                    if (fileImg) {
+                      try {
+                        const uploadedUrl = await uploadFile(fileImg, folderName);
+                        console.log("uploadedUrl", uploadedUrl);
+
+                        setFieldValue("photoUrl", uploadedUrl);
+                        setPhotoPreview(uploadedUrl);
+                      } catch (error) {
+                        console.error("Upload failed:", error);
+                      }
                     }
                   }}
                 />

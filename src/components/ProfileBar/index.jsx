@@ -6,8 +6,12 @@ import { logout } from "../../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 import { logoutProfile } from "../../redux/slices/profileSlice";
 import { resetProfiles } from "../../redux/slices/otherProfilesSlice";
+import { updateProfile } from "../../redux/slices/profileSlice";
+import { uploadFile } from "../../utils/uploadFile";
 
 export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
+  const folderName = "userAvatar";
+
   const { profileData, profileId, loading, error } = useSelector((state) => state.profile);
   const userId = useSelector((state) => state.auth.userId);
 
@@ -34,15 +38,29 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
     }
   }, [profileData.profilePicture]);
 
-  const handleImageUpload = (event) => {
+  const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfilePicture(reader.result);
-        dispatch(setProfileData({ ...profileData, profilePicture: reader.result }));
-      };
-      reader.readAsDataURL(file);
+      try {
+        // Завантажуємо файл на сервер за допомогою функції uploadFile
+        const uploadedFileUrl = await uploadFile(file, folderName);
+
+        // Оновлюємо профіль, замінюючи headerPhotoUrl на новий URL
+        const updatedProfileData = {
+          ...profileData,
+          headerPhotoUrl: uploadedFileUrl, // Оновлене значення URL для headerPhotoUrl
+        };
+        console.log("Оновлений профіль:", updatedProfileData);
+
+        // Відправляємо оновлений профіль на сервер
+        dispatch(updateProfile({ newProfileData: updatedProfileData, profileId }));
+
+        // Оновлюємо локальний стан з новим профілем
+        setProfilePicture(uploadedFileUrl); // Для відображення нового зображення на клієнті
+        dispatch(setProfileData(updatedProfileData)); // Оновлюємо профіль у Redux
+      } catch (error) {
+        console.error("Помилка при завантаженні зображення:", error);
+      }
     }
   };
 
