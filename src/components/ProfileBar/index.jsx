@@ -45,12 +45,19 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
         // Завантажуємо файл на сервер за допомогою функції uploadFile
         const uploadedFileUrl = await uploadFile(file, folderName);
 
-        // Оновлюємо профіль, замінюючи headerPhotoUrl на новий URL
+        // Створюємо об'єкт, який очікує сервер
         const updatedProfileData = {
-          ...profileData,
-          headerPhotoUrl: uploadedFileUrl, // Оновлене значення URL для headerPhotoUrl
+          userId: profileData.userId,
+          name: profileData.name,
+          surname: profileData.surname,
+          birthdate: profileData.birthdate,
+          status: profileData.status,
+          headerPhotoUrl: uploadedFileUrl, // Оновлений URL для зображення
+          position: profileData.position,
+          address: profileData.address,
         };
-        console.log("Оновлений профіль:", updatedProfileData);
+
+        console.log("Оновлений профіль для відправки:", updatedProfileData);
 
         // Відправляємо оновлений профіль на сервер
         dispatch(updateProfile({ newProfileData: updatedProfileData, profileId }));
@@ -89,10 +96,10 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
         className={styles.backgroundProfile}
         style={{ backgroundImage: `url(${backgroundImage})` }}
       >
-        <label className={styles.customFileBacgroundUpload}>
-          <img src="/image/main/Edit.svg" alt="Редагувати фон" />
-          <input type="file" accept="image/*" onChange={handleBackgroundUpload} />
-        </label>
+        {/* <label className={styles.customFileBacgroundUpload}> 
+        <img src="/image/main/Edit.svg" alt="Редагувати фон" /> 
+        <input type="file" accept="image/*" onChange={handleBackgroundUpload} /> 
+      </label> */}
         <div className={styles.photoContainer}>
           <label className={styles.customFileUpload}>
             <img src={profilePicture} alt="Профіль" />
@@ -113,7 +120,7 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
       </button>
 
       <button className={styles.logoutButton} onClick={handleLogout}>
-        Выйти из аккаунта
+        Logout
       </button>
     </div>
   );

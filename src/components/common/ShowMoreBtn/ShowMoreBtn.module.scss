@@ -1,0 +1,34 @@
+.ShowMoreBtn {
+  cursor: pointer;
+
+  color: #666;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 150%;
+  border-radius: 16px;
+  //   border: 1px solid #666;
+  border: none;
+  padding: 5px 34px 5px 16px;
+  position: relative;
+  background-color: #fff;
+  &:hover {
+    // border: 1px solid #666;
+    background-color: #dcdbdb;
+    // background-color: whitesmoke;
+  }
+  &::after {
+    content: "";
+    display: block;
+    width: 14.374px;
+    height: 9.855px;
+    background-image: url("/image/main/ArrowRight.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    // transform: translate(-50%, -50%);
+    transform: translateY(-50%);
+  }
+}
