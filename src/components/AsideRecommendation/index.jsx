@@ -1,9 +1,12 @@
 import React from "react";
 import styles from "./AsideRecommendation.module.scss";
-import FollowUnFollowBtn from "../common/FollowUnFollowBtn";
+import ShowMoreBtn from "../common/ShowMoreBtn";
 
 export default function AsideRecommendation({ profileData = [] }) {
-  const profilePicture = profileData?.profilePicture || "/image/profile/photo_ava_default.png";
+  const profilePicture =
+    profileData?.headerPhotoUrl === "" || profileData?.headerPhotoUrl === undefined
+      ? "/image/profile/photo_ava_default.png"
+      : profileData?.headerPhotoUrl;
 
   profileData?.backgroundImageUrl || "/image/profile/profileBackgroundDefault.svg";
 
@@ -21,7 +24,6 @@ export default function AsideRecommendation({ profileData = [] }) {
           <div className={styles.infoContainer}>
             <p className={styles.userName}>Mykhailo Fedorov</p>
             <p className={styles.userInformation}>Lorem ipsum dolor sit amet consectetur</p>
-            <FollowUnFollowBtn />
           </div>
         </li>
         <li className={styles.usersItemContainer}>
@@ -31,14 +33,10 @@ export default function AsideRecommendation({ profileData = [] }) {
           <div className={styles.infoContainer}>
             <p className={styles.userName}>Mykhailo Fedorov</p>
             <p className={styles.userInformation}>Lorem ipsum dolor sit amet consectetur</p>
-            <FollowUnFollowBtn />
           </div>
         </li>
       </ul>
-      <a className={styles.showMoreLink}>
-        <p>See all recommendation</p>
-        <span></span>
-      </a>
+      <ShowMoreBtn />
     </div>
   );
 }

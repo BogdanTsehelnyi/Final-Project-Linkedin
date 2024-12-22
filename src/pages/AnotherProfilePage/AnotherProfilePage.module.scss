@@ -1,35 +1,23 @@
-.anotherProfileBox{
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    padding: 30px 100px;
+.anotherProfileBox {
+  display: flex;
+  gap: 50px; /* Відповідає стилю .profileBox */
+  justify-content: center;
+  margin-top: 20px;
+
+  :first-child {
+    align-self: start; /* Додаємо, як у .profileBox */
+  }
 }
 
 @media (max-width: 787px) {
-    .anotherProfileBox{
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 50px;
-        margin: 20px 30px;
-    }
+  .anotherProfileBox {
+    display: grid;
+    grid-template-columns: 1fr; /* Зміна на одноколонковий вигляд для мобільних */
+    gap: 50px;
+    margin: 20px 30px; /* Аналогічний відступ */
+  }
 }
 
-.fixedImg {
-    position: fixed;
-    right: 80px;
-    top: 130px;
-    img {
-        border-radius: 15px;
-    }
+.anotherProfileFooter {
+  margin-top: 40px; /* Як у .profileFooter */
 }
-
-@media (max-width: 787px) {
-    .fixedImg {
-        right: 20px; /* Зменшення відступу на мобільних */
-        top: 100px; /* Регулювання відступу зверху */
-        img {
-            width: 80px; /* Зменшення розміру зображення */
-        }
-    }
-}
-
