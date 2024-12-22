@@ -2,90 +2,56 @@ import { useEffect, useRef, useState, useContext } from "react";
 import { ContextTheme } from "../../context/contextTheme/ContextTheme";
 import light from "./Chat.module.scss";
 import dark from "./ChatDark.module.scss";
-import axios from "axios";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchAllUsers, fetchAllMessage, postMessage, updateNewMessage, clearNewMessage } from "../../redux/slices/chatSlice";
 
 export default function Chat() {
   const endMessageRef = useRef(null);
+  const dispatch = useDispatch();
   const [headerName, setHeaderName] = useState({});
+  const { users, message, newMessage } = useSelector((state) => state.chat);
+  const [idOtherProfile, setIdOtherProfile] = useState(null);
+  const { profileData } = useSelector((state) => state.profile);
+  const currentIdUser = profileData.userId;
+  // const { allProfilesData } = useSelector((state) => state.allProfilesData);
 
   const { theme } = useContext(ContextTheme);
 
   const styles = theme === "light" ? light : dark;
 
   //------------------------ Отримання усіх користувачів
-  const [data, setData] = useState([]);
-  const [idOtherProfile, setIdOtherProfile] = useState(null);
-  // console.log(data);
-  // console.log(idOtherProfile);
-  //test
-
   const handleIdProfile = (id, name, surname) => {
     setIdOtherProfile(id);
     setHeaderName({ name, surname });
-    console.log(id);
+    // console.log(id);
   };
 
   useEffect(() => {
-    const fetchDataLit = async () => {
-      const response = await axios.get(
-        "https://final-project-link.onrender.com/profiles",
-        {
-          withCredentials: true,
-        }
-      );
-      setData(response.data);
-      // console.log(response.data);
-    };
-    fetchDataLit();
-  }, []);
+    dispatch(fetchAllUsers());
+  }, [dispatch])
 
   //------------------------ Отримання усіх повідомлень з користувачем
-  const { profileData } = useSelector((state) => state.profile);
-  const currentIdUser = profileData.userId;
-  const [message, setMessage] = useState([]);
-
   useEffect(() => {
-    const getAllMessage = async () => {
-      const response = await axios.get(
-        "https://final-project-link.onrender.com/messages/chat",
-        {
-          withCredentials: true,
-          params: {
-            id1: currentIdUser,
-            id2: idOtherProfile,
-            page: 0,
-            size: 300,
-          },
-        }
-      );
-      console.log(response.data);
-      setMessage(response.data);
-    };
-    getAllMessage();
-  }, [idOtherProfile]);
+    if (idOtherProfile) {
+      dispatch(fetchAllMessage({ currentIdUser, idOtherProfile }));
+    }
+  }, [idOtherProfile, currentIdUser, dispatch]);
 
-  //---------------Post new message
-  const [newMessage, setNewMessage] = useState("");
-
-  const handleSendMessage = async (e) => {
+  //---------------Відбравка нового повідомлення
+  const handleSendMessage = async () => {
     if (!newMessage.trim()) return;
 
-    const response = await axios.post(
-      "https://final-project-link.onrender.com/messages/create",
-      {
+    const response = await dispatch(
+      postMessage({
         senderId: currentIdUser,
         recipientId: idOtherProfile,
         content: newMessage,
-      },
-      { withCredentials: true }
+      })
     );
 
-    console.log(response.data);
-
-    if (response.status === 200) {
-      setMessage([response.data, ...message]);
-      setNewMessage("");
+    if (response.meta.requestStatus === "fulfilled") {
+      dispatch(fetchAllMessage({ currentIdUser, idOtherProfile })); 
+      dispatch(clearNewMessage()); 
     }
   };
 
@@ -107,7 +73,7 @@ export default function Chat() {
     <div className={styles.wrapper}>
       <ul className={styles.listChats}>
         <div className={styles.headerList}>All chats</div>
-        {data.map(
+        {users.map(
           (user) =>
             user.userId !== currentIdUser && (
               <li
@@ -156,7 +122,7 @@ export default function Chat() {
         <textarea
           className={styles.inp}
           value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
+          onChange={(e) => dispatch(updateNewMessage(e.target.value))}
           onKeyDown={handleKeyDown}
           placeholder="Enter your message"
           type="text"
