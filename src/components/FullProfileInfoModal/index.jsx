@@ -95,7 +95,7 @@ export default function FullProfileInfoModal({ open, handleClose }) {
         </Typography>
 
         <Typography id="modal-modal-position" variant="body1" sx={typographyStyle}>
-          Position: {position}
+          Specialization: {position}
         </Typography>
 
         <Typography id="modal-modal-status" variant="body1" sx={typographyStyle}>

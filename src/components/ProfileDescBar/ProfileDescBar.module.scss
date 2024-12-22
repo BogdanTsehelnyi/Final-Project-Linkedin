@@ -31,6 +31,7 @@
     object-fit: cover; /* аналог background-size: cover */
     object-position: center; /* аналог background-position: center */
     width: 100%;
+    height: 100%;
     border-radius: 100%;
     border: 2px solid white;
   }
@@ -49,10 +50,9 @@
 }
 
 .name {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-family: var(--font-family);
+  // white-space: nowrap;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
   font-weight: 500;
   font-size: 20px;
 
@@ -60,7 +60,7 @@
   margin-bottom: 4px;
 }
 
-.education {
+.specialization {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2; /* Ліміт у два рядки */
@@ -68,11 +68,9 @@
   text-overflow: ellipsis;
   line-clamp: 2; /* Фолбек для підтримки інших браузерів */
   max-height: 3em;
-  margin-bottom: 4px;
 }
 .city {
-  color: grey;
-  margin-bottom: 20px;
+  color: #000;
 }
 .experienceBtn {
   width: 100%;
@@ -98,4 +96,10 @@
     // transform: translate(-50%, -50%);
     transform: translateY(-50%);
   }
+}
+.additionalInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 10px;
 }

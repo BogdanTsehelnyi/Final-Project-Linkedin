@@ -20,7 +20,7 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [profilePicture, setProfilePicture] = useState("/image/profile/photo_ava_default.png");
+  // const [profilePicture, setProfilePicture] = useState("/image/profile/photo_ava_default.png");
   const [backgroundImage, setBackgroundImage] = useState(
     "/image/profile/profileBackgroundDefault.svg"
   );
@@ -32,11 +32,11 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
     navigate("/login");
   };
 
-  useEffect(() => {
-    if (profileData.profilePicture) {
-      setProfilePicture(profileData.profilePicture);
-    }
-  }, [profileData.profilePicture]);
+  // useEffect(() => {
+  //   if (profileData.profilePicture) {
+  //     setProfilePicture(profileData.profilePicture);
+  //   }
+  // }, [profileData.profilePicture]);
 
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
@@ -63,7 +63,7 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
         dispatch(updateProfile({ newProfileData: updatedProfileData, profileId }));
 
         // Оновлюємо локальний стан з новим профілем
-        setProfilePicture(uploadedFileUrl); // Для відображення нового зображення на клієнті
+        // setProfilePicture(uploadedFileUrl); // Для відображення нового зображення на клієнті
         dispatch(setProfileData(updatedProfileData)); // Оновлюємо профіль у Redux
       } catch (error) {
         console.error("Помилка при завантаженні зображення:", error);
@@ -83,7 +83,11 @@ export default function ProfileBar({ handleOpenModal, handleOpenModalInfo }) {
   };
 
   const location = profileData?.address || "Unknown";
-  // const profilePicture = profileData?.profilePicture || "./image/profile/profileDefault.svg";
+  const profilePicture =
+    profileData?.headerPhotoUrl === "" || profileData?.headerPhotoUrl === undefined
+      ? "/image/profile/photo_ava_default.png"
+      : profileData?.headerPhotoUrl;
+
   const firstName = profileData?.name || "Unknown";
   const lastName = profileData?.surname || "Unknown";
   const position = profileData?.position || "Unknown";
