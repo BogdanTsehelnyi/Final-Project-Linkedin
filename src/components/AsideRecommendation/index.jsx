@@ -3,7 +3,10 @@ import styles from "./AsideRecommendation.module.scss";
 import ShowMoreBtn from "../common/ShowMoreBtn";
 
 export default function AsideRecommendation({ profileData = [] }) {
-  const profilePicture = profileData?.profilePicture || "/image/profile/photo_ava_default.png";
+  const profilePicture =
+    profileData?.headerPhotoUrl === "" || profileData?.headerPhotoUrl === undefined
+      ? "/image/profile/photo_ava_default.png"
+      : profileData?.headerPhotoUrl;
 
   profileData?.backgroundImageUrl || "/image/profile/profileBackgroundDefault.svg";
 

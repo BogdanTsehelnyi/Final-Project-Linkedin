@@ -39,15 +39,10 @@
 
   .name {
     display: block;
-    font-weight: 600;
-    font-family: system-ui;
-
+    font-weight: 500;
+    font-size: 20px;
+    color: #000;
     margin: 16px 0 16px;
-  }
-
-  .headline {
-    font-family: system-ui;
-    margin-top: -15px;
   }
 }
 
@@ -65,11 +60,12 @@
   align-items: center;
 
   .postImage {
-    width: 60px;
-    height: 60px;
+    display: block;
+    width: 45px;
+    height: 45px;
     object-fit: cover;
-    border-radius: 50%;
-    border: 1px solid #b7b7b7;
+    // border-radius: 50%;
+    // border: 1px solid #b7b7b7;
   }
   .openPostModal {
     width: 80%;

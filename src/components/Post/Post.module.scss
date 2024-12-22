@@ -152,7 +152,7 @@
   cursor: pointer;
   position: absolute;
   left: 58%;
-  margin-top: 5px;
+  margin-bottom: 8px;
 }
 
 .commentList {
@@ -169,7 +169,7 @@
   height: 50px;
   font-size: 15px;
   color: black ;
- 
+  
   background-color: #fff;
   border-radius: 5px;
 }
@@ -197,3 +197,46 @@
   position: relative;
   
 }
+.commentHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  gap: 6px;
+}
+
+.commentAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  
+}
+
+.commentauthor {
+  font-weight: 30px;
+  font-size: 10px;
+}
+
+.commentText {
+  margin: 5px 0;
+}
+
+.inputComment {
+  display: flex;
+  align-items: center;
+}
+
+.addCommentButton img {
+  width: 20px;
+  height: 20px;
+}
+
+.deleteCommentButton img {
+  width: 20px;
+  height: 20px;
+}
+.iconwrapper{
+align-items: center; 
+  display: flex;
+  background: red;
+}
+

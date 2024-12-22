@@ -5,11 +5,20 @@ import { useSelector, useDispatch } from "react-redux";
 export default function ProfileDescBar() {
   const profileData = useSelector((state) => state.profile.profileData);
 
-  const country = profileData?.location?.country || "Unknown country";
-  const city = profileData?.location?.city || "Unknown city";
-  const profilePicture = profileData?.profilePicture || "/image/profile/photo_ava_default.png";
-  const firstName = profileData?.firstName || "Unknown";
-  const lastName = profileData?.lastName || "Unknown";
+  const location = profileData?.address || "Unknown";
+  const profilePicture =
+    profileData?.headerPhotoUrl === "" || profileData?.headerPhotoUrl === undefined
+      ? "/image/profile/photo_ava_default.png"
+      : profileData?.headerPhotoUrl;
+
+  const firstName = profileData?.name || "Unknown";
+  const lastName = profileData?.surname || "Unknown";
+  const position = profileData?.position || "Unknown";
+
+  const status = profileData?.status
+    ? profileData.status.charAt(0).toUpperCase() + profileData.status.slice(1)
+    : "Unknown";
+
   const backgroundUrl =
     profileData?.backgroundImageUrl || "/image/profile/profileBackgroundDefault.svg";
 
@@ -28,15 +37,15 @@ export default function ProfileDescBar() {
         <h3 className={styles.name}>
           {firstName} {lastName}
         </h3>
+        <div className={styles.additionalInfo}>
+          <p className={styles.specialization}>{position}</p>
 
-        <p className={styles.education}>
-          Attended National Technical University of Ukraine 'Kyiv Polytechnic Institute​
-        </p>
-        <p className={styles.city}>
-          {country}, {city}
-        </p>
+          <p className={styles.city}>{location}</p>
 
-        <button className={styles.experienceBtn}>Experience</button>
+          <p className={styles.city}>{status}</p>
+        </div>
+
+        {/* <button className={styles.experienceBtn}>Experience</button> */}
       </div>
     </div>
   );
