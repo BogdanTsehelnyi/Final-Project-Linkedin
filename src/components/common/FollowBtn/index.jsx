@@ -3,6 +3,7 @@ import styles from "./FollowBtn.module.scss";
 import {
   subscribeToUser,
   fetchQuantitySubscribed,
+  fetchQuantitySubscribers,
   unsubscribeFromUser,
 } from "../../../redux/slices/subscriptionSlice"; // Імпортуємо action creators
 import { useDispatch } from "react-redux";
@@ -15,8 +16,6 @@ export default function FollowUnFollowBtn({ followerId, followingId }) {
   const [isFollowed, setIsFollowed] = useState(false);
   const { quantitySubscribed, subscribedData } = useSelector((state) => state.subscription);
 
-  console.log("subscribedData", quantitySubscribed, subscribedData);
-
   const handleFollowClick = async () => {
     try {
       // Виконуємо підписку на користувача
@@ -28,7 +27,8 @@ export default function FollowUnFollowBtn({ followerId, followingId }) {
       // Після успішної підписки виконуємо запит на отримання кількості підписок
       if (result.meta.requestStatus === "fulfilled") {
         setIsFollowed(true);
-        dispatch(fetchQuantitySubscribed(followerId));
+        // dispatch(fetchQuantitySubscribed(followerId));
+        // dispatch(fetchQuantitySubscribers(followerId));
       }
     } catch (error) {
       console.error("Помилка під час виконання subscribeToUser:", error);
@@ -46,7 +46,8 @@ export default function FollowUnFollowBtn({ followerId, followingId }) {
       // Після успішної відписки виконуємо запит на отримання кількості підписок
       if (result.meta.requestStatus === "fulfilled") {
         setIsFollowed(false);
-        dispatch(fetchQuantitySubscribed(followerId));
+        // dispatch(fetchQuantitySubscribed(followerId));
+        // dispatch(fetchQuantitySubscribers(followerId));
       }
     } catch (error) {
       console.error("Помилка під час виконання unsubscribeFromUser:", error);

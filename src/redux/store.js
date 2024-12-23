@@ -7,6 +7,7 @@ import chatReducer from "./slices/chatSlice";
 // import friendsReducer from "./slices/friendsSlice";
 import subscriptionReducer from "./slices/subscriptionSlice";
 import commentsReducer from "./slices/commentsSlice";
+import postsReducer from "./slices/postsSlice";
 
 const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ const store = configureStore({
     chat: chatReducer,
     subscription: subscriptionReducer,
     comments: commentsReducer, // Добавляем в store
+    posts: postsReducer,
   },
 });
 

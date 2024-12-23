@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import { addFriend, removeFriend } from "../../redux/slices/profileRecommendationSlice";
+
 import { useNavigate } from "react-router-dom";
 import styles from "./AnotherProfiles.module.scss";
 import { useEffect } from "react";
@@ -9,6 +9,7 @@ import { fetchOtherProfiles } from "../../redux/slices/otherProfilesSlice";
 import ShowMoreBtn from "../common/ShowMoreBtn";
 import SmallPreloader from "../common/smallPreloader";
 import FollowBtn from "../common/FollowBtn";
+// import getFilteredItems from "../../utils/filteredItems/getFilteredItems";
 
 export default function AnotherProfiles() {
   const dispatch = useDispatch();
@@ -16,7 +17,9 @@ export default function AnotherProfiles() {
 
   const userId = useSelector((state) => state.auth.userId);
   const allProfiles = useSelector((state) => state.allProfiles.allProfilesData);
-  const { quantitySubscribed, subscribedData } = useSelector((state) => state.subscription);
+  const { subscribedData } = useSelector((state) => state.subscription);
+
+  // const recommendedProfiles = getFilteredItems(allProfiles, subscribedData, 5);
 
   useEffect(() => {
     if (allProfiles.length === 0) {
@@ -26,8 +29,6 @@ export default function AnotherProfiles() {
       dispatch(fetchOtherProfiles({ userId: userId, page: 0, limit: 6 }));
     }
   }, [allProfiles.length, dispatch, userId]);
-
-  console.log("allProfiles", allProfiles);
 
   const isProfilesLoading = useSelector((state) => state.allProfiles.loading);
   console.log(isProfilesLoading);
