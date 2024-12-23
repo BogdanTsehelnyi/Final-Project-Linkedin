@@ -10,7 +10,6 @@
 .descriptionProfile {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 10px;
   margin-bottom: 15px;
   .postAvatarContainer {
@@ -236,16 +235,4 @@
   align-items: center;
   display: flex;
   background: red;
-}
-.profilwrapper{
-  display: flex;
-  gap: 15px;
-}
-.deletePost{
-  height: 100%;
-  border: none;
-  background: none;
-}
-.deletePost:hover{
-  background-color: #ff7875;
 }
