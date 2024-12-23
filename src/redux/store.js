@@ -14,7 +14,6 @@ const store = configureStore({
     changeProfileModal: modalReducer,
     auth: authReducer,
     allProfiles: otherProfilesReducer, // Використовується state.allProfiles
-    // friends: friendsReducer, // Використовується state.friends
     chat: chatReducer,
     subscription: subscriptionReducer,
     comments: commentsReducer, // Добавляем в store

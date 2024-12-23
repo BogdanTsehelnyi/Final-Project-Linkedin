@@ -3,17 +3,30 @@ import { ContextTheme } from "../../context/contextTheme/ContextTheme";
 import light from "./Chat.module.scss";
 import dark from "./ChatDark.module.scss";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchAllUsers, fetchAllMessage, postMessage, updateNewMessage, clearNewMessage } from "../../redux/slices/chatSlice";
+import {
+  fetchAllUsers,
+  fetchAllMessage,
+  postMessage,
+  updateNewMessage,
+  clearNewMessage,
+} from "../../redux/slices/chatSlice";
 
 export default function Chat() {
   const endMessageRef = useRef(null);
   const dispatch = useDispatch();
   const [headerName, setHeaderName] = useState({});
-  const { users, message, newMessage } = useSelector((state) => state.chat);
+  const { users, message, newMessage, } = useSelector(
+    (state) => state.chat
+  );
+  // message.forEach((mess) => {
+  //   console.log(mess.read === false);
+  // })
+  // console.log(message);
+  
+  
   const [idOtherProfile, setIdOtherProfile] = useState(null);
   const { profileData } = useSelector((state) => state.profile);
   const currentIdUser = profileData.userId;
-  // const { allProfilesData } = useSelector((state) => state.allProfilesData);
 
   const { theme } = useContext(ContextTheme);
 
@@ -27,8 +40,10 @@ export default function Chat() {
   };
 
   useEffect(() => {
-    dispatch(fetchAllUsers());
-  }, [dispatch])
+    if (users.length === 0) {
+      dispatch(fetchAllUsers());
+    }
+  }, [dispatch, users]);
 
   //------------------------ Отримання усіх повідомлень з користувачем
   useEffect(() => {
@@ -50,8 +65,8 @@ export default function Chat() {
     );
 
     if (response.meta.requestStatus === "fulfilled") {
-      dispatch(fetchAllMessage({ currentIdUser, idOtherProfile })); 
-      dispatch(clearNewMessage()); 
+      dispatch(fetchAllMessage({ currentIdUser, idOtherProfile }));
+      dispatch(clearNewMessage());
     }
   };
 
@@ -62,12 +77,12 @@ export default function Chat() {
     }
   };
 
-    // Автоматическая прокрутка вниз
-    useEffect(() => {
-      if (endMessageRef.current) {
-        endMessageRef.current.scrollIntoView({ behavior: "smooth" });
-      }
-    }, [message]);
+  // Автоматическая прокрутка вниз
+  useEffect(() => {
+    if (endMessageRef.current) {
+      endMessageRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [message]);
 
   return (
     <div className={styles.wrapper}>
@@ -106,17 +121,20 @@ export default function Chat() {
           Message with {headerName.name} {headerName.surname}
         </div>
         <div className={styles.chatWrapper}>
-          {message.slice().reverse().map((mess) =>
-            mess.senderId === currentIdUser ? (
-              <p key={mess.messageId} className={styles.sending}>
-               You: {mess.content}
-              </p>
-            ) : (
-              <p key={mess.messageId} className={styles.pending}>
-                {mess.content}
-              </p>
-            )
-          )}
+          {message
+            .slice()
+            .reverse()
+            .map((mess) =>
+              mess.senderId === currentIdUser ? (
+                <p key={mess.messageId} className={styles.sending}>
+                  You: {mess.content}
+                </p>
+              ) : (
+                <p key={mess.messageId} className={styles.pending}>
+                  {mess.content}
+                </p>
+              )
+            )}
           <div ref={endMessageRef}></div>
         </div>
         <textarea

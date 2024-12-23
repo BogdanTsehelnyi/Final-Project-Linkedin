@@ -104,7 +104,7 @@ export default function Header() {
             </div>
             Net
           </NavLink>
-          <NavLink
+          {/* <NavLink
             to="/jobs"
             className={({ isActive }) => `${styles.item} ${isActive ? styles.active : ""}`}
           >
@@ -112,14 +112,14 @@ export default function Header() {
               <Jobs />
             </div>
             Jobs
-          </NavLink>
+          </NavLink> */}
           <NavLink
             to="/messages"
             className={({ isActive }) => `${styles.item} ${isActive ? styles.active : ""}`}
           >
             <div className={styles.group}>
               <Messages className={styles.mes} />
-              <div className={styles.new}>1</div>
+              {/* <div className={styles.new}>1</div> */}
             </div>
             Messages
           </NavLink>
