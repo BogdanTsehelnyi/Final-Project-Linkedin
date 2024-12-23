@@ -13,6 +13,7 @@ import { useState } from "react";
 import CreatePostModal from "../../components/CreatePostModal";
 import { useDispatch } from "react-redux";
 import { fetchAllPosts } from "../../redux/slices/postsSlice";
+import DefaultPost from "../../components/DefaultPost";
 
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -62,7 +63,7 @@ export default function Home() {
         <aside className={styles.leftSideBar}>
           <ProfileDescBar />
           <ConnectionAside />
-          <NavAsideMenu />
+          {/* <NavAsideMenu /> */}
         </aside>
 
         {/* Main Content of home */}
@@ -93,6 +94,8 @@ export default function Home() {
           {/* POSTS */}
           <ul className={styles.postListContainer}>
             <Post posts={posts} />
+
+            {posts.length === 0 && <DefaultPost />}
           </ul>
         </div>
 

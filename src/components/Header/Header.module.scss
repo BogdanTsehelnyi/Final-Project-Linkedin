@@ -14,6 +14,7 @@
   gap: 17px;
   align-items: center;
   position: relative;
+  margin-left: 10px;
 }
 .wrapperFocus {
   position: fixed;
@@ -53,10 +54,12 @@
   border: none;
   background-color: #eef3f8;
   padding-left: 20%;
+  display: flex;
+  justify-content: start;
 }
 .nav {
   display: flex;
-  gap: 3vw;
+  gap: 30px;
   align-items: center;
 }
 .item {
@@ -80,10 +83,12 @@
   position: relative;
 }
 .active {
+ 
   cursor: default;
   border-bottom: 2px solid gray;
   svg {
     transform: rotate(30deg);
+    
   }
 }
 .arr {
@@ -97,7 +102,7 @@
   display: block;
   width: 30px;
   height: 30px;
-  background-image: url("/image/header/theme.png");
+ 
   background-size: cover;
   border: none;
   background-color: transparent;
@@ -115,6 +120,10 @@
   position: absolute;
   top: -8px;
   right: -10px;
+}
+.displaySearch{
+  padding: 10px;
+  gap: 10px;
 }
 @media (max-width: 911px) {
   .item {

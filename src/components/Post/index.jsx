@@ -6,6 +6,7 @@ import {
   createComment,
   deleteComment,
 } from "../../redux/slices/commentsSlice";
+import { deletePost } from "../../redux/slices/postsSlice"; 
 import styles from "./Post.module.scss";
 import ExpandableText from "../../components/ExpandableText";
 import Dislike from "./images-Post/thumbs-down.svg";
@@ -59,11 +60,25 @@ export default function Post({ postId, posts }) {
     dispatch(deleteComment({ commentId }));
   };
 
+    // Обработчик удаления поста
+    const handleDeletePost = (postId) => {
+      dispatch(deletePost(postId))
+        .then(() => {
+          alert("Post deleted successfully");
+        })
+        .catch((error) => {
+          console.error("Failed to delete post:", error);
+          alert("Failed to delete post");
+        });
+    };
+  
+
   return (
     <ul className={styles.postsList}>
       {posts.map((post) => (
         <li key={post.postId} className={styles.postWrapper}>
           <div className={styles.descriptionProfile}>
+            <div className={styles.profilwrapper} >
             <a className={styles.postAvatarContainer} href="#">
               <img src={profilePicture} alt="avatar" />
             </a>
@@ -71,6 +86,11 @@ export default function Post({ postId, posts }) {
               <h3 className={styles.nameProfile}>{`${firstName} ${lastName}`}</h3>
               <p className={styles.specialization}>{position}</p>
             </div>
+            </div>
+
+            <button onClick={() => handleDeletePost(post.postId)} className={styles.deletePost}>
+            <img src={Trash} alt="Delete" />
+            </button>
           </div>
           <div className={styles.postTextContainer}>
             <h2 className={styles.title}>{post.title}</h2>
@@ -104,10 +124,7 @@ export default function Post({ postId, posts }) {
               <img src="image/publication/Comment.svg" alt="Comment" />
               <span>Comment</span>
             </button>
-            <button>
-              <img src="image/publication/SendMessage.svg" alt="Send" />
-              <span>Send</span>
-            </button>
+
           </div>
 
           {showCommentModal && (
