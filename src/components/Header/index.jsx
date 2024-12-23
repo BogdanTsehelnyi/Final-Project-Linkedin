@@ -127,10 +127,10 @@ export default function Header() {
             to="/notifications"
             className={({ isActive }) => `${styles.item} ${isActive ? styles.active : ""}`}
           >
-            <div className={styles.group}>
+           {/*  <div className={styles.group}>
               <Notifications />
             </div>
-            Notifications
+            Notifications*/}
           </NavLink>
           <NavLink to="/profile" className={classNames(styles.item, styles.itemDisplay)}>
             <Profile />
