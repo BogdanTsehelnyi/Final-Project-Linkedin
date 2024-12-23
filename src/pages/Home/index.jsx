@@ -63,7 +63,7 @@ export default function Home() {
         <aside className={styles.leftSideBar}>
           <ProfileDescBar />
           <ConnectionAside />
-          <NavAsideMenu />
+          {/* <NavAsideMenu /> */}
         </aside>
 
         {/* Main Content of home */}

@@ -9,7 +9,13 @@ import { fetchOtherProfiles } from "../../redux/slices/otherProfilesSlice";
 import ShowMoreBtn from "../common/ShowMoreBtn";
 import SmallPreloader from "../common/smallPreloader";
 import FollowBtn from "../common/FollowBtn";
-// import getFilteredItems from "../../utils/filteredItems/getFilteredItems";
+import { getFilteredItems } from "../../utils/filteredItems/getFilteredItems";
+import {
+  fetchQuantitySubscribed,
+  fetchSubscriptions,
+  fetchQuantitySubscribers,
+  fetchFollowers,
+} from "../../redux/slices/subscriptionSlice";
 
 export default function AnotherProfiles() {
   const dispatch = useDispatch();
@@ -17,16 +23,29 @@ export default function AnotherProfiles() {
 
   const userId = useSelector((state) => state.auth.userId);
   const allProfiles = useSelector((state) => state.allProfiles.allProfilesData);
-  const { subscribedData } = useSelector((state) => state.subscription);
+  // const { subscribedData } = useSelector((state) => state.subscription);
 
-  // const recommendedProfiles = getFilteredItems(allProfiles, subscribedData, 5);
+  // useEffect(() => {
+  //   if (subscribedData.length === 0) {
+  //     console.log("Запит відбувається тільки один раз");
+
+  //     // Завантажуємо підписки лише якщо вони ще не завантажені
+  //     dispatch(fetchSubscriptions({ userId }));
+  //   }
+  // }, [dispatch, subscribedData.length, userId]);
+
+  // console.log(subscribedData, "subscribedData");
+
+  // const recommendedProfiles = getFilteredItems(allProfiles, subscribedData, 10);
+
+  // console.log("recommendedProfiles", recommendedProfiles);
 
   useEffect(() => {
     if (allProfiles.length === 0) {
       console.log("Запит відбувається тільки один раз");
 
       // Завантажуємо профілі лише якщо вони ще не завантажені
-      dispatch(fetchOtherProfiles({ userId: userId, page: 0, limit: 6 }));
+      dispatch(fetchOtherProfiles({ userId: userId, page: 0, limit: 7 }));
     }
   }, [allProfiles.length, dispatch, userId]);
 

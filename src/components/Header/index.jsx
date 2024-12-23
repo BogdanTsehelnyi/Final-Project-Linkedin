@@ -58,7 +58,7 @@ export default function Header() {
       <div className={styles.searchGroup}>
         <Logo className={styles.name} />
         <div className={styles.inputWrapper}>
-          <Search />
+          {/* <Search /> */}
           <input
             onFocus={handleFocus}
             onBlur={handleBlur}
@@ -127,7 +127,7 @@ export default function Header() {
             to="/notifications"
             className={({ isActive }) => `${styles.item} ${isActive ? styles.active : ""}`}
           >
-           {/*  <div className={styles.group}>
+            {/*  <div className={styles.group}>
               <Notifications />
             </div>
             Notifications*/}
