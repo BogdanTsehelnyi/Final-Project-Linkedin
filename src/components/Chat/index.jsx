@@ -22,7 +22,7 @@ export default function Chat() {
     (state) => state.chat
   );
   const { id } = useParams();  // Получаем id собеседника из URL
-  console.log(id);
+  // console.log(id);
   
   // message.forEach((mess) => {
   //   console.log(mess.read === false);
@@ -64,36 +64,6 @@ export default function Chat() {
       dispatch(fetchAllMessageByRout({ id, currentIdUser }));
     } 
   }, [id, dispatch]);
-  
-
-  // const [test, setTest] = useState([]);
-  // console.log(test);
-  
-  // useEffect(() => {
-  //   const fetchRoutChat = async () => {
-  //   try{
-  //     const response = await axios.get(`https://final-project-link.onrender.com/messages/chat`, {
-  //       withCredentials: true,
-  //       params : {
-  //         id1: currentIdUser,
-  //         id2: id,
-  //         page: 0,
-  //         size: 300,
-  //       }
-  //     })
-  //     // return response.data;
-  //     //  return console.log(response.data);
-  //     setTest(response.data);
-      
-  //   } catch(error) {
-  //     console.log(error);
-      
-  //   }
-  // }
-  //     if (id) {
-  //       fetchRoutChat();
-  //     }
-  // }, [id]);
 
   //---------------Відбравка нового повідомлення
   const handleSendMessage = async () => {
