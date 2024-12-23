@@ -36,8 +36,9 @@
   font-family: sans-serif;
 
   .nameProfile {
-    font-size: 16px;
     font-weight: 500;
+    font-size: 20px;
+    color: #000;
   }
 
   .followers {
@@ -46,8 +47,8 @@
   }
 
   .specialization {
-    font-size: 10px;
-    font-weight: 400;
+    font-size: 14px;
+    font-weight: 200;
   }
 }
 
@@ -124,7 +125,6 @@
   margin: 15px 0 4px;
 }
 
-
 .commentModal {
   margin-top: 10px;
   padding: 10px;
@@ -168,8 +168,8 @@
   justify-content: space-between;
   height: 50px;
   font-size: 15px;
-  color: black ;
-  
+  color: black;
+
   background-color: #fff;
   border-radius: 5px;
 }
@@ -181,8 +181,7 @@
 .deleteCommentButton {
   margin-left: 10px;
   padding: 2px 5px;
- 
-  
+
   border: none;
   border-radius: 3px;
   cursor: pointer;
@@ -193,9 +192,8 @@
   background-color: #ff7875;
 }
 
-.input-comment{
+.input-comment {
   position: relative;
-  
 }
 .commentHeader {
   display: flex;
@@ -208,7 +206,6 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  
 }
 
 .commentauthor {
@@ -234,9 +231,8 @@
   width: 20px;
   height: 20px;
 }
-.iconwrapper{
-align-items: center; 
+.iconwrapper {
+  align-items: center;
   display: flex;
   background: red;
 }
-

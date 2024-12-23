@@ -11,6 +11,8 @@ import AsideFooter from "../../components/AsideFooter";
 import Post from "../../components/Post";
 import { useState } from "react";
 import CreatePostModal from "../../components/CreatePostModal";
+import { useDispatch } from "react-redux";
+import { fetchAllPosts } from "../../redux/slices/postsSlice";
 
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -21,11 +23,29 @@ export default function Home() {
 
   // ОТРИМАННЯ ДАНИХ ДЛЯ  ЛІВОГО SIDEBAR
 
+  // Отримання даних профілю
   const profileData = useSelector((state) => state.profile.profileData);
-
   const loading = useSelector((state) => state.profile.loading);
   const error = useSelector((state) => state.profile.error);
+  // Отримання даних постів
 
+  const posts = useSelector((state) => state.posts.posts);
+  const loadingPosts = useSelector((state) => state.posts.loading);
+  const errorPosts = useSelector((state) => state.posts.error);
+
+  console.log("posts", posts);
+
+  const userId = useSelector((state) => state.auth.userId);
+  const dispatch = useDispatch();
+
+  // Завантаження постів при завантаженні сторінки
+  useEffect(() => {
+    if (userId) {
+      dispatch(fetchAllPosts({ userId }));
+    }
+  }, [dispatch, userId]);
+
+  // Заповнення даних
   const location = profileData?.address || "Unknown";
   const profilePicture =
     profileData?.headerPhotoUrl === "" || profileData?.headerPhotoUrl === undefined
@@ -72,7 +92,7 @@ export default function Home() {
           </div>
           {/* POSTS */}
           <ul className={styles.postListContainer}>
-            <Post />
+            <Post posts={posts} />
           </ul>
         </div>
 

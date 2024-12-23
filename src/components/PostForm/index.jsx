@@ -1,33 +1,42 @@
 import React, { useState } from "react";
 import { Field, Form, Formik } from "formik";
-// import * as Yup from "yup";
-import styles from "./PostForm.module.scss"; // Імпорт стилів
+import { useDispatch, useSelector } from "react-redux";
+import styles from "./PostForm.module.scss";
 import { uploadFile } from "../../utils/uploadFile";
-
-// {
-//   "authorId": 129,
-//   "title": "New Post",
-//   "photoUrl": "",
-//   "content": "something about a new post "
-// }
+import { createPost } from "../../redux/slices/postsSlice";
 
 const PostForm = () => {
   const [photoPreview, setPhotoPreview] = useState(null);
+  const userId = useSelector((state) => state.auth.userId);
+  const dispatch = useDispatch();
+
   const folderName = "contentPhoto";
   const initialValues = {
+    authorId: userId,
     title: "",
     content: "",
-    photoUrl: null,
+    photoUrl: "",
   };
 
-  // 1731982417325
+  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    try {
+      // Відправка даних на сервер
+      await dispatch(createPost(values)).unwrap();
+      console.log("Post created successfully:", values);
+
+      // Очистка форми
+      resetForm();
+      setPhotoPreview(null);
+    } catch (error) {
+      console.error("Error creating post:", error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
-    <Formik
-      initialValues={initialValues}
-      //   validationSchema={validationSchema}
-      //   onSubmit={handleSubmit}
-    >
-      {({ setFieldValue, errors, touched }) => (
+    <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+      {({ setFieldValue, errors, touched, isSubmitting }) => (
         <Form className={styles.form}>
           {/* Поле Title */}
           <div className={styles.formGroup}>
@@ -59,6 +68,7 @@ const PostForm = () => {
               <div className={styles.errorMessage}>{errors.content}</div>
             )}
           </div>
+
           {/* Попередній перегляд фото */}
           {photoPreview && (
             <div className={styles.photoPreview}>
@@ -85,8 +95,6 @@ const PostForm = () => {
                     if (fileImg) {
                       try {
                         const uploadedUrl = await uploadFile(fileImg, folderName);
-                        console.log("uploadedUrl", uploadedUrl);
-
                         setFieldValue("photoUrl", uploadedUrl);
                         setPhotoPreview(uploadedUrl);
                       } catch (error) {
@@ -101,8 +109,8 @@ const PostForm = () => {
               )}
             </div>
 
-            <button type="submit" className={styles.submitButton}>
-              Submit
+            <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
+              {isSubmitting ? "Submitting..." : "Submit"}
             </button>
           </div>
         </Form>
