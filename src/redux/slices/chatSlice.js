@@ -22,8 +22,8 @@ export const fetchAllUsers = createAsyncThunk(
 
 //Запит на отримання усіх повідомлень з користувачем
 
-export const fetchAllMessage = createAsyncThunk(
-  "chat/fetchAllMessage",
+export const fetchAllMessageByParams = createAsyncThunk(
+  "chat/fetchAllMessageByParams",
   async ({ currentIdUser, idOtherProfile }, { rejectWithValue }) => {
     try {
       const response = await axios.get(
@@ -46,6 +46,32 @@ export const fetchAllMessage = createAsyncThunk(
     }
   }
 );
+
+//Отримання по роуту
+export const fetchAllMessageByRout = createAsyncThunk(
+  "chat/fetchAllMessageByRout",
+  async ({ id, currentIdUser }, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `https://final-project-link.onrender.com/messages/chat`,
+        {
+          withCredentials: true,
+          params: {
+            id1: currentIdUser,
+            id2: id,
+            page: 0,
+            size: 300,
+          },
+        }
+      );
+      return response.data;
+      console.log(response.data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 
 //Відправлення нового повідомлення користувачу
 export const postMessage = createAsyncThunk(
@@ -90,10 +116,12 @@ const chatSlice = createSlice({
     builder.addCase(fetchAllUsers.fulfilled, (state, action) => {
       state.users = action.payload;
     });
-    builder.addCase(fetchAllMessage.fulfilled, (state, action) => {
+    builder.addCase(fetchAllMessageByParams.fulfilled, (state, action) => {
       state.message = action.payload;
     });
-    builder.addCase(postMessage.fulfilled, (state, action) => {});
+    builder.addCase(fetchAllMessageByRout.fulfilled, (state, action) => {
+      state.message = action.payload;
+    });
   },
 });
 

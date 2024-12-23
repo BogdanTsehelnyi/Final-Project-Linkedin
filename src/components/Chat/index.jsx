@@ -5,11 +5,14 @@ import dark from "./ChatDark.module.scss";
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchAllUsers,
-  fetchAllMessage,
+  fetchAllMessageByParams,
+  fetchAllMessageByRout,
   postMessage,
   updateNewMessage,
   clearNewMessage,
 } from "../../redux/slices/chatSlice";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 export default function Chat() {
   const endMessageRef = useRef(null);
@@ -18,11 +21,15 @@ export default function Chat() {
   const { users, message, newMessage, } = useSelector(
     (state) => state.chat
   );
+  const { id } = useParams();  // Получаем id собеседника из URL
+  console.log(id);
+  
   // message.forEach((mess) => {
   //   console.log(mess.read === false);
   // })
   // console.log(message);
-  
+
+
   
   const [idOtherProfile, setIdOtherProfile] = useState(null);
   const { profileData } = useSelector((state) => state.profile);
@@ -48,9 +55,45 @@ export default function Chat() {
   //------------------------ Отримання усіх повідомлень з користувачем
   useEffect(() => {
     if (idOtherProfile) {
-      dispatch(fetchAllMessage({ currentIdUser, idOtherProfile }));
+      dispatch(fetchAllMessageByParams({ currentIdUser, idOtherProfile }));
     }
   }, [idOtherProfile, currentIdUser, dispatch]);
+
+  useEffect(() => {
+    if (id, currentIdUser) {
+      dispatch(fetchAllMessageByRout({ id, currentIdUser }));
+    } 
+  }, [id, dispatch]);
+  
+
+  // const [test, setTest] = useState([]);
+  // console.log(test);
+  
+  // useEffect(() => {
+  //   const fetchRoutChat = async () => {
+  //   try{
+  //     const response = await axios.get(`https://final-project-link.onrender.com/messages/chat`, {
+  //       withCredentials: true,
+  //       params : {
+  //         id1: currentIdUser,
+  //         id2: id,
+  //         page: 0,
+  //         size: 300,
+  //       }
+  //     })
+  //     // return response.data;
+  //     //  return console.log(response.data);
+  //     setTest(response.data);
+      
+  //   } catch(error) {
+  //     console.log(error);
+      
+  //   }
+  // }
+  //     if (id) {
+  //       fetchRoutChat();
+  //     }
+  // }, [id]);
 
   //---------------Відбравка нового повідомлення
   const handleSendMessage = async () => {
@@ -65,7 +108,7 @@ export default function Chat() {
     );
 
     if (response.meta.requestStatus === "fulfilled") {
-      dispatch(fetchAllMessage({ currentIdUser, idOtherProfile }));
+      dispatch(fetchAllMessageByParams({ currentIdUser, idOtherProfile }));
       dispatch(clearNewMessage());
     }
   };

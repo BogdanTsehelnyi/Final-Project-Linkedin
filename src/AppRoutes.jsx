@@ -91,6 +91,7 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
+        <Route path="/messages/chat/:id" element={<Messages />} />
         <Route
           path="/jobs"
           element={
