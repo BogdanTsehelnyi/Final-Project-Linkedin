@@ -11,6 +11,10 @@ import {
 import NetItems from "../../components/NetItems";
 import ProfileFooter from "../../components/ProfileFooter";
 
+import ButtonMessage from "../ButtonMessage";
+import { isDatePickerView } from "@mui/x-date-pickers/internals";
+import { useState } from "react";
+
 export default function FriendsProfile() {
   const dispatch = useDispatch();
   const navigate = useNavigate();

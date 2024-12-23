@@ -31,7 +31,7 @@ export default function AppRoutes() {
 
   useEffect(() => {
     const resizeWidth = () => {
-      console.log(window.innerWidth);
+      // console.log(window.innerWidth);
 
       setWidthWindow(window.innerWidth);
     };
@@ -91,6 +91,7 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
+        <Route path="/messages/chat/:id" element={<Messages />} />
         <Route
           path="/jobs"
           element={

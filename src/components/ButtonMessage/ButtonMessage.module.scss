@@ -1,0 +1,30 @@
+.baseBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: #666;
+    min-width: 106px;
+    // text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 150%;
+    border-radius: 16px;
+    border: 1px solid #666;
+    // padding: 5.65px 17.45px 5.65px 32.92px;
+    position: relative;
+    &:hover {
+      background-color: #dcdbdb;
+    }
+  
+    // &::before {
+    //   content: "";
+    //   display: block;
+    //   width: 12.532px;
+    //   height: 12.252px;
+    //   position: absolute;
+    //   top: 50%;
+    //   left: 15px;
+    //   transform: translateY(-50%);
+    // }
+  }
