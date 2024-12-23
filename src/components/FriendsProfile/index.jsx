@@ -54,12 +54,12 @@ export default function FriendsProfile() {
     <div className={styles.pageContainer}>
       <div className={styles.contentWrapper}>
         <NetItems
-          title="My subscriptions"
+          title="Subscriptions"
           subscriptionData={subscribedData}
           quantitySubscription={quantitySubscribed}
         />
         <NetItems
-          title="My followers"
+          title="Followers"
           subscriptionData={followersData}
           quantitySubscription={quantitySubscribers}
         />

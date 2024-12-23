@@ -44,7 +44,7 @@ export default function NetItems({ title, subscriptionData = [], quantitySubscri
             </div>
           ))
         ) : (
-          <p className={styles.noFriendsText}>You don't have any friends yet!</p>
+          <p className={styles.noFriendsText}>You don't have any {title} yet!</p>
         )}
       </div>
     </>
