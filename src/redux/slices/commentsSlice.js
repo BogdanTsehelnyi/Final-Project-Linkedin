@@ -1,136 +1,140 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-
 const BASE_URL = "https://final-project-link.onrender.com";
- 
+
+// створення коментаря
+
 export const createComment = createAsyncThunk(
   "comments/createComment",
-  async ({ postId, authorId, content }, { getState, rejectWithValue }) => {
+  async ({ postId, authorId, content }, { rejectWithValue }) => {
     try {
-      const token = getState().auth.token; // Токен авторизации из auth
       const response = await axios.post(
-        `${BASE_URL}/comments`,
-        { postId, authorId, content },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        `${BASE_URL}/comments/create`,
+        { postId, authorId, content }, // Дані для запиту
+        { withCredentials: true } // Налаштування запиту
       );
-      return response.data; 
+      return response.data; // Повертаємо дані з відповіді
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
 
-// 2. Получить список комментариев по ID поста (с постраничной загрузкой)
+// 2. Отримати список коментарів за ID поста (з посторінковим завантаженням)
 export const fetchCommentsByPostId = createAsyncThunk(
   "comments/fetchCommentsByPostId",
-  async ({ postId, page = 0, size = 5 }, { getState, rejectWithValue }) => {
+  async ({ postId, page, size = "" }, { rejectWithValue }) => {
     try {
-      const token = getState().auth.token;
       const response = await axios.get(
-        `${BASE_URL}/comments/post/${postId}`,
-        {
-          params: { page, size },
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        `${BASE_URL}/comments/list/${postId}?page=${page}&size=${size}`, // Динамічний URL із query-параметрами
+        { withCredentials: true } // Налаштування запиту
       );
-      return response.data; // Возвращает массив комментариев
+      return response.data; // Повертаємо масив коментарів
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
 
-// 3. Получить количество комментариев к посту
+// 3. Отримати кількість коментарів до поста
 export const fetchCommentCount = createAsyncThunk(
   "comments/fetchCommentCount",
-  async ({ postId }, { getState, rejectWithValue }) => {
+  async ({ postId }, { rejectWithValue }) => {
     try {
-      const token = getState().auth.token;
-      const response = await axios.get(`${BASE_URL}/comments/count/${postId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      return response.data; // Общее количество комментариев
+      const response = await axios.get(
+        `${BASE_URL}/comments/count/${postId}`, // Динамічний URL
+        { withCredentials: true } // Налаштування запиту
+      );
+      return response.data; // Повертаємо кількість коментарів
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
 
-// 4. Удалить комментарий (логическое удаление)
+// 4. Видалити коментар (логічне видалення)
 export const deleteComment = createAsyncThunk(
   "comments/deleteComment",
-  async ({ commentId }, { getState, rejectWithValue }) => {
+  async ({ commentId }, { rejectWithValue }) => {
     try {
-      const token = getState().auth.token;
-      await axios.delete(`${BASE_URL}/comments/${commentId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      return commentId; // Возвращает ID удаленного комментария
+      const response = await axios.delete(
+        `${BASE_URL}/comments/delete/${commentId}`, // Динамічний URL
+        { withCredentials: true } // Налаштування запиту
+      );
+      return commentId; // Повертаємо ID видаленого коментаря
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
 
-// Слайс для комментариев
+// Слайс для коментарів
 const commentsSlice = createSlice({
   name: "comments",
   initialState: {
-    comments: [], // Список комментариев
-    totalCount: 0, // Общее количество комментариев
-    loading: false, // Состояние загрузки
-    error: null, // Ошибки
+    comments: [], // Список коментарів
+    totalCount: 0, // Загальна кількість коментарів
+    loading: false, // Стан завантаження
+    error: null, // Помилки
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Обработка создания комментария
+      // Обробка створення коментаря
       .addCase(createComment.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(createComment.fulfilled, (state, action) => {
         state.loading = false;
-        state.comments.unshift(action.payload); // Добавляем новый комментарий в начало списка
+        state.comments.unshift(action.payload); // Додаємо новий коментар на початок списку
       })
       .addCase(createComment.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
-      // Обработка получения комментариев
+      // Обробка отримання коментарів
       .addCase(fetchCommentsByPostId.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(fetchCommentsByPostId.fulfilled, (state, action) => {
         state.loading = false;
-        state.comments = action.payload; // Заменяем список комментариев
+        state.comments = action.payload; // Замінюємо список коментарів новими
       })
       .addCase(fetchCommentsByPostId.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
-      // Обработка получения количества комментариев
+      // Обробка отримання кількості коментарів
+      .addCase(fetchCommentCount.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(fetchCommentCount.fulfilled, (state, action) => {
-        state.totalCount = action.payload; // Сохраняем общее количество комментариев
+        state.loading = false;
+        state.totalCount = action.payload; // Зберігаємо загальну кількість коментарів
+      })
+      .addCase(fetchCommentCount.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
 
-      // Обработка удаления комментария
+      // Обробка видалення коментаря
+      .addCase(deleteComment.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(deleteComment.fulfilled, (state, action) => {
-        state.comments = state.comments.filter(
-          (comment) => comment.commentId !== action.payload
-        ); // Удаляем комментарий из списка
+        state.loading = false;
+        state.comments = state.comments.filter((comment) => comment.commentId !== action.payload); // Видаляємо коментар зі списку
+      })
+      .addCase(deleteComment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });

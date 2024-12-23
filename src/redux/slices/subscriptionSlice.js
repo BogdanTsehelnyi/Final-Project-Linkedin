@@ -59,8 +59,8 @@ export const fetchQuantitySubscribed = createAsyncThunk(
 );
 
 // Отримання числа підписників користувача
-export const quantitySubscribers = createAsyncThunk(
-  "subscription/quantitySubscribers",
+export const fetchQuantitySubscribers = createAsyncThunk(
+  "subscription/fetchQuantitySubscribers",
   async (userId, { rejectWithValue }) => {
     try {
       const response = await axios.get(
@@ -161,15 +161,15 @@ const subscriptionSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      .addCase(quantitySubscribers.pending, (state) => {
+      .addCase(fetchQuantitySubscribers.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(quantitySubscribers.fulfilled, (state, action) => {
+      .addCase(fetchQuantitySubscribers.fulfilled, (state, action) => {
         state.loading = false;
         state.quantitySubscribers = action.payload;
       })
-      .addCase(quantitySubscribers.rejected, (state, action) => {
+      .addCase(fetchQuantitySubscribers.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
@@ -191,7 +191,7 @@ const subscriptionSlice = createSlice({
       })
       .addCase(fetchFollowers.fulfilled, (state, action) => {
         state.loading = false;
-        state.followersData = action.payload;
+        state.followersData = action.payload.content;
       })
       .addCase(fetchFollowers.rejected, (state, action) => {
         state.loading = false;

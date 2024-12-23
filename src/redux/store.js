@@ -5,6 +5,7 @@ import modalReducer from "./slices/modal";
 import otherProfilesReducer from "./slices/otherProfilesSlice";
 import subscriptionReducer from "./slices/subscriptionSlice";
 import commentsReducer from "./slices/commentsSlice";
+import postsReducer from "./slices/postsSlice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     allProfiles: otherProfilesReducer, // Використовується state.allProfiles
     subscription: subscriptionReducer,
     comments: commentsReducer, // Добавляем в store
+    posts: postsReducer,
   },
 });
 

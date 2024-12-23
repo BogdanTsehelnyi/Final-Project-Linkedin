@@ -4,6 +4,13 @@ import { Field, Form, Formik } from "formik";
 import styles from "./PostForm.module.scss"; // Імпорт стилів
 import { uploadFile } from "../../utils/uploadFile";
 
+// {
+//   "authorId": 129,
+//   "title": "New Post",
+//   "photoUrl": "",
+//   "content": "something about a new post "
+// }
+
 const PostForm = () => {
   const [photoPreview, setPhotoPreview] = useState(null);
   const folderName = "contentPhoto";
