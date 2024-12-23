@@ -3,6 +3,9 @@ import { useSelector, useDispatch } from "react-redux";
 import styles from "./FriendsProfile.module.scss";
 import { useNavigate } from "react-router-dom";
 import { fetchQuantitySubscribed, fetchSubscriptions } from "../../redux/slices/subscriptionSlice";
+import ButtonMessage from "../ButtonMessage";
+import { isDatePickerView } from "@mui/x-date-pickers/internals";
+import { useState } from "react";
 
 export default function FriendsProfile() {
   const dispatch = useDispatch();
@@ -56,12 +59,13 @@ export default function FriendsProfile() {
               </div>
             </div>
             <div className={styles.btnBox}>
-              <button
+              {/* <button
                 className={styles.friendBtn}
                 onClick={() => console.log("Message to", friend.name)}
               >
                 Message
-              </button>
+              </button> */}
+              <ButtonMessage id={friend.userId} />
               <button className={styles.friendBtn}>Remove Friend</button>
             </div>
           </div>

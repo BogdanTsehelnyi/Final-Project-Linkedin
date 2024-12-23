@@ -2,86 +2,114 @@ import { useEffect, useRef, useState, useContext } from "react";
 import { ContextTheme } from "../../context/contextTheme/ContextTheme";
 import light from "./Chat.module.scss";
 import dark from "./ChatDark.module.scss";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  fetchAllUsers,
+  fetchAllMessageByParams,
+  fetchAllMessageByRout,
+  postMessage,
+  updateNewMessage,
+  clearNewMessage,
+} from "../../redux/slices/chatSlice";
+import { useParams } from "react-router-dom";
 import axios from "axios";
-import { useSelector } from "react-redux";
 
 export default function Chat() {
   const endMessageRef = useRef(null);
+  const dispatch = useDispatch();
   const [headerName, setHeaderName] = useState({});
+  const { users, message, newMessage, } = useSelector(
+    (state) => state.chat
+  );
+  const { id } = useParams();  // Получаем id собеседника из URL
+  console.log(id);
+  
+  // message.forEach((mess) => {
+  //   console.log(mess.read === false);
+  // })
+  // console.log(message);
+
+
+  
+  const [idOtherProfile, setIdOtherProfile] = useState(null);
+  const { profileData } = useSelector((state) => state.profile);
+  const currentIdUser = profileData.userId;
 
   const { theme } = useContext(ContextTheme);
 
   const styles = theme === "light" ? light : dark;
 
   //------------------------ Отримання усіх користувачів
-  const [data, setData] = useState([]);
-  const [idOtherProfile, setIdOtherProfile] = useState(null);
-  // console.log(data);
-  // console.log(idOtherProfile);
-  //test
-
   const handleIdProfile = (id, name, surname) => {
     setIdOtherProfile(id);
     setHeaderName({ name, surname });
-    console.log(id);
+    // console.log(id);
   };
 
   useEffect(() => {
-    const fetchDataLit = async () => {
-      const response = await axios.get("https://final-project-link.onrender.com/profiles", {
-        withCredentials: true,
-      });
-      setData(response.data);
-      // console.log(response.data);
-    };
-    fetchDataLit();
-  }, []);
+    if (users.length === 0) {
+      dispatch(fetchAllUsers());
+    }
+  }, [dispatch, users]);
 
   //------------------------ Отримання усіх повідомлень з користувачем
-  const { profileData } = useSelector((state) => state.profile);
-  const currentIdUser = profileData.userId;
-  const [message, setMessage] = useState([]);
-
-
-  
   useEffect(() => {
-    const getAllMessage = async () => {
-      const response = await axios.get("https://final-project-link.onrender.com/messages/chat", {
-        withCredentials: true,
-        params: {
-          id1: currentIdUser,
-          id2: idOtherProfile,
-          page: 0,
-          size: 300,
-        },
-      });
-      console.log(response.data);
-      setMessage(response.data);
-    };
-    getAllMessage();
-  }, [idOtherProfile]);
+    if (idOtherProfile) {
+      dispatch(fetchAllMessageByParams({ currentIdUser, idOtherProfile }));
+    }
+  }, [idOtherProfile, currentIdUser, dispatch]);
 
-  //---------------Post new message
-  const [newMessage, setNewMessage] = useState("");
+  useEffect(() => {
+    if (id, currentIdUser) {
+      dispatch(fetchAllMessageByRout({ id, currentIdUser }));
+    } 
+  }, [id, dispatch]);
+  
 
-  const handleSendMessage = async (e) => {
+  // const [test, setTest] = useState([]);
+  // console.log(test);
+  
+  // useEffect(() => {
+  //   const fetchRoutChat = async () => {
+  //   try{
+  //     const response = await axios.get(`https://final-project-link.onrender.com/messages/chat`, {
+  //       withCredentials: true,
+  //       params : {
+  //         id1: currentIdUser,
+  //         id2: id,
+  //         page: 0,
+  //         size: 300,
+  //       }
+  //     })
+  //     // return response.data;
+  //     //  return console.log(response.data);
+  //     setTest(response.data);
+      
+  //   } catch(error) {
+  //     console.log(error);
+      
+  //   }
+  // }
+  //     if (id) {
+  //       fetchRoutChat();
+  //     }
+  // }, [id]);
+
+  //---------------Відбравка нового повідомлення
+  const handleSendMessage = async () => {
     if (!newMessage.trim()) return;
 
-    const response = await axios.post(
-      "https://final-project-link.onrender.com/messages/create",
-      {
+    const response = await dispatch(
+      postMessage({
         senderId: currentIdUser,
         recipientId: idOtherProfile,
         content: newMessage,
-      },
-      { withCredentials: true }
+      })
     );
 
-    console.log(response.data);
-
-    if (response.status === 200) {
-      setMessage([response.data, ...message]);
-      setNewMessage("");
+    if (response.meta.requestStatus === "fulfilled") {
+      dispatch(fetchAllMessageByParams({ currentIdUser, idOtherProfile }));
+      dispatch(clearNewMessage());
     }
   };
 
@@ -98,11 +126,12 @@ export default function Chat() {
       endMessageRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [message]);
+
   return (
     <div className={styles.wrapper}>
       <ul className={styles.listChats}>
         <div className={styles.headerList}>All chats</div>
-        {data.map(
+        {users.map(
           (user) =>
             user.userId !== currentIdUser && (
               <li
@@ -115,11 +144,7 @@ export default function Chat() {
                 <div className={styles.imgWrapper}>
                   <img
                     className={styles.img}
-                    src={
-                      user.headerPhotoUrl === "" || user.headerPhotoUrl === undefined
-                        ? "/image/profile/photo_ava_default.png"
-                        : user.headerPhotoUrl
-                    }
+                    src={user.headerPhotoUrl}
                     alt="photo"
                   />
                 </div>
@@ -158,7 +183,7 @@ export default function Chat() {
         <textarea
           className={styles.inp}
           value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
+          onChange={(e) => dispatch(updateNewMessage(e.target.value))}
           onKeyDown={handleKeyDown}
           placeholder="Enter your message"
           type="text"
