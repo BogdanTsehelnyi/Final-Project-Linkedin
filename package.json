@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://BogdanTsehelnyi.github.io/Final-Project-Linkedin", 
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -10,7 +11,9 @@
     "preview": "vite preview",
     "test": "jest --coverage",
     "start": "npm run dev",
-    "prepare": "husky"
+    "prepare": "husky",
+    "predeploy": "npm run build", 
+    "deploy": "gh-pages -d dist" 
   },
   "dependencies": {
     "@date-io/dayjs": "^3.0.0",
@@ -48,6 +51,7 @@
     "eslint-plugin-react": "^7.35.0",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.9",
+    "gh-pages": "^6.2.0", 
     "globals": "^15.9.0",
     "husky": "^9.1.6",
     "identity-obj-proxy": "^3.0.0",
